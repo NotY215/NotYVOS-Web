@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url><loc>https://notyvos.gt.tc/</loc></url><url><loc>https://notyvos.gt.tc/about.php</loc></url><url><loc>https://notyvos.gt.tc/architecture.php</loc></url><url><loc>https://notyvos.gt.tc/docs.php</loc></url><url><loc>https://notyvos.gt.tc/roadmap.php</loc></url><url><loc>https://notyvos.gt.tc/faq.php</loc></url><url><loc>https://notyvos.gt.tc/developer.php</loc></url>
+<url><loc>http://notyvos.gt.tc/</loc></url>
+<url><loc>http://notyvos.gt.tc/About/</loc></url>
+<url><loc>http://notyvos.gt.tc/Architecture/</loc></url>
+<url><loc>http://notyvos.gt.tc/Docs/</loc></url>
+<url><loc>http://notyvos.gt.tc/Roadmap/</loc></url>
+<url><loc>http://notyvos.gt.tc/Updates/</loc></url>
+<url><loc>http://notyvos.gt.tc/FAQ/</loc></url>
+<url><loc>http://notyvos.gt.tc/Developer/</loc></url>
 </urlset>
