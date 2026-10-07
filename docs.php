@@ -124,7 +124,7 @@ $heroCards = [
   <div class="docs-stars" aria-hidden="true"></div>
   <div class="docs-runes" aria-hidden="true">ᛉ　ᛏ　ᛟ　ᚾ　ᛁ　ᛋ　ᛏ　ᚱ　ᚨ　ᚾ</div>
   <div class="section-shell docs-hero-inner">
-    <div class="docs-kicker"><span>NOTYVOS</span><i></i><span>TECHNICAL CODEX</span></div>
+    <div class="docs-kicker"><span>NOTYVOS</span><i></i><span>PS3 // NORSE CODEX</span></div>
     <h1>THE ARCHITECTURE<br><em>BEHIND NOTYVOS</em></h1>
     <p class="docs-hero-copy">A complete native x86-64 operating-system reference covering the kernel, memory, scheduler, NYFS, graphics, desktop, PS3 runtime, GameRunner, toolchain, decisions and roadmap.</p>
     <div class="docs-hero-actions">
@@ -175,9 +175,18 @@ $heroCards = [
       <p>The architecture is layered. Boot establishes the kernel environment, the kernel owns execution and resource primitives, VFS and NYFS own storage, the graphics layer owns rendering, the compositor presents the desktop, and GameRunner consumes runtime services without replacing the kernel.</p>
       <div class="diagram-frame"><div class="diagram-title"><span>LIVE MERMAID</span><b>Native boot to desktop</b></div><pre class="mermaid"><?=htmlspecialchars($diagram['boot'])?></pre></div>
       <div class="docs-grid three">
-        <article class="docs-panel"><span class="panel-tag">BOOT</span><h3>UEFI → Limine</h3><p>The firmware environment hands execution to Limine, which establishes the kernel entry contract and boot information required by the native kernel.</p></article>
-        <article class="docs-panel"><span class="panel-tag">KERNEL</span><h3>Execution core</h3><p>CPU/SMP, memory, scheduler and syscall infrastructure provide the primitives consumed by storage, graphics, desktop and runtime services.</p></article>
-        <article class="docs-panel"><span class="panel-tag">USER SPACE</span><h3>Desktop services</h3><p>Explorer, dialogs, clipboard, input and GameRunner sit above the core service boundaries instead of being mixed into early boot.</p></article>
+        <article class="docs-panel"><span class="panel-tag">BOOT</span><h3>UEFI → Limine</h3><p>Limine v12.9.0 supplies the framebuffer, memory map, HHDM, SMP/MP, module and RSDP information consumed by the native kernel.</p></article>
+        <article class="docs-panel"><span class="panel-tag">KERNEL</span><h3>Execution core</h3><p>CPU/SMP, four-level paging, higher-half mappings, PMM, VMM, heap, scheduler, syscalls and user-fault isolation form the execution foundation.</p></article>
+        <article class="docs-panel"><span class="panel-tag">USER SPACE</span><h3>Desktop services</h3><p>ELF processes, VFS, initramfs, NYFS, shell, Explorer, Settings, clipboard, input and GameRunner sit above explicit service boundaries.</p></article>
+      </div>
+      <div class="docs-grid two">
+        <article class="docs-panel"><span class="panel-tag">PROCESS MODEL</span><h3>ELF64 + per-process PML4</h3><p>The ELF loader validates ELF64/x86-64 files, maps PT_LOAD segments into newly allocated user pages, creates a user stack and records the process entry and stack addresses. fork clones user-visible mappings into a child address space. Processes retain parent/child links, file tables, working-directory state, exit status and reaping state.</p></article>
+        <article class="docs-panel"><span class="panel-tag">UACCESS</span><h3>Kernel/user memory boundary</h3><p>Syscalls enter through the x86-64 assembly entry path and are dispatched by the kernel. User pointers pass through the uaccess layer instead of being trusted directly. Current operations include process control, file operations, directory enumeration, mmap, exec, heap extension, time/sleep, signal/termination and NYFS file creation/removal.</p></article>
+      </div>
+      <div class="docs-grid three">
+        <article class="docs-panel"><span class="panel-tag">DEVICES</span><h3>Native device domains</h3><p>Implemented domains include ACPI, AHCI, Intel e1000 detection/initialization, HDA audio initialization, PS/2 keyboard/mouse and LAPIC/per-CPU/SMP infrastructure.</p></article>
+        <article class="docs-panel"><span class="panel-tag">FILESYSTEM</span><h3>VFS + initramfs + NYFS</h3><p>VFS provides a VNode namespace and file-descriptor layer. The initramfs is a Limine-loaded ustar archive mounted at /. NYFS is mounted at /disk and currently uses a 512-byte superblock, fixed 64-entry file table and following data sectors.</p></article>
+        <article class="docs-panel"><span class="panel-tag">IMAGE PIPELINE</span><h3>Decode → pixel buffer → compositor</h3><p>BMP, PNG, GIF, ICO and JPEG decoders feed Image Viewer and the Graphics API. The resulting pixels travel through the compositor to the framebuffer.</p></article>
       </div>
     </section>
 
@@ -185,13 +194,24 @@ $heroCards = [
       <div class="docs-eyebrow">03 · CORE</div><h2>Boot, Kernel and Init</h2>
       <p>The boot path is intentionally explicit: firmware, boot protocol, kernel entry, processor setup, memory setup, scheduler and system services. Current development includes init-program debugging before the next major GameRunner integration milestone.</p>
       <ol class="docs-steps">
-        <li><b>Firmware</b><span>Initial machine state and firmware services.</span></li>
-        <li><b>Limine</b><span>Boot protocol and kernel handoff.</span></li>
-        <li><b>CPU / SMP</b><span>Processor discovery and multiprocessor setup.</span></li>
-        <li><b>Memory</b><span>Physical/virtual memory and heap foundations.</span></li>
-        <li><b>Scheduler</b><span>Execution and task scheduling.</span></li>
-        <li><b>System services</b><span>Syscalls, VFS, graphics and other kernel-facing services.</span></li>
+        <li><b>1 · UEFI</b><span>Firmware loads the Limine boot environment.</span></li>
+        <li><b>2 · Limine</b><span>Loads notyvos-kernel.elf and configured modules.</span></li>
+        <li><b>3 · Boot requests</b><span>Framebuffer, memory-map, HHDM, SMP/MP, module and RSDP information is made available.</span></li>
+        <li><b>4 · _start</b><span>Kernel entry establishes the entry stack and transfers to kernel_main.</span></li>
+        <li><b>5 · kernel_main</b><span>Serial output, framebuffer console and logging become available.</span></li>
+        <li><b>6 · CPU + memory</b><span>CPU features, PMM, VMM, kernel heap and executable memory arena initialize.</span></li>
+        <li><b>7 · devices</b><span>ACPI, AHCI, e1000, HDA, LAPIC/per-CPU and SMP domains initialize.</span></li>
+        <li><b>8 · NYFS</b><span>NYFS mounts on the first available block device; development formatting occurs if no valid superblock exists.</span></li>
+        <li><b>9 · initramfs</b><span>The Limine module is parsed as ustar and mounted at /. NYFS is attached as /disk.</span></li>
+        <li><b>10 · compositor</b><span>Framebuffer console switches into buffered desktop rendering.</span></li>
+        <li><b>11 · graphics</b><span>Software and VBE graphics backends register and initialize.</span></li>
+        <li><b>12 · PS3 runtime</b><span>Translation cache and RSX state initialize, followed by decoder, ELF, PPU, SPU, DMA, JIT and RSX self-tests.</span></li>
+        <li><b>13 · scheduler</b><span>The task scheduler is initialized.</span></li>
+        <li><b>14 · init.elf</b><span>init.elf is loaded as an x86-64 user process with its own address space and user stack.</span></li>
+        <li><b>15 · interrupts</b><span>Interrupts are enabled and the scheduler starts init.</span></li>
+        <li><b>16 · shell</b><span>The user shell becomes the primary interactive userland process.</span></li>
       </ol>
+      <div class="docs-callout"><b>ISO modules</b><span>Current boot media supplies <code>notyvos-kernel.elf</code>, <code>init.elf</code> and <code>initramfs.tar</code>. An optional converted wallpaper can also be included.</span></div>
     </section>
 
     <section class="docs-section" id="memory">
@@ -257,6 +277,21 @@ COM --> DESKTOP[Desktop UI]</pre></div>
       <div class="docs-eyebrow">08 · PS3</div><h2>GameRunner</h2>
       <p>GameRunner is the application/runtime boundary that connects PS3-oriented execution to NotYVOS services. The architecture keeps firmware and protected material outside the public source distribution while allowing a developer build to provide the required runtime input.</p>
       <div class="docs-callout"><b>Firmware rule</b><span>Developer firmware can be connected by the build/runtime path. The public project does not distribute protected firmware or Sony signing keys.</span></div>
+      <div class="diagram-frame"><pre class="mermaid">flowchart LR
+PPC[PPU PC] --> CACHE[Translation cache]
+CACHE -->|miss| EMIT[x86-64 emitter]
+EMIT --> ARENA[Executable arena]
+ARENA --> BLOCK[Native block]
+BLOCK --> TRAMP[JIT trampoline]
+TRAMP --> CPU[x86-64 CPU]
+CACHE -->|hit| BLOCK
+BLOCK --> NEXT[Next PPC PC]
+NEXT --> CACHE</pre></div>
+      <div class="docs-grid two">
+        <article class="docs-panel"><span class="panel-tag">PPU STATE</span><h3>Register context</h3><p>The PPU context contains GPR/FPR state, PC, LR, CTR, XER and CR plus memory and syscall callbacks.</p></article>
+        <article class="docs-panel"><span class="panel-tag">JIT</span><h3>Baseline translation path</h3><p>The JIT looks up the current PPC PC, translates a supported basic block on a cache miss, emits x86-64 machine code into executable memory, enters it through the trampoline and falls back to the interpreter for unsupported instructions and the current syscall boundary.</p></article>
+      </div>
+      <div class="docs-callout"><b>RSX status</b><span>The delivered compatibility path includes FIFO command processing, rasterization, vertex/index buffers, depth/scissor state, smooth shading, texture binding, UVs, perspective correction, wrapping and mipmap/LOD sampling. Full method and shader coverage remain outside the current boundary.</span></div>
       <div class="docs-grid two">
         <article class="docs-panel"><span class="panel-tag">ABI</span><h3>PS3 ABI boundary</h3><p>Runtime code consumes an explicit PS3 ABI layer instead of depending directly on arbitrary kernel internals.</p></article>
         <article class="docs-panel"><span class="panel-tag">CELL</span><h3>cellFs direction</h3><p>PS3 filesystem semantics connect toward the native storage layer through the runtime boundary.</p></article>
