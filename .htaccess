@@ -1,6 +1,25 @@
 DirectoryIndex index.php
 ErrorDocument 404 /404.php
 Options -Indexes
+ServerSignature Off
+
+# Never expose server-side includes or project metadata.
+<FilesMatch "^(\\.env|\\.git|composer\\.(json|lock)|package(-lock)?\\.json|tsconfig\\.json|phpunit\\.xml|README.*)$">
+Require all denied
+</FilesMatch>
+
+# Update media is data only. Never execute PHP-like files from this directory.
+<DirectoryMatch "/Updates/?$">
+Options -ExecCGI
+<FilesMatch "\\.(php|php[0-9]?|phtml|phar|cgi|pl|py|sh)$">
+Require all denied
+</FilesMatch>
+</DirectoryMatch>
+
+# Keep reusable PHP fragments private.
+<DirectoryMatch "/includes/?$">
+Require all denied
+</DirectoryMatch>
 AddDefaultCharset UTF-8
 
 RewriteEngine On
@@ -35,6 +54,7 @@ RewriteCond %{THE_REQUEST} \s/+developer\.php(?:[?\s]) [NC]
 RewriteRule ^developer\.php$ /Developer/ [R=301,L]
 
 <IfModule mod_headers.c>
+Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; img-src 'self' data: https://raw.githubusercontent.com; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'none'; font-src 'self' data:;"
 Header always set X-Content-Type-Options "nosniff"
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
 Header always set X-Frame-Options "SAMEORIGIN"
