@@ -14,7 +14,7 @@ usort($files, function($a,$b) {
 <section class="page-hero section-shell">
 <span class="eyebrow">PROJECT UPDATES</span>
 <h1>Updates from the build.</h1>
-<p>This page shows visual progress through screenshots stored directly in the website repository.</p>
+<p>A visual record of the operating system as it evolves.</p>
 </section>
 <section class="section-shell section">
 <div class="section-heading">
@@ -23,7 +23,7 @@ usort($files, function($a,$b) {
 <p>Drop screenshots into the <code>Updates/</code> folder in GitHub. The site automatically lists supported image files here, newest numbered updates first.</p>
 </div>
 <?php if (!$files): ?>
-<div class="empty-state"><strong>No screenshots yet.</strong><span>Add numbered images such as <code>1.png</code>, <code>2.png</code> or <code>3.webp</code> to <code>Updates/</code>.</span></div>
+<div class="empty-state"><strong>No updates published yet.</strong><span>Development screenshots will appear here.</span></div>
 <?php else: ?>
 <div class="updates-grid">
 <?php foreach ($files as $file):
