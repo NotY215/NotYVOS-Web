@@ -1,0 +1,1 @@
+The website source belongs to the NotYVOS project. NotYVOS itself is licensed separately in the main repository. Third-party names, logos, fonts, software and linked assets remain under their respective licenses. The NotYVOS logo is sourced from the main NotYVOS repository.
