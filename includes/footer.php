@@ -1,6 +1,6 @@
 <footer class="site-footer"><div class="section-shell footer-grid">
-<div><a class="brand footer-brand" href="index.php"><img src="https://raw.githubusercontent.com/NotY215/NotYVOS/main/Assets/Neon%20Blue%20NotYVOS%20Tech%20Logo.png" alt=""><span>NotYVOS</span></a><p>A native x86-64 operating system project by NotY215.</p></div>
-<div><h4>Explore</h4><a href="docs.php">Documentation</a><a href="architecture.php">Architecture</a><a href="roadmap.php">Roadmap</a></div>
-<div><h4>Project</h4><a href="about.php">About</a><a href="developer.php">Developer</a><a href="faq.php">FAQ</a></div>
+<div><a class="brand footer-brand" href="/"><img src="https://raw.githubusercontent.com/NotY215/NotYVOS/main/Assets/Neon%20Blue%20NotYVOS%20Tech%20Logo.png" alt=""><span>NotYVOS</span></a><p>A native x86-64 operating system project by NotY215.</p></div>
+<div><h4>Explore</h4><a href="/Docs/">Documentation</a><a href="/Architecture/">Architecture</a><a href="/Roadmap/">Roadmap</a><a href="/Updates/">Updates</a></div>
+<div><h4>Project</h4><a href="/About/">About</a><a href="/Developer/">Developer</a><a href="/FAQ/">FAQ</a></div>
 <div><h4>Source</h4><a href="https://github.com/NotY215/NotYVOS" target="_blank" rel="noopener">GitHub repository</a><a href="https://github.com/NotY215" target="_blank" rel="noopener">NotY215 on GitHub</a></div>
 </div><div class="section-shell footer-bottom"><span>© <?= date('Y') ?> NotY215. NotYVOS is a development-stage project.</span><span>HTML · CSS · JS · TypeScript · PHP</span></div></footer></body></html>
