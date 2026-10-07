@@ -1,0 +1,1 @@
+document.addEventListener('keydown',(event)=>{const key=event.key.toUpperCase();const blocked=event.key==='F12'||(event.ctrlKey&&event.shiftKey&&['I','J','C'].includes(key))||(event.ctrlKey&&key==='U');if(blocked){event.preventDefault();event.stopPropagation()}});document.addEventListener('contextmenu',(event)=>event.preventDefault());
