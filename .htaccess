@@ -3,6 +3,37 @@ ErrorDocument 404 /404.php
 Options -Indexes
 AddDefaultCharset UTF-8
 
+RewriteEngine On
+
+# Direct sitemap access and sitemap aliases from every page path.
+RewriteRule ^(?:.*?/)?sitemap\.xml$ sitemap.xml [L]
+
+# Clean application routes. Both /Page and /Page/ resolve.
+RewriteRule ^$ index.php [L]
+RewriteRule ^About/?$ about.php [L]
+RewriteRule ^Architecture/?$ architecture.php [L]
+RewriteRule ^Docs/?$ docs.php [L]
+RewriteRule ^Roadmap/?$ roadmap.php [L]
+RewriteRule ^Updates/?$ updates.php [L]
+RewriteRule ^FAQ/?$ faq.php [L]
+RewriteRule ^Developer/?$ developer.php [L]
+
+# Redirect old direct PHP URLs to the public clean URLs.
+RewriteCond %{THE_REQUEST} \s/+about\.php(?:[?\s]) [NC]
+RewriteRule ^about\.php$ /About/ [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+architecture\.php(?:[?\s]) [NC]
+RewriteRule ^architecture\.php$ /Architecture/ [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+docs\.php(?:[?\s]) [NC]
+RewriteRule ^docs\.php$ /Docs/ [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+roadmap\.php(?:[?\s]) [NC]
+RewriteRule ^roadmap\.php$ /Roadmap/ [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+updates\.php(?:[?\s]) [NC]
+RewriteRule ^updates\.php$ /Updates/ [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+faq\.php(?:[?\s]) [NC]
+RewriteRule ^faq\.php$ /FAQ/ [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+developer\.php(?:[?\s]) [NC]
+RewriteRule ^developer\.php$ /Developer/ [R=301,L]
+
 <IfModule mod_headers.c>
 Header always set X-Content-Type-Options "nosniff"
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
