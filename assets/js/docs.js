@@ -16,7 +16,16 @@ const DOCS=[
  {path:'diagrams/boot.d2',label:'Boot D2',group:'Visuals'},
  {path:'diagrams/architecture.ilograph.yaml',label:'Architecture Ilograph',group:'Visuals'},
  {path:'diagrams/architecture.eraser.md',label:'Architecture Eraser source',group:'Visuals'},
- {path:'diagrams/architecture.excalidraw.md',label:'Architecture Excalidraw source',group:'Visuals'}
+ {path:'diagrams/architecture.excalidraw.md',label:'Architecture Excalidraw source',group:'Visuals'},
+ {path:'decisions/0001-use-limine.md',label:'ADR 0001 · Limine',group:'Decisions'},
+ {path:'decisions/0002-clang-llvm-kernel-toolchain.md',label:'ADR 0002 · Clang + LLVM',group:'Decisions'},
+ {path:'decisions/0003-AGPL-3-license..md',label:'ADR 0003 · AGPL-3 license',group:'Decisions'},
+ {path:'decisions/0004-cpp-primary-language.md',label:'ADR 0004 · C++ primary language',group:'Decisions'},
+ {path:'decisions/0005-ps3-firmware-isolation.md',label:'ADR 0005 · PS3 firmware isolation',group:'Decisions'},
+ {path:'decisions/0006-no-sony-keys-embedded.md',label:'ADR 0006 · No Sony keys embedded',group:'Decisions'},
+ {path:'decisions/0007-windows-compat-is-phase-10.md',label:'ADR 0007 · Windows compatibility boundary',group:'Decisions'},
+ {path:'decisions/0008-reserved-domains-not-yet-created.md',label:'ADR 0008 · Reserved domains',group:'Decisions'},
+ {path:'decisions/0009-inter-fonts.md',label:'ADR 0009 · Inter fonts',group:'Decisions'}
 ];
 const state={doc:null,cache:new Map(),libs:{}};
 const el={app:document.getElementById('notyvos-docs'),nav:document.getElementById('docs-nav'),filter:document.getElementById('docs-filter'),reader:document.getElementById('docs-reader'),status:document.getElementById('docs-status'),dot:document.getElementById('docs-status-dot'),count:document.getElementById('docs-count'),copy:document.getElementById('docs-copy-link'),top:document.getElementById('docs-top'),chart:document.getElementById('docs-state-chart')};
