@@ -1,0 +1,26 @@
+{
+  "name": "notyvos-web-documentation",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Interactive NotYVOS documentation renderer.",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc assets/ts/docs.ts --target ES2022 --module ES2022 --moduleResolution Bundler --outDir assets/js/generated --declaration false"
+  },
+  "dependencies": {
+    "@d2lang/d2": "0.1.34",
+    "chart.js": "4.5.1",
+    "cytoscape": "3.34.3",
+    "dompurify": "3.4.16",
+    "gojs": "4.0.3",
+    "gridjs": "6.2.0",
+    "highlight.js": "11.12.0",
+    "katex": "0.19.0",
+    "marked": "18.1.0",
+    "mermaid": "12.1.0",
+    "markmap-lib": "0.18.12",
+    "markmap-view": "0.18.12",
+    "typescript": "5.9.3"
+  }
+}
