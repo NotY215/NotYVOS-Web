@@ -1,55 +1,149 @@
-const DOCS_BASE='https://raw.githubusercontent.com/NotY215/NotYVOS/main/docs/';
-const DOCS=[
- {path:'architecture.md',label:'Architecture',group:'Core'},
- {path:'boot-flow.md',label:'Boot flow',group:'Core'},
- {path:'data flow.md',label:'Data flow',group:'Core'},
- {path:'build.md',label:'Build guide',group:'Development'},
- {path:'VM.md',label:'Virtual machine',group:'Development'},
- {path:'testing.md',label:'Testing',group:'Development'},
- {path:'coding-standards.md',label:'Coding standards',group:'Development'},
- {path:'fonts.md',label:'Fonts',group:'Subsystems'},
- {path:'roadmap.md',label:'Roadmap',group:'Project'},
- {path:'diagrams/README.md',label:'Diagram catalog',group:'Visuals'},
- {path:'diagrams/roadmap.markmap.md',label:'Roadmap mindmap',group:'Visuals'},
- {path:'diagrams/architecture.d2',label:'Architecture D2',group:'Visuals'},
- {path:'diagrams/truetype.d2',label:'TrueType D2',group:'Visuals'},
- {path:'diagrams/boot.d2',label:'Boot D2',group:'Visuals'},
- {path:'diagrams/architecture.ilograph.yaml',label:'Architecture Ilograph',group:'Visuals'},
- {path:'diagrams/architecture.eraser.md',label:'Architecture Eraser source',group:'Visuals'},
- {path:'diagrams/architecture.excalidraw.md',label:'Architecture Excalidraw source',group:'Visuals'},
- {path:'decisions/0001-use-limine.md',label:'ADR 0001 · Limine',group:'Decisions'},
- {path:'decisions/0002-clang-llvm-kernel-toolchain.md',label:'ADR 0002 · Clang + LLVM',group:'Decisions'},
- {path:'decisions/0003-AGPL-3-license..md',label:'ADR 0003 · AGPL-3 license',group:'Decisions'},
- {path:'decisions/0004-cpp-primary-language.md',label:'ADR 0004 · C++ primary language',group:'Decisions'},
- {path:'decisions/0005-ps3-firmware-isolation.md',label:'ADR 0005 · PS3 firmware isolation',group:'Decisions'},
- {path:'decisions/0006-no-sony-keys-embedded.md',label:'ADR 0006 · No Sony keys embedded',group:'Decisions'},
- {path:'decisions/0007-windows-compat-is-phase-10.md',label:'ADR 0007 · Windows compatibility boundary',group:'Decisions'},
- {path:'decisions/0008-reserved-domains-not-yet-created.md',label:'ADR 0008 · Reserved domains',group:'Decisions'},
- {path:'decisions/0009-inter-fonts.md',label:'ADR 0009 · Inter fonts',group:'Decisions'}
-];
-const state={doc:null,cache:new Map(),libs:{}};
-const el={app:document.getElementById('notyvos-docs'),nav:document.getElementById('docs-nav'),filter:document.getElementById('docs-filter'),reader:document.getElementById('docs-reader'),status:document.getElementById('docs-status'),dot:document.getElementById('docs-status-dot'),count:document.getElementById('docs-count'),copy:document.getElementById('docs-copy-link'),top:document.getElementById('docs-top'),chart:document.getElementById('docs-state-chart')};
-const moduleUrl={marked:'https://cdn.jsdelivr.net/npm/marked@18.1.0/+esm',purify:'https://cdn.jsdelivr.net/npm/dompurify@3.4.16/+esm',mermaid:'https://cdn.jsdelivr.net/npm/mermaid@12.1.0/+esm',hljs:'https://cdn.jsdelivr.net/npm/highlight.js@11.12.0/+esm',grid:'https://cdn.jsdelivr.net/npm/gridjs@6.2.0/+esm',chart:'https://cdn.jsdelivr.net/npm/chart.js@4.5.1/auto/+esm',markmapLib:'https://cdn.jsdelivr.net/npm/markmap-lib@0.18.12/+esm',markmapView:'https://cdn.jsdelivr.net/npm/markmap-view@0.18.12/+esm',d2:'https://esm.sh/@d2lang/d2@0.1.34',cytoscape:'https://cdn.jsdelivr.net/npm/cytoscape@3.34.3/+esm'};
-async function lib(name){if(!state.libs[name])state.libs[name]=import(moduleUrl[name]);return state.libs[name]}
-function rawUrl(path){return DOCS_BASE+path.split('/').map(encodeURIComponent).join('/')}
-function esc(text){return text.replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\\':'&#39;','"':'&quot;'}[c]))}
-function groupDocs(list){const groups={};for(const item of list)(groups[item.group]??=[]).push(item);return groups}
-function renderNav(query=''){const groups=groupDocs(DOCS);el.nav.innerHTML='';let visible=0;for(const [group,items] of Object.entries(groups)){const wrap=document.createElement('div');wrap.className='docs-nav-group';const title=document.createElement('strong');title.textContent=group;wrap.appendChild(title);for(const item of items){if(query&&!item.label.toLowerCase().includes(query)&&!item.path.toLowerCase().includes(query))continue;visible++;const b=document.createElement('button');b.type='button';b.textContent=item.label;b.dataset.path=item.path;b.className=item.path===state.doc?'active':'';b.addEventListener('click',()=>openDoc(item.path));wrap.appendChild(b)}el.nav.appendChild(wrap)}el.count.textContent=visible+' document'+(visible===1?'':'s')}
-function setStatus(message,kind=''){el.status.textContent=message;el.dot.className='docs-status-dot'+(kind?' '+kind:'')}
-function setUrl(path){const u=new URL(location.href);u.searchParams.set('doc',path);history.replaceState({doc:path},'',u)}
-function linkToDoc(path){const normalized=decodeURIComponent(path).replace(/^\.\//,'');if(DOCS.some(d=>d.path===normalized)){const u=new URL(location.href);u.searchParams.set('doc',normalized);return u.pathname+u.search}return null}
-function rewriteInternalLinks(root){root.querySelectorAll('a[href]').forEach(a=>{const href=a.getAttribute('href')||'';let match=href.match(/^https?:\\/\\/github\\.com\\/NotY215\\/NotYVOS\\/blob\\/main\\/docs\\/(.+)$/);if(match){const local=linkToDoc(decodeURIComponent(match[1]));if(local){a.setAttribute('href',local);a.removeAttribute('target')}}match=href.match(/^(?:\\.\\/)?((?:diagrams\\/)?[^#?]+\\.md)(?:#(.*))?$/);if(match){const local=linkToDoc(match[1]);if(local){a.setAttribute('href',local+(match[2]?'#'+match[2]:''));a.removeAttribute('target')}}});}
-function interceptDocNavigation(e){const a=e.target.closest('a[href]');if(!a)return;const url=new URL(a.href,location.href);if(url.origin===location.origin&&url.searchParams.has('doc')){e.preventDefault();openDoc(url.searchParams.get('doc'),url.hash)}}
-function slugify(s){return s.toLowerCase().trim().replace(/[^a-z0-9\\s-]/g,'').replace(/\\s+/g,'-')}
-async function renderMarkdown(source,path){const [{marked},{default:DOMPurify},{default:hljs}]=await Promise.all([lib('marked'),lib('purify'),lib('hljs')]);const html=marked.parse(source,{gfm:true,breaks:false});el.reader.innerHTML=DOMPurify.sanitize(html,{USE_PROFILES:{html:true}});el.reader.querySelectorAll('h1,h2,h3,h4').forEach(h=>{if(!h.id)h.id=slugify(h.textContent||'')});rewriteInternalLinks(el.reader);el.reader.querySelectorAll('pre code').forEach(code=>{try{hljs.highlightElement(code)}catch{}});await renderBlocks(el.reader);upgradeTables(el.reader);renderMath(el.reader);if(path.endsWith('roadmap.markmap.md'))await renderMarkmap(source);}
-async function renderBlocks(root){const mermaids=[...root.querySelectorAll('pre code.language-mermaid')];if(mermaids.length){const {default:mermaid}=await lib('mermaid');mermaid.initialize({startOnLoad:false,securityLevel:'strict',theme:'dark',flowchart:{htmlLabels:false}});for(let i=0;i<mermaids.length;i++){const code=mermaids[i].textContent||'';const box=document.createElement('div');box.className='docs-diagram mermaid';const id='notyvos-mermaid-'+Date.now()+'-'+i;mermaids[i].parentElement.replaceWith(box);try{const result=await mermaid.render(id,code);box.innerHTML=result.svg}catch(error){box.innerHTML='<div class="docs-error">Mermaid could not render this diagram: '+esc(String(error))+'</div>'}}}
-const d2s=[...root.querySelectorAll('pre code.language-d2')];if(d2s.length){const {D2}=await lib('d2');for(let i=0;i<d2s.length;i++){const source=d2s[i].textContent||'';const box=document.createElement('div');box.className='docs-diagram d2';d2s[i].parentElement.replaceWith(box);try{const d2=new D2();const result=await d2.compile(source,{layout:'elk'});box.innerHTML=await d2.render(result.diagram,{...result.renderOptions,noXMLTag:true,salt:'notyvos-'+i});await d2.dispose()}catch(error){box.innerHTML='<div class="docs-error">D2 could not render this diagram: '+esc(String(error))+'</div>'}}}
-const charts=[...root.querySelectorAll('pre code.language-chart')];if(charts.length){const {Chart}=await lib('chart');for(let i=0;i<charts.length;i++){const box=document.createElement('div');box.className='docs-diagram docs-chart';const canvas=document.createElement('canvas');box.appendChild(canvas);charts[i].parentElement.replaceWith(box);try{const spec=JSON.parse(charts[i].textContent||'{}');new Chart(canvas,spec)}catch(error){box.innerHTML='<div class="docs-error">Chart data is invalid: '+esc(String(error))+'</div>'}}}
-const cytos=[...root.querySelectorAll('pre code.language-cytoscape')];if(cytos.length){const cytoscape=(await lib('cytoscape')).default;for(let i=0;i<cytos.length;i++){const box=document.createElement('div');box.className='docs-diagram';box.style.height='520px';cytos[i].parentElement.replaceWith(box);try{const config=JSON.parse(cytos[i].textContent||'{}');cytoscape({...config,container:box})}catch(error){box.innerHTML='<div class="docs-error">Cytoscape graph is invalid: '+esc(String(error))+'</div>'}}}}
-function upgradeTables(root){const tables=[...root.querySelectorAll('table')];if(!tables.length)return;lib('grid').then(({Grid,html})=>{for(const table of tables){const headers=[...table.querySelectorAll('thead th')].map(x=>x.textContent.trim());const rows=[...table.querySelectorAll('tbody tr')].map(tr=>[...tr.children].map(td=>td.textContent.trim()));if(!headers.length||!rows.length)continue;const mount=document.createElement('div');table.replaceWith(mount);new Grid({columns:headers,data:rows,search:true,sort:true,pagination:{limit:8},language:{search:{placeholder:'Search table...'},pagination:{previous:'<',next:'>',showing:'Showing',results:'results'}}}).render(mount)}}).catch(()=>{})}
-async function renderMath(root){if(!root.textContent.match(/\\$\\$|\\\\\\(|\\\\\\[/))return;try{const katex=await import('https://cdn.jsdelivr.net/npm/katex@0.19.0/dist/katex.mjs');root.querySelectorAll('code').forEach(()=>{});root.querySelectorAll('p').forEach(p=>{const raw=p.textContent||'';const block=raw.match(/^\\$\\$(.+)\\$\\$$/s);if(block){p.innerHTML='';katex.default.render(block[1],p,{displayMode:true,throwOnError:false})}})}catch{}}
-async function renderMarkmap(source){try{const {Transformer}=await lib('markmapLib');const {Markmap}=await lib('markmapView');const holder=document.createElement('div');holder.className='docs-diagram docs-markmap';const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');holder.appendChild(svg);el.reader.insertBefore(holder,el.reader.firstChild);const transformer=new Transformer();const {root}=transformer.transform(source);Markmap.create(svg,null,root)}catch(error){const note=document.createElement('div');note.className='docs-error';note.textContent='Markmap could not render this document: '+String(error);el.reader.prepend(note)}}
-async function fetchDoc(path){if(state.cache.has(path))return state.cache.get(path);const response=await fetch(rawUrl(path),{headers:{Accept:'text/plain'},cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);const text=await response.text();state.cache.set(path,text);return text}
-async function openDoc(path,hash=''){const item=DOCS.find(d=>d.path===path)||DOCS[0];state.doc=item.path;renderNav(el.filter.value.trim().toLowerCase());setUrl(item.path);setStatus('Loading '+item.label+'…');el.reader.innerHTML='<div class="docs-loading"><span></span><span></span><span></span><p>Rendering '+esc(item.label)+'…</p></div>';try{const source=await fetchDoc(item.path);if(item.path.endsWith('.d2')){el.reader.innerHTML='<pre><code class="language-d2">'+esc(source)+'</code></pre>';await renderBlocks(el.reader)}else if(item.path.endsWith('.yaml')||item.path.endsWith('.json')){el.reader.innerHTML='<div class="docs-raw-source">Source format: '+esc(item.path.split('.').pop().toUpperCase())+'</div><pre><code>'+esc(source)+'</code></pre>'}else{await renderMarkdown(source,item.path)}setStatus('Ready · '+item.label,'ready');if(hash){requestAnimationFrame(()=>document.getElementById(hash.slice(1))?.scrollIntoView({block:'start'}))}else{el.reader.scrollIntoView({behavior:'smooth',block:'start')}}}catch(error){setStatus('Documentation unavailable','error');el.reader.innerHTML='<div class="docs-error"><strong>Could not load this document.</strong><p>'+esc(String(error))+'</p><p>The public website renderer is working, but the canonical documentation source could not be fetched.</p></div>'}}
-async function renderStateChart(){try{const {Chart}=await lib('chart');new Chart(el.chart,{type:'bar',data:{labels:['Kernel','Memory','Scheduler','VFS / NYFS','Graphics','RSX','PPU / SPU / DMA / JIT','PS3 ABI / cellFs','Desktop UI','Image decoders','SVG + icons','TrueType','Hardware','NotYVFirm'],datasets:[{label:'Current implementation level',data:[92,95,85,55,85,65,70,55,70,90,85,75,30,0],borderWidth:1}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.parsed.x+'%'}}},scales:{x:{beginAtZero:true,max:100,ticks:{callback:value=>value+'%'},grid:{color:'rgba(120,190,255,.08)'}},y:{grid:{display:false}}}}})}catch(error){el.chart.parentElement.innerHTML='<div class="docs-error">Chart renderer unavailable: '+esc(String(error))+'</div>'}}
-el.filter.addEventListener('input',()=>renderNav(el.filter.value.trim().toLowerCase()));el.nav.addEventListener('click',()=>setTimeout(()=>{},0));document.addEventListener('click',interceptDocNavigation);el.copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(location.href);el.copy.textContent='Copied';setTimeout(()=>el.copy.textContent='Copy document link',1400)}catch{el.copy.textContent='Copy failed'}});el.top.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));window.addEventListener('popstate',()=>openDoc(new URL(location.href).searchParams.get('doc')||el.app.dataset.docDefault));renderNav();renderStateChart();openDoc(new URL(location.href).searchParams.get('doc')||el.app.dataset.docDefault);
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@12.1.0/+esm';
+import { Chart } from 'https://cdn.jsdelivr.net/npm/chart.js@4.5.1/+esm';
+import { Grid } from 'https://cdn.jsdelivr.net/npm/gridjs@6.2.0/+esm';
+import gsap from 'https://cdn.jsdelivr.net/npm/gsap@3.13.0/index.js';
+import cytoscape from 'https://cdn.jsdelivr.net/npm/cytoscape@3.34.3/+esm';
+
+const root=document.querySelector('.docs-war');
+const content=document.querySelector('#docs-content');
+const links=[...document.querySelectorAll('.docs-link')];
+const search=document.querySelector('#docs-search');
+const progress=document.querySelector('#docs-progress');
+
+mermaid.initialize({
+ startOnLoad:false,
+ securityLevel:'strict',
+ theme:'base',
+ themeVariables:{
+  background:'#05080d',
+  primaryColor:'#162538',
+  primaryTextColor:'#eaf7ff',
+  primaryBorderColor:'#39c7ff',
+  lineColor:'#d7a93b',
+  secondaryColor:'#321a20',
+  tertiaryColor:'#0b1724',
+  fontFamily:'Inter, system-ui, sans-serif'
+ }
+});
+
+async function diagrams(){
+ const nodes=[...document.querySelectorAll('.mermaid')];
+ for(const node of nodes){
+  const source=node.textContent.trim();
+  const id='notyvos-'+Math.random().toString(36).slice(2);
+  try{
+   const result=await mermaid.render(id,source);
+   node.outerHTML='<div class="mermaid-output">'+result.svg+'</div>';
+  }catch(error){
+   node.outerHTML='<div class="diagram-error">Diagram failed to render: '+String(error)+'</div>';
+  }
+ }
+}
+
+function sectionLinks(){
+ links.forEach(button=>button.addEventListener('click',()=>{
+  document.getElementById(button.dataset.section)?.scrollIntoView({behavior:'smooth',block:'start'});
+ }));
+ document.querySelectorAll('[data-jump]').forEach(button=>button.addEventListener('click',()=>{
+  document.getElementById(button.dataset.jump)?.scrollIntoView({behavior:'smooth',block:'start'});
+ }));
+}
+
+function observer(){
+ const sections=[...document.querySelectorAll('.docs-section')];
+ const io=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+   if(!entry.isIntersecting)return;
+   links.forEach(x=>x.classList.toggle('active',x.dataset.section===entry.target.id));
+  });
+ },{rootMargin:'-18% 0px -65% 0px'});
+ sections.forEach(s=>io.observe(s));
+ window.addEventListener('scroll',()=>{
+  const max=document.documentElement.scrollHeight-innerHeight;
+  progress.textContent=(max>0?Math.round(scrollY/max*100):0)+'%';
+ },{passive:true});
+}
+
+function filter(){
+ search?.addEventListener('input',()=>{
+  const q=search.value.trim().toLowerCase();
+  links.forEach(button=>{
+   const section=document.getElementById(button.dataset.section);
+   const match=!q||button.textContent.toLowerCase().includes(q)||(section?.textContent||'').toLowerCase().includes(q);
+   button.hidden=!match;
+  });
+ });
+}
+
+function charts(){
+ const canvas=document.querySelector('#roadmap-chart');
+ if(!canvas)return;
+ const labels=['Kernel','Memory','Scheduler','NYFS','Graphics','RSX','PPU/SPU/DMA/JIT','Desktop UI','Decoders','SVG/Icons','TrueType'];
+ const values=[92,95,85,55,85,65,70,70,90,85,75];
+ new Chart(canvas,{type:'bar',data:{labels,datasets:[{label:'Implementation level',data:values,borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,max:100,ticks:{callback:v=>v+'%'}},y:{grid:{display:false}}}}});
+}
+
+function tableEnhancement(){
+ const tables=[...document.querySelectorAll('.docs-table')];
+ tables.forEach(table=>{
+  const headers=[...table.querySelectorAll('thead th')].map(x=>x.textContent.trim());
+  const rows=[...table.querySelectorAll('tbody tr')].map(row=>[...row.children].map(x=>x.textContent.trim()));
+  const host=document.createElement('div');
+  host.className='docs-grid-table';
+  table.replaceWith(host);
+  new Grid({columns:headers,data:rows,search:true,sort:true,pagination:{limit:8}}).render(host);
+ });
+}
+
+function liveGraph(){
+ const host=document.querySelector('.docs-final');
+ if(!host)return;
+ const graph=document.createElement('div');
+ graph.className='docs-mini-graph';
+ graph.innerHTML='<div class="graph-label">LIVE SUBSYSTEM MAP</div><div id="docs-cyto"></div>';
+ host.before(graph);
+ const cy=cytoscape({
+  container:graph.querySelector('#docs-cyto'),
+  elements:[
+   {data:{id:'kernel',label:'KERNEL'}},{data:{id:'memory',label:'MEMORY'}},{data:{id:'sched',label:'SCHEDULER'}},
+   {data:{id:'vfs',label:'VFS'}},{data:{id:'nyfs',label:'NYFS'}},{data:{id:'gfx',label:'GRAPHICS'}},
+   {data:{id:'desktop',label:'DESKTOP'}},{data:{id:'game',label:'GAMERUNNER'}},{data:{id:'rsx',label:'RSX'}},
+   {data:{source:'kernel',target:'memory'}},{data:{source:'kernel',target:'sched'}},{data:{source:'kernel',target:'vfs'}},
+   {data:{source:'vfs',target:'nyfs'}},{data:{source:'kernel',target:'gfx'}},{data:{source:'gfx',target:'desktop'}},
+   {data:{source:'kernel',target:'game'}},{data:{source:'game',target:'rsx'}},{data:{source:'rsx',target:'gfx'}}
+  ],
+  style:[
+   {selector:'node',style:{label:'data(label)',color:'#eaf7ff','background-color':'#12324a','border-color':'#39c7ff','border-width':2,'font-size':10,'text-valign':'center','text-halign':'center','width':'label','height':'label','padding':'10px','shape':'roundrectangle'}},
+   {selector:'edge',style:{width:2,'line-color':'#8f6d24','target-arrow-color':'#8f6d24','target-arrow-shape':'triangle','curve-style':'bezier'}}
+  ],
+  layout:{name:'cose',animate:true,padding:40}
+ });
+ graph.addEventListener('click',()=>cy.layout({name:'cose',animate:true,padding:40}).run());
+}
+
+function particles(){
+ const canvas=document.createElement('canvas');
+ canvas.className='docs-particles';
+ root.prepend(canvas);
+ const ctx=canvas.getContext('2d');
+ let w=0,h=0;
+ const points=Array.from({length:70},()=>({x:Math.random(),y:Math.random(),vx:(Math.random()-.5)*.00035,vy:(Math.random()-.5)*.00035,r:Math.random()*1.6+.4}));
+ const resize=()=>{w=canvas.width=innerWidth*devicePixelRatio;h=canvas.height=innerHeight*devicePixelRatio;canvas.style.width=innerWidth+'px';canvas.style.height=innerHeight+'px';ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)};
+ addEventListener('resize',resize);resize();
+ const draw=()=>{
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  for(const p of points){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>1)p.vx*=-1;if(p.y<0||p.y>1)p.vy*=-1;ctx.beginPath();ctx.arc(p.x*innerWidth,p.y*innerHeight,p.r,0,Math.PI*2);ctx.fillStyle='rgba(57,199,255,.42)';ctx.fill();}
+  requestAnimationFrame(draw);
+ };
+ draw();
+}
+
+function animations(){
+ gsap.from('.docs-hero-inner',{opacity:0,y:35,duration:1.1,ease:'power3.out'});
+ gsap.from('.docs-hero-card',{opacity:0,y:24,stagger:.12,duration:.8,delay:.35,ease:'power2.out'});
+ document.querySelectorAll('.docs-section').forEach(section=>{
+  gsap.from(section,{opacity:0,y:22,duration:.65,scrollTrigger:undefined});
+ });
+}
+
+sectionLinks();observer();filter();charts();tableEnhancement();liveGraph();particles();animations();diagrams();
