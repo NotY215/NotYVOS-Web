@@ -4,7 +4,7 @@ declare(strict_types=1);
 $pageTitle = 'NotYVOS Documentation';
 $pageDescription = 'The complete NotYVOS technical documentation, architecture, decisions, roadmap, subsystem reference and interactive diagrams.';
 $currentPage = 'docs';
-$canonicalUrl = 'http://notyvos.gt.tc/Docs/';
+$canonicalUrl = 'http://notyvos.gt.tc/Documentation/';
 require __DIR__ . '/includes/header.php';
 
 $sections = [
@@ -124,11 +124,11 @@ $heroCards = [
   <div class="docs-stars" aria-hidden="true"></div>
   <div class="docs-runes" aria-hidden="true">ᛉ　ᛏ　ᛟ　ᚾ　ᛁ　ᛋ　ᛏ　ᚱ　ᚨ　ᚾ</div>
   <div class="section-shell docs-hero-inner">
-    <div class="docs-kicker"><span>NOTYVOS</span><i></i><span>PS3 // NORSE CODEX</span></div>
+    <div class="docs-kicker"><span>NOTYVOS</span><i></i><span>PS3 // TECHNICAL CODEX</span></div>
     <h1>THE ARCHITECTURE<br><em>BEHIND NOTYVOS</em></h1>
     <p class="docs-hero-copy">A complete native x86-64 operating-system reference covering the kernel, memory, scheduler, NYFS, graphics, desktop, PS3 runtime, GameRunner, toolchain, decisions and roadmap.</p>
     <div class="docs-hero-actions">
-      <button class="docs-primary" data-jump="overview">Enter the Codex</button>
+      <button class="docs-primary" data-jump="overview">Open Documentation</button>
       <button class="docs-secondary" data-jump="architecture">View Architecture</button>
     </div>
     <div class="docs-hero-cards">
