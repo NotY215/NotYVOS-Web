@@ -1,1 +1,0 @@
-This directory is a deployment marker for htdocs-style hosts. The actual PHP document root is the repository root. If a host provides an htdocs directory, deploy the site files there instead of nesting this marker.
