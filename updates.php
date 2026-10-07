@@ -20,7 +20,7 @@ usort($files, function($a,$b) {
 <div class="section-heading">
 <span class="eyebrow">SCREENSHOTS</span>
 <h2>Recent development snapshots</h2>
-<p>Drop screenshots into the <code>Updates/</code> folder in GitHub. The site automatically lists supported image files here, newest numbered updates first.</p>
+<p>Recent visual development snapshots.</p>
 </div>
 <?php if (!$files): ?>
 <div class="empty-state"><strong>No updates published yet.</strong><span>Development screenshots will appear here.</span></div>
