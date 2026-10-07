@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://notyvos.gt.tc/sitemap.xml
+Sitemap: http://notyvos.gt.tc/sitemap.xml
