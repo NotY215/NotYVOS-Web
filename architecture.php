@@ -1,10 +1,3 @@
-<?php
-$pageTitle = 'NotYVOS Architecture';
-$pageDescription = 'Explore the NotYVOS boot, kernel, graphics, storage and PS3 runtime architecture.';
-$currentPage = 'architecture';
-$canonicalUrl = 'http://notyvos.gt.tc/Architecture/';
-require __DIR__ . '/includes/header.php';
-?>
 <main>
 <section class="page-hero section-shell">
   <span class="eyebrow">SYSTEM ARCHITECTURE</span>
@@ -147,4 +140,3 @@ require __DIR__ . '/includes/header.php';
   </div>
 </section>
 </main>
-<?php require __DIR__ . '/includes/footer.php'; ?>
