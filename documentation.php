@@ -1,6 +1,4 @@
 <?php
-declare(strict_types=1);
-
 $pageTitle = 'NotYVOS Documentation';
 $pageDescription = 'The complete NotYVOS technical documentation, architecture, decisions, roadmap, subsystem reference and interactive diagrams.';
 $currentPage = 'docs';
