@@ -17,3 +17,23 @@
 .docs-panel,.decision-card,.road-row,.docs-table-wrap,.diagram-frame,.docs-code,.docs-chart{border-radius:2px;box-shadow:0 12px 35px rgba(0,0,0,.18)}.docs-panel{background:linear-gradient(180deg,rgba(11,24,37,.88),rgba(4,10,17,.94))}.docs-panel:hover{border-color:rgba(75,188,255,.28)}
 .panel-tag,.diagram-title span,.docs-eyebrow{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.docs-table th{background:#0a1b2a}.docs-table td{background:rgba(3,9,15,.55)}.docs-steps li{border-left:2px solid rgba(75,188,255,.25);background:rgba(5,13,22,.72)}.road-row{background:linear-gradient(90deg,rgba(9,22,35,.9),rgba(4,10,17,.9))}.road-row:hover{border-color:rgba(75,188,255,.3)}.decision-card{background:linear-gradient(180deg,rgba(11,24,37,.9),rgba(4,10,17,.96))}
 @media(max-width:650px){.docs-hero{min-height:690px}.docs-hero h1{font-size:2.75rem}.docs-section{padding:46px 0}}
+
+/* Interaction and motion layer */
+.docs-page,.docs-page *{user-select:none;-webkit-user-select:none;-moz-user-select:none}
+.docs-page input,.docs-page textarea{user-select:text;-webkit-user-select:text}
+.docs-page img,.docs-page canvas,.docs-page svg{-webkit-user-drag:none;user-drag:none}
+.docs-section,.docs-hero-card,.docs-panel,.decision-card,.road-row,.diagram-frame,.docs-chart{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1);transition-delay:var(--docs-delay,0s)}
+.docs-section.docs-visible,.docs-hero-card.docs-visible,.docs-panel.docs-visible,.decision-card.docs-visible,.road-row.docs-visible,.diagram-frame.docs-visible,.docs-chart.docs-visible{opacity:1;transform:none}
+.docs-hero-card{animation:docsCardFloat 7s ease-in-out infinite}
+.docs-hero-card:nth-child(2){animation-delay:-1.7s}.docs-hero-card:nth-child(3){animation-delay:-3.4s}.docs-hero-card:nth-child(4){animation-delay:-5.1s}
+@keyframes docsCardFloat{0%,100%{translate:0 0}50%{translate:0 -5px}}
+.docs-visual-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:28px}
+.docs-visual{margin:0;border:1px solid var(--line);background:#040a11;padding:8px;overflow:hidden;box-shadow:0 15px 40px rgba(0,0,0,.28)}
+.docs-visual img{display:block;width:100%;height:100%;max-height:520px;object-fit:cover;transition:transform .6s ease,filter .6s ease}
+.docs-visual:hover img{transform:scale(1.025);filter:brightness(1.08)}
+.docs-visual figcaption{padding:12px 8px 7px;color:#8fa7b8;font-size:.72rem;letter-spacing:.05em}
+@media(max-width:650px){.docs-visual-grid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){
+ .docs-section,.docs-hero-card,.docs-panel,.decision-card,.road-row,.diagram-frame,.docs-chart{opacity:1;transform:none;transition:none}
+ .docs-hero-card{animation:none}
+}
