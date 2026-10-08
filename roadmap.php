@@ -3,6 +3,9 @@ $pageTitle = 'NotYVOS Roadmap';
 $pageDescription = 'NotYVOS development roadmap with completed, active and planned phases.';
 $currentPage = 'roadmap';
 $canonicalUrl = 'http://notyvos.gt.tc/Roadmap/';
+header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+header('Pragma: no-cache');
+header('Expires: 0');
 
 $defaultPhases = [
     ['01','Kernel Foundation','Native x86-64 kernel foundation, boot path, interrupts, CPU/SMP and core kernel services.','completed'],
