@@ -5,16 +5,22 @@ const search=document.querySelector('#docs-search');
 const progress=document.querySelector('#docs-progress');
 
 function sectionLinks(){
-  links.forEach(button=>{
-    button.addEventListener('click',()=>{
-      const target=document.getElementById(button.dataset.section);
-      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+  links.forEach(link=>{
+    link.addEventListener('click',event=>{
+      const target=document.getElementById(link.dataset.section);
+      if(!target)return;
+      event.preventDefault();
+      history.replaceState(null,'','#'+target.id);
+      target.scrollIntoView({behavior:'smooth',block:'start'});
     });
   });
-  document.querySelectorAll('[data-jump]').forEach(button=>{
-    button.addEventListener('click',()=>{
-      const target=document.getElementById(button.dataset.jump);
-      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+  document.querySelectorAll('[data-jump]').forEach(link=>{
+    link.addEventListener('click',event=>{
+      const target=document.getElementById(link.dataset.jump);
+      if(!target)return;
+      event.preventDefault();
+      history.replaceState(null,'','#'+target.id);
+      target.scrollIntoView({behavior:'smooth',block:'start'});
     });
   });
 }
@@ -72,7 +78,7 @@ function cssAnimations(){
 
 async function loadOptionalLibraries(){
   const results=await Promise.allSettled([
-    import('https://cdn.jsdelivr.net/npm/mermaid@12.1.0/+esm'),
+    import('https://cdn.jsdelivr.net/npm/mermaid@12.1.0/dist/mermaid.esm.min.mjs'),
     import('https://cdn.jsdelivr.net/npm/chart.js@4.5.1/+esm'),
     import('https://cdn.jsdelivr.net/npm/gridjs@6.2.0/+esm'),
     import('https://cdn.jsdelivr.net/npm/gsap@3.13.0/+esm'),
@@ -105,13 +111,14 @@ async function diagrams(mermaid){
       fontFamily:'Inter, system-ui, sans-serif'
     }
   });
+
   const nodes=Array.from(document.querySelectorAll('.mermaid'));
   for(const node of nodes){
-    const source=node.textContent.trim();
-    const id='notyvos-'+Math.random().toString(36).slice(2);
     try{
-      const result=await mermaid.render(id,source);
-      node.outerHTML='<div class="mermaid-output">'+result.svg+'</div>';
+      await mermaid.run({
+        nodes:[node],
+        suppressErrors:false
+      });
     }catch(error){
       node.outerHTML='<div class="diagram-error">Diagram failed to render.</div>';
     }
