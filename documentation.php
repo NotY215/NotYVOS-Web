@@ -17,6 +17,7 @@ $sections = [
     'toolchain' => ['Build & Toolchain', 'Development'],
     'testing' => ['Testing', 'Development'],
     'fonts' => ['Fonts & Text', 'Graphics'],
+    'screens' => ['Screenshots', 'Visuals'],
     'roadmap' => ['Roadmap', 'Project'],
     'decisions' => ['Architecture Decisions', 'Decisions'],
     'security' => ['Security & Firmware', 'Security'],
@@ -337,8 +338,27 @@ RASTER --> COM[Compositor]
 COM --> SCREEN[Display]</pre></div>
     </section>
 
+    <section class="docs-section" id="screens">
+      <div class="docs-eyebrow">12 · VISUALS</div><h2>NotYVOS Visual Archive</h2>
+      <p>Selected project images are served from the public NotYVOS website repository. They provide visual context for the documentation without replacing the technical descriptions and diagrams.</p>
+      <div class="docs-visual-grid">
+        <figure class="docs-visual">
+          <img src="https://raw.githubusercontent.com/NotY215/NotYVOS-Web/main/Updates/1.png" alt="NotYVOS development screenshot" loading="lazy" decoding="async">
+          <figcaption>Development snapshot · NotYVOS desktop and runtime work</figcaption>
+        </figure>
+        <figure class="docs-visual">
+          <img src="https://raw.githubusercontent.com/NotY215/NotYVOS-Web/main/Updates/2.png" alt="NotYVOS development screenshot" loading="lazy" decoding="async">
+          <figcaption>Development snapshot · graphics and system integration</figcaption>
+        </figure>
+      </div>
+      <div class="docs-grid two">
+        <article class="docs-panel"><span class="panel-tag">SOURCE</span><h3>Public website repository</h3><p>Images are kept in the main NotYVOS website source so the host layer does not become a second content repository.</p></article>
+        <article class="docs-panel"><span class="panel-tag">DIAGRAMS</span><h3>Architecture remains authoritative</h3><p>Mermaid diagrams and written sections remain the primary technical reference. Screenshots are supporting visual evidence only.</p></article>
+      </div>
+    </section>
+
     <section class="docs-section" id="roadmap">
-      <div class="docs-eyebrow">12 · PROJECT</div><h2>Roadmap</h2>
+      <div class="docs-eyebrow">13 · PROJECT</div><h2>Roadmap</h2>
       <p>The roadmap is ordered. A later milestone assumes the earlier foundation is delivered. The current queue separates the active GameRunner work from the upcoming network, storage and firmware milestones.</p>
       <div class="roadmap-list">
       <?php foreach($roadmap as $r): ?>
@@ -349,7 +369,7 @@ COM --> SCREEN[Display]</pre></div>
     </section>
 
     <section class="docs-section" id="decisions">
-      <div class="docs-eyebrow">13 · DECISIONS</div><h2>Architecture Decision Records</h2>
+      <div class="docs-eyebrow">14 · DECISIONS</div><h2>Architecture Decision Records</h2>
       <p>These decisions are part of the technical contract of the project. They explain why major boundaries exist and prevent later documentation from silently redefining the architecture.</p>
       <div class="decision-grid">
       <?php foreach($decisions as $d): ?>
@@ -359,7 +379,7 @@ COM --> SCREEN[Display]</pre></div>
     </section>
 
     <section class="docs-section" id="security">
-      <div class="docs-eyebrow">14 · SECURITY</div><h2>Security, Firmware and Distribution Boundaries</h2>
+      <div class="docs-eyebrow">15 · SECURITY</div><h2>Security, Firmware and Distribution Boundaries</h2>
       <div class="docs-grid two">
         <article class="docs-panel"><span class="panel-tag">PUBLIC SOURCE</span><h3>No protected signing material</h3><p>Protected Sony signing keys and equivalent private material are not embedded in the public repository.</p></article>
         <article class="docs-panel"><span class="panel-tag">FIRMWARE</span><h3>Developer supplied</h3><p>PS3 firmware is treated as developer-provided input to the runtime/build environment and is not presented as a publicly distributed project asset.</p></article>
@@ -368,7 +388,7 @@ COM --> SCREEN[Display]</pre></div>
     </section>
 
     <section class="docs-section" id="dataflow">
-      <div class="docs-eyebrow">15 · VISUALS</div><h2>Complete Data Flow</h2>
+      <div class="docs-eyebrow">16 · VISUALS</div><h2>Complete Data Flow</h2>
       <p>The following diagram connects the important desktop data paths: clock data, input, storage, syscalls and graphics.</p>
       <div class="diagram-frame"><div class="diagram-title"><span>LIVE MERMAID</span><b>Subsystem data flow</b></div><pre class="mermaid"><?=htmlspecialchars($diagram['data'])?></pre></div>
       <div class="docs-grid two">
