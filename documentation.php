@@ -127,8 +127,8 @@ $heroCards = [
     <h1>THE ARCHITECTURE<br><em>BEHIND NOTYVOS</em></h1>
     <p class="docs-hero-copy">A complete native x86-64 operating-system reference covering the kernel, memory, scheduler, NYFS, graphics, desktop, PS3 runtime, GameRunner, toolchain, decisions and roadmap.</p>
     <div class="docs-hero-actions">
-      <button class="docs-primary" data-jump="overview">Open Documentation</button>
-      <button class="docs-secondary" data-jump="architecture">View Architecture</button>
+      <a class="docs-primary" href="#overview">Open Documentation</a>
+      <a class="docs-secondary" href="#architecture">View Architecture</a>
     </div>
     <div class="docs-hero-cards">
       <?php foreach ($heroCards as $c): ?>
@@ -400,7 +400,7 @@ COM --> SCREEN[Display]</pre></div>
     <section class="docs-section docs-final">
       <div class="docs-eyebrow">END OF CODEX</div><h2>Build the system, not just the interface.</h2>
       <p>This page is intentionally authored as PHP data and HTML rather than acting as a GitHub Markdown reader. The documentation is part of the website itself.</p>
-      <button class="docs-primary" data-jump="overview">Return to beginning</button>
+      <a class="docs-primary" href="#overview">Return to beginning</a>
     </section>
   </div>
 </section>
