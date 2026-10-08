@@ -54,3 +54,23 @@ main{animation:notyvosPageIn .55s ease both}
   .roadmap-phase-status{font-size:.59rem}
 }
 
+
+/* NotYVOS roadmap: explicit rendering layer */
+.roadmap-page{display:block;min-height:100vh}
+.roadmap-hero{position:relative}
+.roadmap-hero .roadmap-current{margin-top:28px}
+.roadmap-section{position:relative}
+.roadmap-timeline{display:grid!important;grid-template-columns:1fr;gap:14px!important;visibility:visible!important;opacity:1!important}
+.roadmap-phase{display:grid!important;visibility:visible!important;opacity:1!important;min-height:108px}
+.roadmap-phase-body{min-width:0}
+.roadmap-phase-body h3{display:block!important}
+.roadmap-phase-body p{display:block!important}
+.roadmap-phase-marker{flex-shrink:0}
+.roadmap-phase-active{box-shadow:0 0 0 1px rgba(255,70,87,.12),0 16px 45px rgba(0,0,0,.2)}
+.roadmap-current-section{position:relative;overflow:hidden}
+.roadmap-current-section:after{content:"";position:absolute;width:300px;height:300px;border:1px solid rgba(80,190,255,.08);border-radius:50%;right:12%;bottom:-210px;pointer-events:none}
+.roadmap-source{padding-bottom:100px}
+@media(max-width:700px){
+ .roadmap-timeline{gap:10px!important}
+ .roadmap-phase{min-height:92px}
+}
