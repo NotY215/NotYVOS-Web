@@ -127,8 +127,7 @@ $heroCards = [
     <h1>THE ARCHITECTURE<br><em>BEHIND NOTYVOS</em></h1>
     <p class="docs-hero-copy">A complete native x86-64 operating-system reference covering the kernel, memory, scheduler, NYFS, graphics, desktop, PS3 runtime, GameRunner, toolchain, decisions and roadmap.</p>
     <div class="docs-hero-actions">
-      <a class="docs-primary" href="#overview">Open Documentation</a>
-      <a class="docs-secondary" href="#architecture">View Architecture</a>
+      <a class="docs-secondary" href="#architecture" data-jump="architecture">View Architecture</a>
     </div>
     <div class="docs-hero-cards">
       <?php foreach ($heroCards as $c): ?>
@@ -144,7 +143,7 @@ $heroCards = [
     <div class="docs-search"><input id="docs-search" type="search" placeholder="Search the codex..." aria-label="Search documentation"></div>
     <nav id="docs-index-nav">
       <?php $lastGroup=''; foreach ($sections as $id=>$s): if($s[1]!==$lastGroup): $lastGroup=$s[1]; echo '<div class="docs-group">'.htmlspecialchars($lastGroup).'</div>'; endif; ?>
-      <button class="docs-link" data-section="<?=htmlspecialchars($id)?>"><span></span><?=htmlspecialchars($s[0])?></button>
+      <a class="docs-link" href="#<?=htmlspecialchars($id)?>" data-section="<?=htmlspecialchars($id)?>"><span></span><?=htmlspecialchars($s[0])?></a>
       <?php endforeach; ?>
     </nav>
     <div class="docs-index-foot"><span>STATUS</span><strong><i></i> DOCUMENTATION ONLINE</strong></div>
