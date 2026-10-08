@@ -37,18 +37,26 @@ $decisions = [
 ];
 
 $roadmap = [
- ['0–10F','Frozen foundation','Kernel, memory, scheduler, storage foundations, graphics, RSX work, GameRunner foundations, decoders, desktop foundations, SVG/icon work and the initial TrueType renderer are delivered.','done'],
- ['11','TrueType','Inter-Regular is the default font and the TrueType renderer is integrated into the desktop text path.','done'],
- ['12','Explorer 10G','Explorer receives grid/details view, breadcrumb navigation and real file operations through VFS/NYFS.','done'],
- ['13A','Clipboard','Global clipboard, text/file lists and Ctrl+C/X/V routing are integrated.','done'],
- ['15A–15E','USB + unified input','xHCI, USB enumeration, HID keyboard/mouse, mass storage and unified input facade are delivered.','done'],
- ['Init','Init program debugging','Active engineering target: resolve init-program build/runtime issues in user/init/main.c.','next'],
- ['14 / 7D','GameRunner','Session lifecycle, persistent per-game configuration and cellSaveData bridge to NYFS.','queued'],
- ['16','Networking','Native production network stack: Ethernet, ARP, IPv4, ICMP, UDP, TCP, DHCP, DNS and sockets.','queued'],
- ['17','Wi-Fi','Wireless networking built on top of the network layer with management UI.','queued'],
+ ['01','Kernel Foundation','Native x86-64 kernel foundation, boot path, interrupts, CPU/SMP and core kernel services.','done'],
+ ['02','Memory Management','PMM, VMM, four-level paging, higher-half mappings and kernel heap foundation.','done'],
+ ['03','Scheduler','Task scheduling, execution infrastructure and user-fault isolation foundation.','done'],
+ ['04','Storage Foundation','VFS, initramfs and the initial NYFS storage path.','done'],
+ ['05','Graphics Foundation','Graphics API/HAL, framebuffer rendering and compositor foundation.','done'],
+ ['06','Desktop Foundation','Desktop shell, windows, Explorer, Settings, dialogs and core interaction.','done'],
+ ['07','PS3 Runtime Foundation','PS3 ABI, PPU/SPU execution, DMA, JIT and RSX runtime foundations.','done'],
+ ['08','GameRunner Foundation','GameRunner integration with the PS3 runtime and native graphics services.','done'],
+ ['09','Image Decoders','BMP, PNG, GIF, ICO and JPEG decoding integrated into the native image pipeline.','done'],
+ ['10','SVG + Icons','SVG rendering and desktop icon infrastructure integrated into the graphics stack.','done'],
+ ['11','TrueType','Inter-Regular and the native TrueType renderer integrated into the desktop text path.','done'],
+ ['12','Explorer 10G','Grid/details view, breadcrumb navigation and real file operations through VFS/NYFS.','done'],
+ ['13','Clipboard + Dialogs','Global clipboard, text/file lists, Ctrl+C/X/V routing and desktop dialog integration.','done'],
+ ['14','GameRunner Integration','Session lifecycle, persistent per-game configuration and cellSaveData bridge to NYFS.','done'],
+ ['15','USB + Unified Input','xHCI, USB enumeration, HID keyboard/mouse, mass storage and the unified input facade.','done'],
+ ['16','Networking','Native network stack foundation including Ethernet, ARP, IPv4, ICMP, UDP, TCP, DHCP, DNS and sockets.','done'],
+ ['17','Wi-Fi','Wireless networking built on the native network layer with management and desktop integration.','working'],
  ['18','Bluetooth','Bluetooth transport and supported input-device integration.','queued'],
- ['19','NYFS maturity','Write-ahead journaling, crash recovery, dynamic scaling and integrity checks.','queued'],
- ['20','Firewall','Host/network firewall policy and enforcement with Settings UI.','queued'],
+ ['19','NYFS Maturity','Write-ahead journaling, crash recovery, dynamic scaling and integrity checks.','queued'],
+ ['20','Firewall','Host/network firewall policy and enforcement with Settings integration.','queued'],
  ['21','NotYVFirm','Native firmware domain replacing the Limine/UEFI boot dependency.','queued'],
 ];
 
@@ -303,13 +311,13 @@ COM --> SCREEN[Framebuffer]</pre></div>
 
     <section class="docs-section" id="roadmap">
       <div class="docs-eyebrow">13 · PROJECT</div><h2>Roadmap</h2>
-      <p>Phases 0–10F are frozen as delivered. Phase 11 TrueType, Phase 12 Explorer, Phase 13A clipboard and Phase 15A–15E USB + unified input are delivered. The active milestone is init-program debugging. Windows PE/Win32 compatibility and Brave/VLC validation are explicitly excluded.</p>
+      <p>Phases 01–16 are complete. Phase 17 is the current working phase. The roadmap uses the same explicit Phase / Status / Scope structure used across the Vayu project, with completed, working and queued milestones clearly separated.</p>
       <div class="roadmap-list">
         <?php foreach ($roadmap as $r): ?>
         <div class="road-row">
-          <div class="road-phase"><?=htmlspecialchars($r[0])?></div>
+          <div class="road-phase">PHASE <?=htmlspecialchars($r[0])?></div>
           <div><h3><?=htmlspecialchars($r[1])?></h3><p><?=htmlspecialchars($r[2])?></p></div>
-          <div class="road-status <?=htmlspecialchars($r[3])?>"><?=strtoupper(htmlspecialchars($r[3]))?></div>
+          <div class="road-status <?=htmlspecialchars($r[3])?>"><?=strtoupper(htmlspecialchars($r[3] === "working" ? "working" : $r[3]))?></div>
         </div>
         <?php endforeach; ?>
       </div>
