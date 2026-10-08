@@ -52,3 +52,14 @@ The production site uses the committed browser runtime in `assets/js/docs.js`. T
 Live site: http://notyvos.gt.tc/
 
 Main project: https://github.com/NotY215/NotYVOS
+
+
+## Project policies
+
+- [Contributing](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Security](SECURITY.md)
+- [Support](SUPPORT.md)
+- [Citation](CITATION.cff)
+- [Governance](GOVERNANCE.md)
+- [License](LICENSE.md)
