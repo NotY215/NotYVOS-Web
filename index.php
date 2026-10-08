@@ -1,10 +1,3 @@
-<?php
-$pageTitle = 'NotYVOS | Native x86-64 Operating System';
-$pageDescription = 'NotYVOS is a lightweight x86-64 operating system with a native desktop, persistent storage, hardware drivers and a PS3 runtime foundation.';
-$currentPage = 'home';
-$canonicalUrl = 'http://notyvos.gt.tc/';
-require __DIR__ . '/includes/header.php';
-?>
 <main>
 <section class="hero section-shell">
   <div class="hero-grid">
@@ -93,4 +86,3 @@ status: development</code></pre>
   </div>
 </section>
 </main>
-<?php require __DIR__ . '/includes/footer.php'; ?>
