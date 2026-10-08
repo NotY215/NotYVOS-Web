@@ -12,9 +12,6 @@ AddDefaultCharset UTF-8
 
 RewriteEngine On
 
-# Direct sitemap access and sitemap aliases from every page path.
-RewriteRule ^(?:.*?/)?sitemap\.xml$ sitemap.xml [NC,L]
-
 # Clean application routes. Both /Page and /Page/ resolve.
 RewriteRule ^$ index.php [L]
 RewriteRule ^About/?$ about.php [L]
