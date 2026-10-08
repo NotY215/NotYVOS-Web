@@ -1,16 +1,16 @@
 {
   "_readme": {
     "title": "NotYVOS Roadmap",
-    "howto": "Update phase status and scope here. The roadmap page and host deployment read this file as the canonical roadmap data.",
+    "howto": "Synchronized from NotY215/NotYVOS/docs/roadmap.md. Update the canonical OS roadmap first, then update this web snapshot.",
     "phase_status": {
-      "completed": "Completed",
+      "completed": "Delivered",
       "working": "Currently in development",
-      "soon": "Planned"
+      "soon": "Queued"
     }
   },
-  "repo": "NotY215/NotYVOS-Web",
+  "source": "https://github.com/NotY215/NotYVOS/blob/main/docs/roadmap.md",
   "updated": "2026-10-08",
-  "currentPhase": 17,
+  "currentPhase": "17",
   "phases": [
     {
       "id": "01",
@@ -21,13 +21,13 @@
     {
       "id": "02",
       "name": "Memory Management",
-      "description": "PMM, VMM, paging, higher-half mappings and kernel heap foundation.",
+      "description": "PMM, VMM, four-level paging, higher-half mappings and kernel heap foundation.",
       "status": "completed"
     },
     {
       "id": "03",
       "name": "Scheduler",
-      "description": "Task scheduling, execution infrastructure and process isolation foundation.",
+      "description": "Task scheduling, execution infrastructure and user-fault isolation foundation.",
       "status": "completed"
     },
     {
@@ -39,7 +39,7 @@
     {
       "id": "05",
       "name": "Graphics Foundation",
-      "description": "Graphics HAL, framebuffer rendering and compositor foundation.",
+      "description": "Graphics API/HAL, framebuffer rendering and compositor foundation.",
       "status": "completed"
     },
     {
@@ -63,79 +63,85 @@
     {
       "id": "09",
       "name": "Image Decoders",
-      "description": "BMP, PNG, GIF, ICO and JPEG support in the native image pipeline.",
+      "description": "BMP, PNG, GIF, ICO and JPEG decoding integrated into the native image pipeline.",
       "status": "completed"
     },
     {
       "id": "10",
       "name": "SVG + Icons",
-      "description": "SVG rendering and native desktop icon infrastructure.",
+      "description": "SVG rendering and desktop icon infrastructure integrated into the graphics stack.",
       "status": "completed"
     },
     {
       "id": "11",
       "name": "TrueType",
-      "description": "Native TrueType rendering and the Inter desktop font path.",
+      "description": "Inter-Regular and the native TrueType renderer integrated into the desktop text path.",
       "status": "completed"
     },
     {
       "id": "12",
       "name": "Explorer 10G",
-      "description": "Explorer grid/details view, breadcrumbs and real VFS file operations.",
+      "description": "Grid/details view, breadcrumb navigation and real file operations through VFS/NYFS.",
+      "status": "completed"
+    },
+    {
+      "id": "13A",
+      "name": "Clipboard",
+      "description": "Global clipboard, text/file lists, Ctrl+C/X/V routing and desktop clipboard integration.",
       "status": "completed"
     },
     {
       "id": "13",
       "name": "Clipboard + Dialogs",
-      "description": "Global clipboard routing, text/file transfers and desktop dialogs.",
+      "description": "Desktop dialogs, confirmation flows and read-only Properties integration.",
       "status": "completed"
     },
     {
-      "id": "14",
+      "id": "14 / 7D",
       "name": "GameRunner Integration",
-      "description": "Game session lifecycle, configuration persistence and NYFS save-data integration.",
+      "description": "Session lifecycle, persistent per-game configuration and cellSaveData bridge to NYFS.",
       "status": "completed"
     },
     {
-      "id": "15",
+      "id": "15A-15E",
       "name": "USB + Unified Input",
-      "description": "xHCI, USB enumeration, HID keyboard/mouse, mass storage and unified input.",
+      "description": "xHCI, USB enumeration, HID keyboard/mouse, mass storage and unified input facade.",
       "status": "completed"
     },
     {
       "id": "16",
-      "name": "Networking",
-      "description": "Ethernet, ARP, IPv4, ICMP, UDP, TCP, DHCP, DNS and socket foundations.",
+      "name": "Production Networking",
+      "description": "Ethernet, ARP, IPv4, ICMP, UDP, TCP, DHCP, DNS and user-space sockets.",
       "status": "completed"
     },
     {
       "id": "17",
-      "name": "Wi-Fi",
-      "description": "Native wireless networking, device management and desktop integration.",
+      "name": "Wi-Fi Driver + Management UI",
+      "description": "RTL8188EU driver, firmware loading, WPA2, Network Manager, roaming and power management.",
       "status": "working"
     },
     {
       "id": "18",
-      "name": "Bluetooth",
-      "description": "Bluetooth transport and supported input-device integration.",
+      "name": "Bluetooth Framework",
+      "description": "HCI, USB transport, L2CAP/RFCOMM, Bluetooth HID and pairing UI.",
       "status": "soon"
     },
     {
       "id": "19",
       "name": "NYFS Maturity",
-      "description": "Journaling, crash recovery, scaling and filesystem integrity improvements.",
+      "description": "Write-ahead journaling, crash recovery, dynamic directory/inode scaling and CRC32 integrity.",
       "status": "soon"
     },
     {
       "id": "20",
-      "name": "Firewall",
-      "description": "Native firewall policy, filtering and Settings integration.",
+      "name": "Firewall + Network Security",
+      "description": "Stateful IP/TCP filtering, per-application rules and Settings integration.",
       "status": "soon"
     },
     {
       "id": "21",
-      "name": "NotYFirm",
-      "description": "Native firmware domain and the next-stage boot/runtime boundary.",
+      "name": "NotYVFirm",
+      "description": "Native firmware architecture, UEFI path, optional legacy path, configuration and updates.",
       "status": "soon"
     }
   ]
