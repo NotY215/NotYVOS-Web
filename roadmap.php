@@ -1,0 +1,78 @@
+<?php
+$pageTitle = 'NotYVOS Roadmap';
+$pageDescription = 'Current NotYVOS roadmap, delivered phases, queued work and explicit exclusions.';
+$currentPage = 'roadmap';
+$canonicalUrl = 'http://notyvos.gt.tc/Roadmap/';
+require __DIR__ . '/includes/header.php';
+?>
+<main>
+<section class="page-hero section-shell">
+  <span class="eyebrow">ROADMAP</span>
+  <h1>Delivered, active and queued.</h1>
+  <p>The roadmap below mirrors the canonical project roadmap. It separates completed work from future milestones and explicit exclusions.</p>
+</section>
+
+<section class="section-shell section">
+  <div class="roadmap-legend">
+    <span class="legend done">Finished</span>
+    <span class="legend working">Working</span>
+    <span class="legend soon">Soon</span>
+  </div>
+  <div class="timeline">
+<?php
+$items = [
+  ['0–10F', 'Foundation through desktop polish', 'done'],
+  ['11', 'TrueType Font Subsystem', 'done'],
+  ['12', 'Explorer 10G + Real File Operations', 'done'],
+  ['13A', 'Desktop Clipboard', 'done'],
+  ['15A–15E', 'USB Stack + Unified Input', 'done'],
+  ['Fix', 'User-fault isolation + build/test hardening', 'done'],
+  ['Init', 'Init program debugging', 'working'],
+  ['14 / 7D', 'GameRunner Runtime Integration', 'soon'],
+  ['13B–13C', 'Dialogs and Properties', 'soon'],
+  ['16', 'Production Network Stack', 'soon'],
+  ['17', 'Wi-Fi Driver + Management UI', 'soon'],
+  ['18', 'Bluetooth Framework', 'soon'],
+  ['19', 'NYFS Maturity', 'soon'],
+  ['20', 'Firewall + Network Security', 'soon'],
+  ['21', 'NotYVFirm', 'soon'],
+];
+foreach ($items as [$phase, $name, $status]):
+?>
+    <article class="timeline-item <?= $status ?>">
+      <div class="timeline-dot"></div>
+      <div>
+        <span class="phase"><?= htmlspecialchars($phase) ?></span>
+        <h3><?= htmlspecialchars($name) ?></h3>
+        <span class="status"><?= htmlspecialchars(strtoupper($status)) ?></span>
+      </div>
+    </article>
+<?php endforeach; ?>
+  </div>
+</section>
+
+<section class="section-shell section tinted">
+  <div class="section-heading">
+    <span class="eyebrow">CURRENT MILESTONE</span>
+    <h2>Init program debugging</h2>
+    <p>The next active engineering target is <code>user/init/main.c</code>. Resolve the current init-program build/runtime issue before advancing to Phase 14 / 7D unless explicitly requested otherwise.</p>
+  </div>
+</section>
+
+<section class="section-shell section">
+  <div class="section-heading">
+    <span class="eyebrow">EXPLICIT EXCLUSIONS</span>
+    <h2>Not on the current roadmap</h2>
+    <p>Windows PE/Win32 compatibility, Brave validation and VLC validation are explicitly excluded from the current queue.</p>
+  </div>
+</section>
+
+<section class="section-shell section">
+  <div class="section-heading">
+    <span class="eyebrow">CANONICAL SOURCE</span>
+    <h2>Always check the main roadmap for implementation detail.</h2>
+    <a class="button secondary" href="https://github.com/NotY215/NotYVOS/blob/main/docs/roadmap.md" target="_blank" rel="noopener">Open roadmap.md ↗</a>
+  </div>
+</section>
+</main>
+<?php require __DIR__ . '/includes/footer.php'; ?>
