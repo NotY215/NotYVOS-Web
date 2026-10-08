@@ -6,3 +6,51 @@ img,svg,canvas{-webkit-user-drag:none;user-drag:none}
 main{animation:notyvosPageIn .55s ease both}
 @keyframes notyvosPageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){main{animation:none}.reveal{transition:none!important}}
+
+
+/* Roadmap timeline */
+.roadmap-hero{padding-bottom:70px}
+.roadmap-current{display:inline-flex;align-items:center;gap:9px;margin-top:26px;padding:9px 13px;border:1px solid rgba(255,83,98,.3);border-radius:999px;background:rgba(255,70,87,.07);color:#ff8490;font:800 .72rem/1 ui-monospace,SFMono-Regular,monospace;letter-spacing:.1em}
+.roadmap-current-dot{width:8px;height:8px;border-radius:50%;background:#ff5d6c;box-shadow:0 0 16px rgba(255,70,87,.7);animation:roadmapPulse 1.5s ease-in-out infinite}
+@keyframes roadmapPulse{50%{opacity:.45;transform:scale(.75)}}
+.roadmap-section{padding-top:40px}
+.roadmap-head{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:42px}
+.roadmap-head .section-heading{margin-bottom:0}
+.roadmap-legend{display:flex;gap:18px;flex-wrap:wrap;align-items:center;color:#8298a9;font-size:.78rem}
+.roadmap-legend-item{display:flex;align-items:center;gap:8px;white-space:nowrap}
+.roadmap-legend-check{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;color:#63e6a0;border:1px solid rgba(99,230,160,.4);background:rgba(40,100,69,.16);font-size:.7rem;font-weight:900}
+.roadmap-legend-working,.roadmap-legend-planned{width:8px;height:8px;border-radius:50%}
+.roadmap-legend-working{background:#ff5d6d;box-shadow:0 0 12px rgba(255,70,87,.45)}
+.roadmap-legend-planned{border:1px solid #63798a;background:transparent}
+.roadmap-timeline{position:relative;display:grid;gap:13px;max-width:900px;margin:0 auto}
+.roadmap-timeline:before{content:"";position:absolute;left:27px;top:18px;bottom:18px;width:1px;background:var(--line)}
+.roadmap-phase{position:relative;display:grid;grid-template-columns:55px minmax(0,1fr);gap:16px;padding:21px 24px 21px 10px;border:1px solid var(--line);border-left:2px solid rgba(120,190,255,.14);border-radius:16px;background:linear-gradient(145deg,rgba(13,29,47,.68),rgba(6,15,27,.72));box-shadow:0 14px 42px rgba(0,0,0,.18);transition:transform .2s ease,border-color .2s ease,background .2s ease}
+.roadmap-phase:hover{transform:translateX(3px);border-color:rgba(85,217,255,.28);background:linear-gradient(145deg,rgba(15,34,54,.76),rgba(6,16,28,.78))}
+.roadmap-phase-completed{border-left-color:rgba(99,230,160,.45)}
+.roadmap-phase-active{border-left-color:rgba(255,70,87,.55);background:linear-gradient(90deg,rgba(255,70,87,.07),rgba(255,255,255,.018))}
+.roadmap-phase-marker{position:relative;z-index:1;width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:#071321;border:1px solid var(--line);font-size:.78rem;font-weight:900;color:#63798a}
+.roadmap-phase-completed .roadmap-phase-marker{color:#63e6a0;border-color:rgba(99,230,160,.45);background:rgba(40,100,69,.17)}
+.roadmap-phase-active .roadmap-phase-marker{color:#ff7180;border-color:rgba(255,70,87,.55);background:rgba(90,20,28,.24);animation:roadmapPulse 1.5s ease-in-out infinite}
+.roadmap-phase-top{display:flex;align-items:center;gap:12px;margin-bottom:5px;flex-wrap:wrap}
+.roadmap-phase-number{color:#55d9ff;font:900 .73rem/1 ui-monospace,SFMono-Regular,monospace;letter-spacing:.12em}
+.roadmap-phase-active .roadmap-phase-number{color:#ff7180}
+.roadmap-phase-status{font:900 .65rem/1 ui-monospace,SFMono-Regular,monospace;letter-spacing:.12em;color:#718797}
+.roadmap-phase-completed .roadmap-phase-status{color:#63e6a0}
+.roadmap-phase-active .roadmap-phase-status{color:#ff6b76}
+.roadmap-phase-body h3{margin:0 0 6px;font-size:1.22rem}
+.roadmap-phase-body p{margin:0;color:var(--muted);font-size:.9rem;max-width:800px}
+.roadmap-current-section{margin-top:25px}
+@media(max-width:900px){
+  .roadmap-head{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:700px){
+  .roadmap-section{padding-top:25px}
+  .roadmap-timeline:before{left:22px}
+  .roadmap-phase{grid-template-columns:44px minmax(0,1fr);padding:16px 14px 16px 7px;gap:11px}
+  .roadmap-phase-marker{width:30px;height:30px;font-size:.68rem}
+  .roadmap-phase-body h3{font-size:1.05rem}
+  .roadmap-phase-body p{font-size:.82rem}
+  .roadmap-phase-number{font-size:.65rem}
+  .roadmap-phase-status{font-size:.59rem}
+}
+
