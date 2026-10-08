@@ -1,0 +1,335 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#06101c"><meta name="description" content="Complete NotYVOS technical documentation synchronized with the main repository."><title>NotYVOS Documentation</title><link rel="icon" type="image/png" href="https://raw.githubusercontent.com/NotY215/NotYVOS/main/Assets/Neon%20Blue%20NotYVOS%20Tech%20Logo.png"><link rel="canonical" href="http://notyvos.gt.tc/Documentation/"><link rel="stylesheet" href="/assets/css/style.css"><link rel="stylesheet" href="/assets/css/docs.css"><script defer src="/assets/js/app.js"></script><script defer src="/assets/js/security.js"></script></head><body><div class="site-bg" aria-hidden="true"><span></span><span></span><span></span></div><header class="site-header"><div class="nav-shell"><a class="brand" href="/"><img src="https://raw.githubusercontent.com/NotY215/NotYVOS/main/Assets/Neon%20Blue%20NotYVOS%20Tech%20Logo.png" alt=""><span>NotYVOS</span></a><button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button><nav class="main-nav"><a href="/">Home</a><a href="/About/">About</a><a href="/Architecture/">Architecture</a><a class="active" href="/Documentation/">Documentation</a><a href="/Roadmap/">Roadmap</a><a href="/Updates/">Updates</a><a href="/FAQ/">FAQ</a><a href="/Developer/">Developer</a><a class="github-link" href="https://github.com/NotY215/NotYVOS" target="_blank" rel="noopener">GitHub ↗</a></nav></div></header>
+<main class="docs-page docs-war">
+<section class="docs-hero">
+  <div class="docs-stars" aria-hidden="true"></div>
+  <div class="docs-runes" aria-hidden="true">ᛉ　ᛏ　ᛟ　ᚾ　ᛁ　ᛋ　ᛏ　ᚱ　ᚨ　ᚾ</div>
+  <div class="section-shell docs-hero-inner">
+    <div class="docs-kicker"><span>NOTYVOS</span><i></i><span>PS3 // TECHNICAL CODEX</span></div>
+    <h1>THE ARCHITECTURE<br><em>BEHIND NOTYVOS</em></h1>
+    <p class="docs-hero-copy">A complete native x86-64 operating-system reference covering the kernel, memory, scheduler, NYFS, graphics, desktop, PS3 runtime, GameRunner, toolchain, decisions and roadmap.</p>
+    <div class="docs-hero-actions">
+      <a class="docs-secondary" href="#architecture" data-jump="architecture">View Architecture</a>
+    </div>
+    <div class="docs-hero-cards">
+      <article class="docs-hero-card"><small>01</small><span>NATIVE CORE</span><h3>x86-64 kernel</h3><p>Native kernel, memory, scheduler, services and storage foundations.</p></article><article class="docs-hero-card"><small>02</small><span>GRAPHICS</span><h3>RSX + desktop</h3><p>Graphics HAL, compositor, SVG/icons and TrueType rendering.</p></article><article class="docs-hero-card"><small>03</small><span>PS3</span><h3>GameRunner</h3><p>PPU, SPU, DMA, JIT and RSX runtime architecture.</p></article><article class="docs-hero-card"><small>04</small><span>PROJECT</span><h3>Roadmap</h3><p>Delivered foundation plus active Wi-Fi and queued firmware work.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="docs-shell section-shell">
+  <aside class="docs-index">
+    <div class="docs-index-title"><span>CODEX</span><b id="docs-progress">0%</b></div>
+    <div class="docs-search"><input id="docs-search" type="search" placeholder="Search the codex..." aria-label="Search documentation"></div>
+    <nav id="docs-index-nav">
+      <div class="docs-group">Project</div><a class="docs-link" href="#overview" data-section="overview"><span></span>Overview</a><div class="docs-group">Core</div><a class="docs-link" href="#architecture" data-section="architecture"><span></span>Architecture</a><a class="docs-link" href="#boot" data-section="boot"><span></span>Boot & Kernel</a><a class="docs-link" href="#memory" data-section="memory"><span></span>Memory & Scheduler</a><a class="docs-link" href="#storage" data-section="storage"><span></span>Storage & NYFS</a><div class="docs-group">Graphics</div><a class="docs-link" href="#graphics" data-section="graphics"><span></span>Graphics & Desktop</a><div class="docs-group">PS3</div><a class="docs-link" href="#ps3" data-section="ps3"><span></span>PS3 Runtime</a><a class="docs-link" href="#game" data-section="game"><span></span>GameRunner</a><div class="docs-group">Development</div><a class="docs-link" href="#toolchain" data-section="toolchain"><span></span>Build & Toolchain</a><a class="docs-link" href="#testing" data-section="testing"><span></span>Testing</a><div class="docs-group">Graphics</div><a class="docs-link" href="#fonts" data-section="fonts"><span></span>Fonts & Text</a><div class="docs-group">Visuals</div><a class="docs-link" href="#screens" data-section="screens"><span></span>Screenshots</a><div class="docs-group">Project</div><a class="docs-link" href="#roadmap" data-section="roadmap"><span></span>Roadmap</a><div class="docs-group">Decisions</div><a class="docs-link" href="#decisions" data-section="decisions"><span></span>Architecture Decisions</a><div class="docs-group">Security</div><a class="docs-link" href="#security" data-section="security"><span></span>Security & Firmware</a><div class="docs-group">Visuals</div><a class="docs-link" href="#dataflow" data-section="dataflow"><span></span>Data Flow</a>
+    </nav>
+    <div class="docs-index-foot"><span>STATUS</span><strong><i></i> DOCUMENTATION ONLINE</strong></div>
+  </aside>
+
+  <div class="docs-content" id="docs-content">
+    <section class="docs-section" id="overview" data-title="Overview">
+      <div class="docs-eyebrow">01 · PROJECT</div><h2>What is NotYVOS?</h2>
+      <p>NotYVOS is a freestanding x86-64 operating system with a native kernel, userland, VFS, persistent NYFS storage, software-rendered desktop, hardware drivers and a PS3 runtime foundation. The project is not a themed Linux distribution. Its core objective is a native platform where the low-level execution path, storage path, rendering path and runtime services are controlled by the project.</p>
+      <div class="docs-callout"><b>Design rule</b><span>Native first. Compatibility layers are boundaries around the OS, not the definition of the OS.</span></div>
+      <div class="docs-grid two">
+        <article class="docs-panel"><span class="panel-tag">PLATFORM</span><h3>x86-64 native target</h3><p>The kernel and desktop are designed around the x86-64 execution environment, with SMP, virtual memory, interrupts, native storage and graphics services forming the base.</p></article>
+        <article class="docs-panel"><span class="panel-tag">RUNTIME</span><h3>PS3-oriented subsystem</h3><p>GameRunner models PS3 execution through PPU, SPU, DMA, JIT and RSX components rather than making the PS3 runtime the kernel itself.</p></article>
+      </div>
+      <div class="docs-table-wrap"><table class="docs-table"><thead><tr><th>Layer</th><th>Responsibility</th><th>Current direction</th></tr></thead><tbody>
+      <tr><td>Boot</td><td>Firmware handoff and kernel entry</td><td>Limine-based boot path</td></tr>
+      <tr><td>Kernel</td><td>CPU, memory, scheduling and system services</td><td>Native x86-64</td></tr>
+      <tr><td>Storage</td><td>VFS and NYFS</td><td>Native filesystem</td></tr>
+      <tr><td>Graphics</td><td>HAL, compositor, RSX integration</td><td>Native rendering</td></tr>
+      <tr><td>Desktop</td><td>Explorer, dialogs, clipboard, input</td><td>Active integration</td></tr>
+      <tr><td>PS3</td><td>PPU, SPU, DMA, JIT, RSX, GameRunner</td><td>Runtime integration</td></tr>
+      </tbody></table></div>
+    </section>
+
+    <section class="docs-section" id="architecture">
+      <div class="docs-eyebrow">02 · CORE</div><h2>System Architecture</h2>
+      <p>The architecture is layered. Boot establishes the kernel environment, the kernel owns execution and resource primitives, VFS and NYFS own storage, the graphics layer owns rendering, the compositor presents the desktop, and GameRunner consumes runtime services without replacing the kernel.</p>
+      <div class="diagram-frame"><div class="diagram-title"><span>LIVE MERMAID</span><b>Native boot to desktop</b></div><pre class="mermaid">flowchart TD
+ A[UEFI / Firmware] --&gt; B[Limine v12.9.0]
+ B --&gt; C[x86-64 Kernel Entry]
+ C --&gt; D[CPU + SMP]
+ D --&gt; E[Memory Manager]
+ E --&gt; F[Scheduler]
+ F --&gt; G[Kernel Services]
+ G --&gt; H[VFS]
+ H --&gt; I[NYFS]
+ G --&gt; J[Graphics HAL]
+ J --&gt; K[Compositor]
+ K --&gt; L[Desktop / Explorer]</pre></div>
+      <div class="docs-grid three">
+        <article class="docs-panel"><span class="panel-tag">BOOT</span><h3>UEFI → Limine</h3><p>Limine v12.9.0 supplies the framebuffer, memory map, HHDM, SMP/MP, module and RSDP information consumed by the native kernel.</p></article>
+        <article class="docs-panel"><span class="panel-tag">KERNEL</span><h3>Execution core</h3><p>CPU/SMP, four-level paging, higher-half mappings, PMM, VMM, heap, scheduler, syscalls and user-fault isolation form the execution foundation.</p></article>
+        <article class="docs-panel"><span class="panel-tag">USER SPACE</span><h3>Desktop services</h3><p>ELF processes, VFS, initramfs, NYFS, shell, Explorer, Settings, clipboard, input and GameRunner sit above explicit service boundaries.</p></article>
+      </div>
+      <div class="docs-grid two">
+        <article class="docs-panel"><span class="panel-tag">PROCESS MODEL</span><h3>ELF64 + per-process PML4</h3><p>The ELF loader validates ELF64/x86-64 files, maps PT_LOAD segments into newly allocated user pages, creates a user stack and records the process entry and stack addresses. fork clones user-visible mappings into a child address space. Processes retain parent/child links, file tables, working-directory state, exit status and reaping state.</p></article>
+        <article class="docs-panel"><span class="panel-tag">UACCESS</span><h3>Kernel/user memory boundary</h3><p>Syscalls enter through the x86-64 assembly entry path and are dispatched by the kernel. User pointers pass through the uaccess layer instead of being trusted directly. Current operations include process control, file operations, directory enumeration, mmap, exec, heap extension, time/sleep, signal/termination and NYFS file creation/removal.</p></article>
+      </div>
+      <div class="docs-grid three">
+        <article class="docs-panel"><span class="panel-tag">DEVICES</span><h3>Native device domains</h3><p>Implemented domains include ACPI, AHCI, Intel e1000 detection/initialization, HDA audio initialization, PS/2 keyboard/mouse, USB/xHCI, and LAPIC/per-CPU/SMP infrastructure.</p></article>
+        <article class="docs-panel"><span class="panel-tag">FILESYSTEM</span><h3>VFS + initramfs + NYFS</h3><p>VFS provides a VNode namespace and file-descriptor layer. The initramfs is a Limine-loaded ustar archive mounted at /. NYFS is mounted at /disk and currently uses a 512-byte superblock, fixed 64-entry file table and following data sectors.</p></article>
+        <article class="docs-panel"><span class="panel-tag">IMAGE PIPELINE</span><h3>Decode → pixel buffer → compositor</h3><p>BMP, PNG, GIF, ICO and JPEG decoders feed Image Viewer and the Graphics API. The resulting pixels travel through the compositor to the framebuffer.</p></article>
+      </div>
+    </section>
+
+    <section class="docs-section" id="boot">
+      <div class="docs-eyebrow">03 · CORE</div><h2>Boot, Kernel and Init</h2>
+      <p>The boot path is intentionally explicit: firmware, boot protocol, kernel entry, processor setup, memory setup, scheduler and system services. Current development includes init-program debugging before the next major GameRunner integration milestone.</p>
+      <ol class="docs-steps">
+        <li><b>1 · UEFI</b><span>Firmware loads the Limine boot environment.</span></li>
+        <li><b>2 · Limine</b><span>Loads notyvos-kernel.elf and configured modules.</span></li>
+        <li><b>3 · Boot requests</b><span>Framebuffer, memory-map, HHDM, SMP/MP, module and RSDP information is made available.</span></li>
+        <li><b>4 · _start</b><span>Kernel entry establishes the entry stack and transfers to kernel_main.</span></li>
+        <li><b>5 · kernel_main</b><span>Serial output, framebuffer console and logging become available.</span></li>
+        <li><b>6 · CPU + memory</b><span>CPU features, PMM, VMM, kernel heap and executable memory arena initialize.</span></li>
+        <li><b>7 · devices</b><span>ACPI, AHCI, e1000, HDA, LAPIC/per-CPU, SMP and USB/xHCI domains initialize.</span></li>
+        <li><b>8 · NYFS</b><span>NYFS mounts on the first available block device; development formatting occurs if no valid superblock exists.</span></li>
+        <li><b>9 · initramfs</b><span>The Limine module is parsed as ustar and mounted at /. NYFS is attached as /disk.</span></li>
+        <li><b>10 · compositor</b><span>Framebuffer console switches into buffered desktop rendering.</span></li>
+        <li><b>11 · graphics</b><span>Software and VBE graphics backends register and initialize.</span></li>
+        <li><b>12 · PS3 runtime</b><span>Translation cache and RSX state initialize, followed by decoder, ELF, PPU, SPU, DMA, JIT and RSX self-tests.</span></li>
+        <li><b>13 · scheduler</b><span>The task scheduler is initialized.</span></li>
+        <li><b>14 · init.elf</b><span>init.elf is loaded as an x86-64 user process with its own address space and user stack.</span></li>
+        <li><b>15 · interrupts</b><span>Interrupts are enabled and the scheduler starts init.</span></li>
+        <li><b>16 · shell</b><span>The user shell becomes the primary interactive userland process.</span></li>
+      </ol>
+      <div class="docs-callout"><b>ISO modules</b><span>Current boot media supplies <code>notyvos-kernel.elf</code>, <code>init.elf</code> and <code>initramfs.tar</code>. An optional converted wallpaper can also be included.</span></div>
+    </section>
+
+    <section class="docs-section" id="memory">
+      <div class="docs-eyebrow">04 · CORE</div><h2>Memory and Scheduler</h2>
+      <div class="docs-grid two">
+        <article class="docs-panel"><span class="panel-tag">MEMORY · 95%</span><h3>PMM / VMM / heap</h3><p>Physical memory management, virtual address management and dynamic allocation form the resource layer used by kernel services and higher-level components. Four-level paging and higher-half kernel mappings keep the kernel address space consistent across processes.</p></article>
+        <article class="docs-panel"><span class="panel-tag">SCHEDULER · 85%</span><h3>Task execution</h3><p>The scheduler provides the execution boundary required for kernel work, services and future user programs. Init-program debugging remains the active milestone. User-fault isolation routes user-mode exceptions to the offending task.</p></article>
+      </div>
+      <div class="diagram-frame"><div class="diagram-title"><span>DATA PATH</span><b>Execution and memory dependency</b></div><pre class="mermaid">flowchart LR
+CPU[CPU / SMP] --> SCHED[Scheduler]
+SCHED --> TASK[Tasks]
+TASK --> SYSCALL[Syscalls]
+SYSCALL --> MEM[Virtual Memory]
+MEM --> HEAP[Kernel Heap]
+MEM --> USER[User Address Space]</pre></div>
+    </section>
+
+    <section class="docs-section" id="storage">
+      <div class="docs-eyebrow">05 · CORE</div><h2>Storage, VFS and NYFS</h2>
+      <p>VFS is the service-facing filesystem abstraction while NYFS is the native filesystem implementation. Explorer talks to the filesystem through this boundary rather than reaching directly into block-level details.</p>
+      <div class="docs-grid two">
+        <article class="docs-panel"><span class="panel-tag">VFS</span><h3>Stable service boundary</h3><p>Kernel services and applications use a consistent filesystem interface, keeping the concrete filesystem implementation replaceable. VNode-based namespace and per-task file-descriptor tables provide the user-visible surface.</p></article>
+        <article class="docs-panel"><span class="panel-tag">NYFS · 55%</span><h3>Development filesystem</h3><p>NYFS currently stores one 512-byte superblock, a fixed 64-entry file table and file data sectors. It supports create, read, write, directory enumeration and unlink. It is intentionally a small development filesystem, not yet a general-purpose journaling filesystem.</p></article>
+      </div>
+      <div class="diagram-frame"><div class="diagram-title"><span>LIVE MERMAID</span><b>NYFS data path</b></div><pre class="mermaid">flowchart LR
+    FD[User file descriptor] --> VFS[VFS]
+    VFS --> NYFS[NYFS]
+    NYFS --> SB[512-byte superblock]
+    NYFS --> FT[64-entry file table]
+    NYFS --> DATA[File data sectors]
+    DATA --> DISK[Persistent block device]
+    DISK --> NYFS</pre></div>
+    </section>
+
+    <section class="docs-section" id="graphics">
+      <div class="docs-eyebrow">06 · GRAPHICS</div><h2>Graphics Stack and Desktop</h2>
+      <p>The graphics stack has four layers: Graphics API, HAL, GPU abstraction and Compositor. The native desktop rendering path uses the Graphics API/HAL/backend architecture, while the PS3 runtime additionally has a software RSX compatibility path.</p>
+      <div class="diagram-frame"><div class="diagram-title"><span>LIVE MERMAID</span><b>Graphics API → HAL → compositor</b></div><pre class="mermaid">flowchart LR
+ APP[Desktop / apps] --&gt; API[Graphics API]
+ API --&gt; HAL[Graphics HAL]
+ HAL --&gt; SW[Software backend]
+ HAL --&gt; VBE[VBE backend]
+ TT[TrueType draw_text] --&gt; COMP[Compositor]
+ SW --&gt; COMP
+ VBE --&gt; COMP
+ COMP --&gt; FB[Framebuffer]</pre></div>
+      <div class="docs-grid three">
+        <article class="docs-panel"><span class="panel-tag">COMPOSITOR</span><h3>Desktop scene</h3><p>Desktop background, taskbar, Start menu, shortcuts, window focus/dragging, Alt-Tab, snap layouts, notification toasts, minimize/maximize/close and context menus.</p></article>
+        <article class="docs-panel"><span class="panel-tag">WIDGETS</span><h3>UI primitives</h3><p>Button, Label and ListView primitives. Terminal, Explorer, Settings and Bin windows sit on the compositor.</p></article>
+        <article class="docs-panel"><span class="panel-tag">THEMES</span><h3>Appearance</h3><p>Dark, Light and macOS Dark themes plus Appearance controls through Settings feed the active theme into the desktop UI styling layer.</p></article>
+      </div>
+    </section>
+
+    <section class="docs-section" id="ps3">
+      <div class="docs-eyebrow">07 · PS3</div><h2>PS3 Runtime Architecture</h2>
+      <p>The PS3 PPU state is represented by a register context containing GPR/FPR state, PC, LR, CTR, XER and CR plus memory/syscall callbacks. The baseline JIT looks up the current PPC PC in the translation cache, translates supported basic blocks, emits x86-64 machine code into executable memory and falls back to the interpreter for unsupported instructions.</p>
+      <div class="diagram-frame"><div class="diagram-title"><span>LIVE MERMAID</span><b>PS3 runtime path</b></div><pre class="mermaid">flowchart TD
+ GAME[GameRunner] --&gt; ABI[PS3 ABI]
+ ABI --&gt; PPU[PPU execution]
+ ABI --&gt; SPU[SPU execution]
+ PPU --&gt; JIT[JIT / translation]
+ SPU --&gt; DMA[DMA]
+ PPU --&gt; RSX[RSX]
+ DMA --&gt; RSX
+ RSX --&gt; HAL[Graphics HAL]
+ HAL --&gt; COMP[Compositor]</pre></div>
+      <div class="docs-grid four">
+        <article class="docs-panel"><span class="panel-tag">PPU</span><h3>PowerPC</h3><p>Decoder, interpreter and baseline x86-64 JIT with translation cache, block chaining and cache invalidation.</p></article>
+        <article class="docs-panel"><span class="panel-tag">SPU</span><h3>Local store</h3><p>SPU interpreter with 256 KiB local store and mailbox foundations.</p></article>
+        <article class="docs-panel"><span class="panel-tag">DMA</span><h3>Cell-style</h3><p>DMA queue, tag state and synchronization barriers between main memory and SPU local store.</p></article>
+        <article class="docs-panel"><span class="panel-tag">RSX</span><h3>Software path</h3><p>FIFO, method decode, rasterization, textures, UVs, perspective correction, depth/scissor and mipmap/LOD sampling.</p></article>
+      </div>
+    </section>
+
+    <section class="docs-section" id="game">
+      <div class="docs-eyebrow">08 · PS3</div><h2>GameRunner</h2>
+      <p>GameRunner is the session-oriented surface for PS3 binary loading and runtime integration. The completed path covers format detection, PS3 ELF loading, ABI/syscalls, cellFs through VFS/NYFS and the PPU/RSX execution path. Phase 14 / 7D remains the next runtime integration milestone.</p>
+      <div class="diagram-frame"><div class="diagram-title"><span>LIVE MERMAID</span><b>GameRunner flow</b></div><pre class="mermaid">flowchart LR
+ A[GameRunner] --&gt; B[PS3 ABI]
+ B --&gt; C[PPU]
+ B --&gt; D[SPU]
+ C --&gt; E[JIT / Translator]
+ D --&gt; F[DMA]
+ C --&gt; G[RSX]
+ G --&gt; H[Graphics HAL]
+ H --&gt; I[Compositor]</pre></div>
+      <div class="docs-callout"><b>Next milestone</b><span>Phase 14 covers session lifecycle (start/step/pause/resume/stop), persistent per-game configuration and cellSaveData bridge to NYFS.</span></div>
+    </section>
+
+    <section class="docs-section" id="toolchain">
+      <div class="docs-eyebrow">09 · DEVELOPMENT</div><h2>Build and Toolchain</h2>
+      <p>The project uses Clang/LLVM as the primary toolchain with CMake and Ninja. C++20 is the primary kernel language; userland components may use C17. Limine provides the boot protocol.</p>
+      <div class="docs-grid two">
+        <article class="docs-panel"><span class="panel-tag">TOOLCHAIN</span><h3>Clang + LLVM</h3><p>Kernel and runtime components are built with Clang diagnostics and LLVM code generation. Assembly entry paths and linker scripts remain explicit.</p></article>
+        <article class="docs-panel"><span class="panel-tag">LAYOUT</span><h3>Source tree</h3><p>Kernel, drivers, graphics, filesystem, PS3 runtime, userland and documentation live in clearly separated directories.</p></article>
+      </div>
+      <pre class="docs-code">kernel/
+  boot/
+  cpu/
+  mm/
+  sched/
+  fs/
+  drivers/
+  graphics/
+  ps3/
+user/
+  init/
+  shell/
+  desktop/
+  gamerunner/
+docs/
+  decisions/
+  diagrams/</pre>
+    </section>
+
+    <section class="docs-section" id="testing">
+      <div class="docs-eyebrow">10 · DEVELOPMENT</div><h2>Testing and Validation</h2>
+      <p>Testing is layered so a failure can be isolated to boot, kernel, subsystem, desktop or runtime integration. Native tests and build validation are preferred over treating the complete ISO as the only test target. Every subsystem gets a boot self-test.</p>
+      <div class="docs-grid two">
+        <article class="docs-panel"><span class="panel-tag">BUILD</span><h3>Static validation</h3><p>Compiler diagnostics, linker validation, source checks and build reproducibility. Warnings are errors; casts use static_cast.</p></article>
+        <article class="docs-panel"><span class="panel-tag">RUNTIME</span><h3>Boot validation</h3><p>Kernel startup, init program, filesystem, graphics and GameRunner milestones are validated independently through self-tests and ISO runs.</p></article>
+      </div>
+    </section>
+
+    <section class="docs-section" id="fonts">
+      <div class="docs-eyebrow">11 · GRAPHICS</div><h2>Fonts and Text Rendering</h2>
+      <p>NotYVOS includes a native TrueType renderer. Inter-Regular is the default UI font. Text rendering feeds the compositor and is treated as part of the desktop graphics stack rather than a browser dependency. Multiple weights, kerning and complex-script shaping remain deferred.</p>
+      <div class="diagram-frame"><div class="diagram-title"><span>LIVE MERMAID</span><b>TrueType path</b></div><pre class="mermaid">flowchart LR
+FONT[Inter TrueType] --> PARSE[TrueType parser]
+PARSE --> GLYPH[Glyph outlines]
+GLYPH --> RASTER[4x coverage rasterizer]
+RASTER --> CACHE[Per-face glyph cache]
+CACHE --> DRAW[draw_text]
+DRAW --> COM[Compositor]
+COM --> SCREEN[Framebuffer]</pre></div>
+    </section>
+
+    <section class="docs-section" id="screens">
+      <div class="docs-eyebrow">12 · VISUALS</div><h2>NotYVOS Visual Archive</h2>
+      <p>Selected project images are served from the public NotYVOS website repository. They provide visual context for the documentation without replacing the technical descriptions and diagrams.</p>
+      <div class="docs-visual-grid">
+        <figure class="docs-visual">
+          <img src="https://raw.githubusercontent.com/NotY215/NotYVOS-Web/main/Updates/1.png" alt="NotYVOS development screenshot" loading="lazy" decoding="async">
+          <figcaption>Development snapshot · NotYVOS desktop and runtime work</figcaption>
+        </figure>
+        <figure class="docs-visual">
+          <img src="https://raw.githubusercontent.com/NotY215/NotYVOS-Web/main/Updates/2.png" alt="NotYVOS development screenshot" loading="lazy" decoding="async">
+          <figcaption>Development snapshot · graphics and system integration</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="docs-section" id="roadmap">
+      <div class="docs-eyebrow">13 · PROJECT</div><h2>Roadmap</h2>
+      <p>Phases 01–16 are complete. Phase 17 is the current working phase. The roadmap uses the same explicit Phase / Status / Scope structure used across the Vayu project, with completed, working and queued milestones clearly separated.</p>
+      <div class="roadmap-list">
+        <div class="road-row"><div class="road-phase">PHASE 01</div><div><h3>Kernel Foundation</h3><p>Native x86-64 kernel foundation, boot path, interrupts, CPU/SMP and core kernel services.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 02</div><div><h3>Memory Management</h3><p>PMM, VMM, four-level paging, higher-half mappings and kernel heap foundation.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 03</div><div><h3>Scheduler</h3><p>Task scheduling, execution infrastructure and user-fault isolation foundation.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 04</div><div><h3>Storage Foundation</h3><p>VFS, initramfs and the initial NYFS storage path.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 05</div><div><h3>Graphics Foundation</h3><p>Graphics API/HAL, framebuffer rendering and compositor foundation.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 06</div><div><h3>Desktop Foundation</h3><p>Desktop shell, windows, Explorer, Settings, dialogs and core interaction.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 07</div><div><h3>PS3 Runtime Foundation</h3><p>PS3 ABI, PPU/SPU execution, DMA, JIT and RSX runtime foundations.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 08</div><div><h3>GameRunner Foundation</h3><p>GameRunner integration with the PS3 runtime and native graphics services.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 09</div><div><h3>Image Decoders</h3><p>BMP, PNG, GIF, ICO and JPEG decoding integrated into the native image pipeline.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 10</div><div><h3>SVG + Icons</h3><p>SVG rendering and desktop icon infrastructure integrated into the graphics stack.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 11</div><div><h3>TrueType</h3><p>Inter-Regular and the native TrueType renderer integrated into the desktop text path.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 12</div><div><h3>Explorer 10G</h3><p>Grid/details view, breadcrumb navigation and real file operations through VFS/NYFS.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 13</div><div><h3>Clipboard + Dialogs</h3><p>Global clipboard, text/file lists, Ctrl+C/X/V routing and desktop dialog integration.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 14 / 7D</div><div><h3>GameRunner Integration</h3><p>Session lifecycle, persistent per-game configuration and cellSaveData bridge to NYFS.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 15A-15E</div><div><h3>USB + Unified Input</h3><p>xHCI, USB enumeration, HID keyboard/mouse, mass storage and unified input facade.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 16</div><div><h3>Production Networking</h3><p>Ethernet, ARP, IPv4, ICMP, UDP, TCP, DHCP, DNS and user-space sockets.</p></div><div class="road-status done">DONE</div></div><div class="road-row"><div class="road-phase">PHASE 17</div><div><h3>Wi-Fi Driver + Management UI</h3><p>RTL8188EU driver, firmware loading, WPA2, Network Manager, roaming and power management.</p></div><div class="road-status working">WORKING</div></div><div class="road-row"><div class="road-phase">PHASE 18</div><div><h3>Bluetooth Framework</h3><p>HCI, USB transport, L2CAP/RFCOMM, Bluetooth HID and pairing UI.</p></div><div class="road-status queued">QUEUED</div></div><div class="road-row"><div class="road-phase">PHASE 19</div><div><h3>NYFS Maturity</h3><p>Write-ahead journaling, crash recovery, dynamic scaling and integrity checks.</p></div><div class="road-status queued">QUEUED</div></div><div class="road-row"><div class="road-phase">PHASE 20</div><div><h3>Firewall + Network Security</h3><p>Stateful IP/TCP filtering, per-application rules and Settings integration.</p></div><div class="road-status queued">QUEUED</div></div><div class="road-row"><div class="road-phase">PHASE 21</div><div><h3>NotYVFirm</h3><p>Native firmware architecture, UEFI path, optional legacy path, configuration and updates.</p></div><div class="road-status queued">QUEUED</div></div>
+      </div>
+      <div class="docs-chart"><canvas id="roadmap-chart"></canvas></div>
+    </section>
+
+    <section class="docs-section" id="decisions">
+      <div class="docs-eyebrow">14 · DECISIONS</div><h2>Architecture Decision Records</h2>
+      <p>These decisions document the binding technical choices that shape the system. They are intentionally short and concrete.</p>
+      <div class="decision-grid">
+        <article class="decision-card"><div class="decision-no">ADR-0001</div><h3>Use Limine as the boot protocol</h3><p>Limine provides a modern documented handoff into the native x86-64 kernel while keeping early boot code small.</p></article><article class="decision-card"><div class="decision-no">ADR-0002</div><h3>Use Clang + LLVM for the kernel toolchain</h3><p>Clang/LLVM provides the primary C++ toolchain, diagnostics and code-generation infrastructure.</p></article><article class="decision-card"><div class="decision-no">ADR-0003</div><h3>AGPL-3 license</h3><p>The OS source uses AGPL-3, while third-party components retain their own licenses.</p></article><article class="decision-card"><div class="decision-no">ADR-0004</div><h3>C++ is the primary language</h3><p>C++ is primary; C, assembly, linker scripts and small utilities remain available where platform boundaries require them.</p></article><article class="decision-card"><div class="decision-no">ADR-0005</div><h3>PS3 firmware isolation</h3><p>PS3 firmware is developer-supplied runtime input and is isolated from public source distribution.</p></article><article class="decision-card"><div class="decision-no">ADR-0006</div><h3>No Sony keys embedded</h3><p>Protected Sony signing keys and equivalent private material are not embedded or distributed.</p></article><article class="decision-card"><div class="decision-no">ADR-0007</div><h3>Windows compatibility is a later boundary</h3><p>Windows executable compatibility is separated from the native OS core and excluded from the current roadmap.</p></article><article class="decision-card"><div class="decision-no">ADR-0008</div><h3>Reserved domains are not created yet</h3><p>Future network domains and services are documented as reserved names rather than existing services.</p></article><article class="decision-card"><div class="decision-no">ADR-0009</div><h3>Inter is the default UI font</h3><p>Inter is the default TrueType UI font for a consistent desktop text baseline.</p></article>
+      </div>
+    </section>
+
+    <section class="docs-section" id="security">
+      <div class="docs-eyebrow">15 · SECURITY</div><h2>Security, Firmware and Distribution Boundaries</h2>
+      <div class="docs-grid two">
+        <article class="docs-panel"><span class="panel-tag">PUBLIC SOURCE</span><h3>No protected signing material</h3><p>Protected Sony signing keys and equivalent private material are not embedded in the public repository.</p></article>
+        <article class="docs-panel"><span class="panel-tag">FIRMWARE</span><h3>Developer supplied</h3><p>PS3 firmware is treated as developer-provided input to the runtime/build environment and is not presented as a publicly distributed project asset. NotYVFirm is a separate native firmware domain.</p></article>
+      </div>
+      <div class="docs-callout"><b>Compatibility boundary</b><span>Windows executable compatibility is not allowed to redefine the native kernel architecture. It is a separate compatibility concern with its own milestone boundary and is currently excluded from the roadmap.</span></div>
+    </section>
+
+    <section class="docs-section" id="dataflow">
+      <div class="docs-eyebrow">16 · VISUALS</div><h2>Complete Data Flow</h2>
+      <p>The system-wide flow connects boot, kernel services, storage, graphics, desktop and the PS3 runtime. Sequence and phase-level diagrams live in the source repository under docs/data flow.md.</p>
+      <div class="diagram-frame"><div class="diagram-title"><span>LIVE MERMAID</span><b>System-wide flow</b></div><pre class="mermaid">flowchart LR
+ FW[UEFI firmware] --&gt; LIM[Limine v12.9.0]
+ LIM --&gt; K[Kernel entry]
+ K --&gt; CPU[CPU + memory]
+ CPU --&gt; PROC[Processes + scheduler]
+ CPU --&gt; VFS[VFS]
+ VFS --&gt; RAMFS[Initramfs /]
+ VFS --&gt; NYFS[NYFS /disk]
+ PROC --&gt; SYSCALL[Syscall ABI]
+ SYSCALL --&gt; VFS
+ SYSCALL --&gt; PROC
+ PROC --&gt; INIT[init.elf + shell]
+ K --&gt; GFX[Graphics API + HAL]
+ GFX --&gt; COMP[Compositor]
+ COMP --&gt; DESKTOP[Desktop + windows + widgets]
+ DESKTOP --&gt; INPUT[PS/2 keyboard + mouse]
+ INPUT --&gt; COMP
+ K --&gt; PS3[PS3 runtime]
+ PS3 --&gt; DEC[PPC decoder]
+ DEC --&gt; PPU[PPU interpreter]
+ DEC --&gt; JIT[Baseline x86-64 JIT]
+ PS3 --&gt; SPU[SPU interpreter]
+ PS3 --&gt; DMA[DMA engine]
+ JIT --&gt; PPU
+ JIT --&gt; EXEC[Executable arena]</pre></div>
+      <div class="diagram-frame"><div class="diagram-title"><span>LIVE MERMAID</span><b>Subsystem data paths</b></div><pre class="mermaid">flowchart TD
+ RTC[RTC / CMOS] --&gt; READ[rtc read]
+ READ --&gt; CLOCK[System clock]
+ CLOCK --&gt; COMP[Compositor]
+ INPUT[USB / Unified Input] --&gt; EVENT[Input events]
+ EVENT --&gt; DESKTOP[Desktop / Explorer]
+ VFS[VFS] --&gt; NYFS[NYFS]
+ NYFS --&gt; FILES[Files]
+ FILES --&gt; EXPLORER[Explorer]
+ SYSCALL[Syscalls] --&gt; VFS
+ SYSCALL --&gt; MEMORY[Memory manager]
+ SYSCALL --&gt; GRAPHICS[Graphics HAL]</pre></div>
+      <div class="docs-grid two">
+        <article class="docs-panel"><span class="panel-tag">CLOCK</span><h3>RTC → compositor</h3><p>RTC/CMOS data becomes system clock state and is exposed to the compositor for desktop time presentation.</p></article>
+        <article class="docs-panel"><span class="panel-tag">INPUT</span><h3>USB → unified input</h3><p>Input devices feed the unified input path before desktop components consume input events. PS/2 and USB HID share the same facade.</p></article>
+      </div>
+    </section>
+
+    <section class="docs-section docs-final">
+      <div class="docs-eyebrow">END OF CODEX</div><h2>Build the system, not just the interface.</h2>
+      <p>This page is static HTML. Canonical technical sources live in the main NotYVOS repository under docs/.</p>
+      <a class="docs-primary" href="#overview">Return to beginning</a>
+    </section>
+  </div>
+</section>
+</main>
+<script type="module" src="/assets/js/docs.js"></script>
+
+<footer class="site-footer"><div class="section-shell footer-grid"><div><a class="brand footer-brand" href="/"><img src="https://raw.githubusercontent.com/NotY215/NotYVOS/main/Assets/Neon%20Blue%20NotYVOS%20Tech%20Logo.png" alt=""><span>NotYVOS</span></a><p>A native x86-64 operating system project by NotY215.</p></div><div><h4>Explore</h4><a href="/Documentation/">Documentation</a><a href="/Architecture/">Architecture</a><a href="/Roadmap/">Roadmap</a><a href="/Updates/">Updates</a></div><div><h4>Project</h4><a href="/About/">About</a><a href="/Developer/">Developer</a><a href="/FAQ/">FAQ</a></div><div><h4>Source</h4><a href="https://github.com/NotY215/NotYVOS" target="_blank" rel="noopener">GitHub repository</a><a href="https://github.com/NotY215" target="_blank" rel="noopener">NotY215 on GitHub</a></div></div><div class="section-shell footer-bottom"><span>© 2026 NotY215. NotYVOS is a development-stage project.</span><span>HTML · CSS · JS · TypeScript</span></div></footer></body></html>
