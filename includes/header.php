@@ -1,5 +1,5 @@
 <?php
-$nav=['home'=>['Home','/'],'about'=>['About','/About/'],'architecture'=>['Architecture','/Architecture/'],'docs'=>['Docs','/Docs/'],'roadmap'=>['Roadmap','/Roadmap/'],'updates'=>['Updates','/Updates/'],'faq'=>['FAQ','/FAQ/'],'developer'=>['Developer','/Developer/']];
+$nav=['home'=>['Home','/'],'about'=>['About','/About/'],'architecture'=>['Architecture','/Architecture/'],'docs'=>['Documentation','/Documentation/'],'roadmap'=>['Roadmap','/Roadmap/'],'updates'=>['Updates','/Updates/'],'faq'=>['FAQ','/FAQ/'],'developer'=>['Developer','/Developer/']];
 ?>
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
