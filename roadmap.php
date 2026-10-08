@@ -9,7 +9,7 @@ require __DIR__ . '/includes/header.php';
 <section class="page-hero section-shell">
   <span class="eyebrow">ROADMAP</span>
   <h1>Delivered, active and queued.</h1>
-  <p>The roadmap below mirrors the canonical project roadmap. It separates completed work from future milestones and explicit exclusions.</p>
+  <p>Phases 01–16 are complete. Phase 17 is currently in progress. Later phases remain queued.</p>
 </section>
 
 <section class="section-shell section">
@@ -21,20 +21,26 @@ require __DIR__ . '/includes/header.php';
   <div class="timeline">
 <?php
 $items = [
-  ['0–10F', 'Foundation through desktop polish', 'done'],
-  ['11', 'TrueType Font Subsystem', 'done'],
-  ['12', 'Explorer 10G + Real File Operations', 'done'],
-  ['13A', 'Desktop Clipboard', 'done'],
-  ['15A–15E', 'USB Stack + Unified Input', 'done'],
-  ['Fix', 'User-fault isolation + build/test hardening', 'done'],
-  ['Init', 'Init program debugging', 'working'],
-  ['14 / 7D', 'GameRunner Runtime Integration', 'soon'],
-  ['13B–13C', 'Dialogs and Properties', 'soon'],
-  ['16', 'Production Network Stack', 'soon'],
-  ['17', 'Wi-Fi Driver + Management UI', 'soon'],
-  ['18', 'Bluetooth Framework', 'soon'],
+  ['01', 'Kernel Foundation', 'done'],
+  ['02', 'Memory Management', 'done'],
+  ['03', 'Scheduler', 'done'],
+  ['04', 'Storage Foundation', 'done'],
+  ['05', 'Graphics Foundation', 'done'],
+  ['06', 'Desktop Foundation', 'done'],
+  ['07', 'PS3 Runtime Foundation', 'done'],
+  ['08', 'GameRunner Foundation', 'done'],
+  ['09', 'Image Decoders', 'done'],
+  ['10', 'SVG + Icons', 'done'],
+  ['11', 'TrueType', 'done'],
+  ['12', 'Explorer 10G', 'done'],
+  ['13', 'Clipboard + Dialogs', 'done'],
+  ['14', 'GameRunner Integration', 'done'],
+  ['15', 'USB + Unified Input', 'done'],
+  ['16', 'Networking', 'done'],
+  ['17', 'Wi-Fi', 'working'],
+  ['18', 'Bluetooth', 'soon'],
   ['19', 'NYFS Maturity', 'soon'],
-  ['20', 'Firewall + Network Security', 'soon'],
+  ['20', 'Firewall', 'soon'],
   ['21', 'NotYVFirm', 'soon'],
 ];
 foreach ($items as [$phase, $name, $status]):
@@ -54,8 +60,8 @@ foreach ($items as [$phase, $name, $status]):
 <section class="section-shell section tinted">
   <div class="section-heading">
     <span class="eyebrow">CURRENT MILESTONE</span>
-    <h2>Init program debugging</h2>
-    <p>The next active engineering target is <code>user/init/main.c</code>. Resolve the current init-program build/runtime issue before advancing to Phase 14 / 7D unless explicitly requested otherwise.</p>
+    <h2>Phase 17: Wi-Fi</h2>
+    <p>Phases 01–16 are complete. Phase 17 is the current active engineering phase, focused on the native Wi-Fi driver, wireless management and desktop integration.</p>
   </div>
 </section>
 
