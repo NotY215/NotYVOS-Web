@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+title: "NotYVOS Web"
+message: "If you use the NotYVOS website source, please cite this repository."
+type: software
+authors:
+  - given-names: Shreyas
+    family-names: Mishra
+    affiliation: NotY215
+repository-code: "https://github.com/NotY215/NotYVOS-Web"
+url: "http://notyvos.gt.tc/"
+version: "current"
