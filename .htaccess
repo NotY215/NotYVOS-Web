@@ -1,33 +1,35 @@
-DirectoryIndex index.php
-ErrorDocument 404 /404.php
+DirectoryIndex index.html
+ErrorDocument 404 /404.html
 Options -Indexes
 ServerSignature Off
+AddDefaultCharset UTF-8
 
-# Never expose server-side includes or project metadata.
-<FilesMatch "^(\\.env|\\.git|composer\\.(json|lock)|package(-lock)?\\.json|tsconfig\\.json|phpunit\\.xml|README.*)$">
+<FilesMatch "^(\.env|\.git|composer\.(json|lock)|package(-lock)?\.json|tsconfig\.json|phpunit\.xml|README.*)$">
 Require all denied
 </FilesMatch>
 
-AddDefaultCharset UTF-8
-
 RewriteEngine On
 
-# Clean application routes. Both /Page and /Page/ resolve.
-RewriteRule ^$ index.php [L]
-RewriteRule ^About/?$ about.php [L]
-RewriteRule ^Architecture/?$ architecture.php [L]
-RewriteRule ^Documentation/?$ documentation.php [L]
+# Static HTML routes
+RewriteRule ^$ index.html [L]
+RewriteRule ^About/?$ about.html [L]
+RewriteRule ^Architecture/?$ architecture.html [L]
+RewriteRule ^Documentation/?$ documentation.html [L]
 RewriteRule ^Docs/?$ /Documentation/ [R=301,L]
-RewriteRule ^Roadmap/?$ roadmap.php [L]
-RewriteRule ^Updates/?$ updates.php [L]
-RewriteRule ^FAQ/?$ faq.php [L]
-RewriteRule ^Developer/?$ developer.php [L]
+RewriteRule ^Roadmap/?$ roadmap.html [L]
+RewriteRule ^Updates/?$ updates.html [L]
+RewriteRule ^FAQ/?$ faq.html [L]
+RewriteRule ^Developer/?$ developer.html [L]
 
-# Redirect old direct PHP URLs to the public clean URLs.
+# Legacy PHP URLs
+RewriteCond %{THE_REQUEST} \s/+index\.php(?:[?\s]) [NC]
+RewriteRule ^index\.php$ / [R=301,L]
 RewriteCond %{THE_REQUEST} \s/+about\.php(?:[?\s]) [NC]
 RewriteRule ^about\.php$ /About/ [R=301,L]
 RewriteCond %{THE_REQUEST} \s/+architecture\.php(?:[?\s]) [NC]
 RewriteRule ^architecture\.php$ /Architecture/ [R=301,L]
+RewriteCond %{THE_REQUEST} \s/+documentation\.php(?:[?\s]) [NC]
+RewriteRule ^documentation\.php$ /Documentation/ [R=301,L]
 RewriteCond %{THE_REQUEST} \s/+docs\.php(?:[?\s]) [NC]
 RewriteRule ^docs\.php$ /Documentation/ [R=301,L]
 RewriteCond %{THE_REQUEST} \s/+roadmap\.php(?:[?\s]) [NC]
@@ -39,14 +41,14 @@ RewriteRule ^faq\.php$ /FAQ/ [R=301,L]
 RewriteCond %{THE_REQUEST} \s/+developer\.php(?:[?\s]) [NC]
 RewriteRule ^developer\.php$ /Developer/ [R=301,L]
 
+<FilesMatch "\.(md|json|ts)$">
+Require all denied
+</FilesMatch>
+
 <IfModule mod_headers.c>
-Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; img-src 'self' data: https://raw.githubusercontent.com; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'none'; font-src 'self' data:;"
+Header always set Cache-Control "public, max-age=300"
 Header always set X-Content-Type-Options "nosniff"
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
 Header always set X-Frame-Options "SAMEORIGIN"
 Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
 </IfModule>
-
-<FilesMatch "\.(md|json|ts)$">
-Require all denied
-</FilesMatch>
