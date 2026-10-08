@@ -1,0 +1,142 @@
+{
+  "_readme": {
+    "title": "NotYVOS Roadmap",
+    "howto": "Update phase status and scope here. The roadmap page and host deployment read this file as the canonical roadmap data.",
+    "phase_status": {
+      "completed": "Completed",
+      "working": "Currently in development",
+      "soon": "Planned"
+    }
+  },
+  "repo": "NotY215/NotYVOS-Web",
+  "updated": "2026-10-08",
+  "currentPhase": 17,
+  "phases": [
+    {
+      "id": "01",
+      "name": "Kernel Foundation",
+      "description": "Native x86-64 kernel foundation, boot path, interrupts, CPU/SMP and core kernel services.",
+      "status": "completed"
+    },
+    {
+      "id": "02",
+      "name": "Memory Management",
+      "description": "PMM, VMM, paging, higher-half mappings and kernel heap foundation.",
+      "status": "completed"
+    },
+    {
+      "id": "03",
+      "name": "Scheduler",
+      "description": "Task scheduling, execution infrastructure and process isolation foundation.",
+      "status": "completed"
+    },
+    {
+      "id": "04",
+      "name": "Storage Foundation",
+      "description": "VFS, initramfs and the initial NYFS storage path.",
+      "status": "completed"
+    },
+    {
+      "id": "05",
+      "name": "Graphics Foundation",
+      "description": "Graphics HAL, framebuffer rendering and compositor foundation.",
+      "status": "completed"
+    },
+    {
+      "id": "06",
+      "name": "Desktop Foundation",
+      "description": "Desktop shell, windows, Explorer, Settings, dialogs and core interaction.",
+      "status": "completed"
+    },
+    {
+      "id": "07",
+      "name": "PS3 Runtime Foundation",
+      "description": "PS3 ABI, PPU/SPU execution, DMA, JIT and RSX runtime foundations.",
+      "status": "completed"
+    },
+    {
+      "id": "08",
+      "name": "GameRunner Foundation",
+      "description": "GameRunner integration with the PS3 runtime and native graphics services.",
+      "status": "completed"
+    },
+    {
+      "id": "09",
+      "name": "Image Decoders",
+      "description": "BMP, PNG, GIF, ICO and JPEG support in the native image pipeline.",
+      "status": "completed"
+    },
+    {
+      "id": "10",
+      "name": "SVG + Icons",
+      "description": "SVG rendering and native desktop icon infrastructure.",
+      "status": "completed"
+    },
+    {
+      "id": "11",
+      "name": "TrueType",
+      "description": "Native TrueType rendering and the Inter desktop font path.",
+      "status": "completed"
+    },
+    {
+      "id": "12",
+      "name": "Explorer 10G",
+      "description": "Explorer grid/details view, breadcrumbs and real VFS file operations.",
+      "status": "completed"
+    },
+    {
+      "id": "13",
+      "name": "Clipboard + Dialogs",
+      "description": "Global clipboard routing, text/file transfers and desktop dialogs.",
+      "status": "completed"
+    },
+    {
+      "id": "14",
+      "name": "GameRunner Integration",
+      "description": "Game session lifecycle, configuration persistence and NYFS save-data integration.",
+      "status": "completed"
+    },
+    {
+      "id": "15",
+      "name": "USB + Unified Input",
+      "description": "xHCI, USB enumeration, HID keyboard/mouse, mass storage and unified input.",
+      "status": "completed"
+    },
+    {
+      "id": "16",
+      "name": "Networking",
+      "description": "Ethernet, ARP, IPv4, ICMP, UDP, TCP, DHCP, DNS and socket foundations.",
+      "status": "completed"
+    },
+    {
+      "id": "17",
+      "name": "Wi-Fi",
+      "description": "Native wireless networking, device management and desktop integration.",
+      "status": "working"
+    },
+    {
+      "id": "18",
+      "name": "Bluetooth",
+      "description": "Bluetooth transport and supported input-device integration.",
+      "status": "soon"
+    },
+    {
+      "id": "19",
+      "name": "NYFS Maturity",
+      "description": "Journaling, crash recovery, scaling and filesystem integrity improvements.",
+      "status": "soon"
+    },
+    {
+      "id": "20",
+      "name": "Firewall",
+      "description": "Native firewall policy, filtering and Settings integration.",
+      "status": "soon"
+    },
+    {
+      "id": "21",
+      "name": "NotYFirm",
+      "description": "Native firmware domain and the next-stage boot/runtime boundary.",
+      "status": "soon"
+    }
+  ]
+}
