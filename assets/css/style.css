@@ -74,3 +74,85 @@ main{animation:notyvosPageIn .55s ease both}
  .roadmap-timeline{gap:10px!important}
  .roadmap-phase{min-height:92px}
 }
+
+
+/* Spatial glass refresh: layered depth, liquid highlights, and accessible motion. */
+:root{
+  --glass-base:rgba(10,22,40,.58);
+  --glass-raised:rgba(18,37,62,.66);
+  --glass-edge:rgba(185,226,255,.2);
+  --glass-edge-hot:rgba(91,211,255,.42);
+  --glass-blur:24px;
+  --glass-shine:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.025) 42%,rgba(67,190,255,.06) 72%,rgba(255,255,255,.09));
+  --spatial-shadow:0 24px 70px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.11);
+}
+html{scroll-behavior:smooth;scroll-padding-top:100px}
+body{
+  background:
+    radial-gradient(ellipse at 12% 8%,rgba(24,119,255,.14),transparent 34rem),
+    radial-gradient(ellipse at 88% 24%,rgba(0,214,255,.09),transparent 32rem),
+    radial-gradient(ellipse at 52% 100%,rgba(88,71,255,.1),transparent 42rem),
+    var(--bg);
+  background-attachment:fixed;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.22;
+  background-image:linear-gradient(rgba(145,200,255,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(145,200,255,.045) 1px,transparent 1px);
+  background-size:48px 48px;
+  mask-image:linear-gradient(to bottom,black,transparent 82%);
+}
+header,.site-header,.navbar,.topbar,.nav-wrap{
+  -webkit-backdrop-filter:blur(22px) saturate(165%);
+  backdrop-filter:blur(22px) saturate(165%);
+}
+:is(.hero,.hero-panel,.feature-card,.card,.panel,.glass-card,.stat-card,.update-card,.roadmap-card,.roadmap-item,.docs-card,.architecture-card,.faq-item,.developer-card,.content-card,.section-card){
+  position:relative;
+  isolation:isolate;
+  background-image:var(--glass-shine);
+  border-color:var(--glass-edge);
+  box-shadow:var(--spatial-shadow);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(155%);
+  backdrop-filter:blur(var(--glass-blur)) saturate(155%);
+  transition:transform .28s cubic-bezier(.2,.8,.2,1),border-color .28s ease,box-shadow .28s ease,background-color .28s ease;
+}
+:is(.hero,.hero-panel,.feature-card,.card,.panel,.glass-card,.stat-card,.update-card,.roadmap-card,.roadmap-item,.docs-card,.architecture-card,.faq-item,.developer-card,.content-card,.section-card):before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;
+  background:radial-gradient(500px circle at var(--pointer-x,50%) var(--pointer-y,0%),rgba(95,207,255,.1),transparent 44%);
+  opacity:.8;
+}
+:is(.feature-card,.card,.glass-card,.stat-card,.update-card,.roadmap-card,.roadmap-item,.docs-card,.architecture-card,.faq-item,.developer-card,.content-card,.section-card):hover{
+  transform:translateY(-4px);
+  border-color:var(--glass-edge-hot);
+  box-shadow:0 30px 85px rgba(0,0,0,.4),0 0 34px rgba(43,173,255,.08),inset 0 1px 0 rgba(255,255,255,.16);
+}
+:is(button,.btn,a.button,.cta,.nav-link,.chip){
+  transition:transform .22s ease,box-shadow .22s ease,border-color .22s ease,background-color .22s ease,filter .22s ease;
+}
+:is(button,.btn,a.button,.cta):hover{filter:brightness(1.08);transform:translateY(-2px)}
+:is(button,.btn,a.button,.cta):active{transform:translateY(0) scale(.985)}
+:is(button,.btn,a.button,.cta):focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+  outline:2px solid var(--cyan,#39c7ff);outline-offset:4px;
+}
+:is(input,textarea,select){
+  background:rgba(3,12,25,.64);
+  border-color:rgba(150,204,255,.2);
+  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+}
+img{max-width:100%}
+::selection{background:rgba(57,199,255,.28);color:#fff}
+@supports (background:color-mix(in srgb,white,transparent)){
+  :is(.feature-card,.card,.glass-card,.stat-card,.update-card,.roadmap-card,.roadmap-item,.docs-card,.architecture-card,.faq-item,.developer-card,.content-card,.section-card):hover{
+    background-color:color-mix(in srgb,var(--glass-raised) 88%,rgba(55,190,255,.12));
+  }
+}
+@media (max-width:760px){
+  :root{--glass-blur:16px}
+  body{background-attachment:scroll}
+  body:before{background-size:32px 32px;opacity:.13}
+  :is(.feature-card,.card,.glass-card,.stat-card,.update-card,.roadmap-card,.roadmap-item,.docs-card,.architecture-card,.faq-item,.developer-card,.content-card,.section-card):hover{transform:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
