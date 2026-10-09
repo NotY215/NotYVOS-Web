@@ -20,6 +20,7 @@ RewriteRule ^Roadmap/?$ roadmap.html [L]
 RewriteRule ^Updates/?$ updates.html [L]
 RewriteRule ^FAQ/?$ faq.html [L]
 RewriteRule ^Developer/?$ developer.html [L]
+RewriteRule ^PPSX3/?$ ppsx3.html [L]
 
 # Legacy PHP URLs
 RewriteCond %{THE_REQUEST} \s/+index\.php(?:[?\s]) [NC]
