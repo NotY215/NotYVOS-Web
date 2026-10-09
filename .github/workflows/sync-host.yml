@@ -42,6 +42,10 @@ jobs:
           cp source/faq.html host/NotYvos/FAQ.html
           cp source/developer.html host/NotYvos/Developer.html
           cp source/ppsx3.html host/NotYvos/ppsx3.html
+          for page in host/NotYvos/index.html host/NotYvos/About.html host/NotYvos/Architecture.html host/NotYvos/Documentation.html host/NotYvos/Roadmap.html host/NotYvos/Updates.html host/NotYvos/FAQ.html host/NotYvos/Developer.html host/NotYvos/ppsx3.html; do
+            sed -i 's#href="/assets/css/#href="https://cdn.jsdelivr.net/gh/NotY215/NotYVOS-Web@main/assets/css/#g' "$page"
+            sed -i 's#src="/assets/js/#src="https://cdn.jsdelivr.net/gh/NotY215/NotYVOS-Web@main/assets/js/#g' "$page"
+          done
 
       - name: Commit and push changes
         working-directory: host
