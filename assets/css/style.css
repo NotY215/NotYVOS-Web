@@ -156,3 +156,15 @@ img{max-width:100%}
   html{scroll-behavior:auto}
   *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
 }
+
+
+/* Page-specific surfaces use the same spatial glass language. */
+:is(.logo-card,.terminal-card,.stat,.roadmap-current,.roadmap-phase,.docs-panel,.docs-hero-card,.docs-index,.docs-section,.docs-visual,.docs-code,.diagram-frame,.roadmap-legend,.roadmap-source){
+  background-image:var(--glass-shine);
+  border-color:var(--glass-edge);
+  box-shadow:var(--spatial-shadow);
+  -webkit-backdrop-filter:blur(var(--glass-blur)) saturate(155%);
+  backdrop-filter:blur(var(--glass-blur)) saturate(155%);
+}
+:is(.roadmap-phase-completed,.roadmap-phase-working,.roadmap-phase-soon){transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.roadmap-phase:hover{transform:translateY(-3px);border-color:var(--glass-edge-hot);box-shadow:0 24px 65px rgba(0,0,0,.35),0 0 28px rgba(57,199,255,.07)}
