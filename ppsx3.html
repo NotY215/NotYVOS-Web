@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#06101c">
-<meta name="description" content="PPSX33 is an experimental PlayStation 3 static recompiler for decrypted ELF64 big-endian PowerPC64 input.">
+<meta name="description" content="PPSX33 is an experimental PlayStation 3 static recompiler for decrypted ELF64 big-endian PowerPC64 input, with PPU lifting, a CLI, WinForms GUI, SPU interpreter and an early RSX path.">
 <meta name="robots" content="index,follow">
-<title>PPSX3 | PlayStation 3 Static Recompiler</title>
-<link rel="canonical" href="http://notyvos.gt.tc/PPSX3/">
+<title>PPSX33 | PlayStation 3 Static Recompiler</title>
+<link rel="canonical" href="https://notyvos.gt.tc/PPSX3/">
 <link rel="stylesheet" href="/assets/css/style.css">
 <script defer src="/assets/js/app.js"></script>
 <script defer src="/assets/js/security.js"></script>
@@ -18,74 +18,48 @@
 <a class="brand" href="/"><img src="https://raw.githubusercontent.com/NotY215/NotYVOS/main/Assets/Neon%20Blue%20NotYVOS%20Tech%20Logo.png" alt=""><span>NotYVOS</span></a>
 <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
 <nav class="main-nav" id="main-nav">
-<a href="/">Home</a><a href="/About/">About</a><a href="/Architecture/">Architecture</a><a href="/Documentation/">Documentation</a><a href="/Roadmap/">Roadmap</a><a href="/Updates/">Updates</a><a href="/FAQ/">FAQ</a><a href="/Developer/">Developer</a><a class="active" href="/PPSX3/">PPSX3</a><a class="github-link" href="https://github.com/NotY215/NotYVOS" target="_blank" rel="noopener">GitHub ↗</a>
+<a href="/">Home</a><a href="/About/">About</a><a href="/Architecture/">Architecture</a><a href="/Documentation/">Documentation</a><a href="/Roadmap/">Roadmap</a><a href="/Updates/">Updates</a><a href="/FAQ/">FAQ</a><a href="/Developer/">Developer</a><a class="active" href="/PPSX3/">PPSX33</a><a class="github-link" href="https://github.com/NotY215/NotYVOS" target="_blank" rel="noopener">NotYVOS GitHub ↗</a>
 </nav></div></header>
 <main>
 <section class="page-hero section-shell">
 <span class="eyebrow">NOTY215 · SYSTEMS TOOLING</span>
-<h1>PPSX3</h1>
-<p>An experimental PlayStation 3 static recompiler that translates decrypted ELF64 big-endian PowerPC64 input into host-side C/C++ and build artifacts. It is a recompiler project, not a complete PS3 emulator.</p>
-<div class="hero-actions"><a class="button primary" href="https://github.com/NotY215/PPSX33" target="_blank" rel="noopener">Explore repository ↗</a><a class="button secondary" href="https://github.com/NotY215/PPSX33/blob/main/ROADMAP.md" target="_blank" rel="noopener">View roadmap</a></div>
+<h1>PPSX33</h1>
+<p>An experimental PlayStation 3 static recompiler for decrypted ELF64 big-endian PowerPC64 input. It includes a C/C++ core, CLI, C# WinForms GUI, guest runtime support, PPU lifting, SPU interpreter work and an early RSX compatibility path. PPSX33 is not a complete PS3 emulator.</p>
+<div class="hero-actions"><a class="button primary" href="https://github.com/NotY215/PPSX33" target="_blank" rel="noopener">Explore repository ↗</a><a class="button secondary" href="https://github.com/NotY215/PPSX33/blob/main/ROADMAP.md" target="_blank" rel="noopener">View roadmap</a><a class="button secondary" href="https://github.com/NotY215/PPSX33/blob/main/docs/games/README.md" target="_blank" rel="noopener">Game lift records</a></div>
 </section>
 <section class="section-shell section tinted">
+<div class="section-heading"><span class="eyebrow">RECORDED STATIC LIFTS</span><h2>Large translation snapshots, with clear caveats</h2><p>These are static output counts from specific lift runs. They do not prove correct semantics, successful boot, rendering, or playability.</p></div>
 <div class="stats-grid">
-<div class="stat"><strong>1,285,560</strong><span>GOW3 instruction instances in the recorded lift snapshot</span></div>
-<div class="stat"><strong>157</strong><span>Chunks in that snapshot</span></div>
-<div class="stat"><strong>0</strong><span>Reported unimplemented instances in that report</span></div>
-<div class="stat"><strong>Experimental</strong><span>Runtime and game compatibility remain unverified</span></div>
+<div class="stat"><strong>1,285,560</strong><span>GOW3 translated instruction instances</span></div>
+<div class="stat"><strong>157</strong><span>GOW3 chunks in the recorded snapshot</span></div>
+<div class="stat"><strong>3,485,016</strong><span>Uncharted 2 translated instruction instances</span></div>
+<div class="stat"><strong>426</strong><span>Uncharted 2 chunks in the recorded snapshot</span></div>
 </div>
-<p class="prose" style="max-width:900px;margin:22px auto 0">These figures describe one static-lift report only. They do not establish correct instruction semantics, successful boot, rendering or playability.</p>
+<p class="muted">Both snapshots report zero unimplemented instruction instances. Approximate translations and no-op fallbacks can still be emitted, so this is not equivalent to semantic coverage.</p>
 </section>
 <section class="section-shell section">
-<div class="section-heading"><span class="eyebrow">PROJECT SURFACE</span><h2>What PPSX33 contains</h2><p>The repository combines ELF analysis, PPU lifting, runtime scaffolding and developer tooling.</p></div>
-<div class="card-grid three">
-<article class="feature-card"><span class="icon">ELF</span><h3>ELF64 analysis</h3><p>Loads big-endian PowerPC64 ELF segments and analyzes entry points, symbols, function descriptors and embedded SPU images.</p></article>
-<article class="feature-card"><span class="icon">PPU</span><h3>Static PPU lifting</h3><p>Translates PPU instruction instances to generated host-side code. Some instruction behavior remains approximate and requires semantic tests.</p></article>
-<article class="feature-card"><span class="icon">CLI</span><h3>GUI and CLI workflow</h3><p>A C/C++ core, command-line frontend and C# WinForms GUI support project setup, lifting, host builds and report inspection.</p></article>
-<article class="feature-card"><span class="icon">RT</span><h3>Guest runtime</h3><p>Runtime helpers cover guest memory and CPU state. SPU APIs and RSX surfaces remain stubs rather than full execution or rendering implementations.</p></article>
-<article class="feature-card"><span class="icon">TEST</span><h3>Synthetic smoke test</h3><p>A generated PPC64 ELF exercises the pipeline and expects the test output “OK”. It validates the workflow, not commercial-game compatibility.</p></article>
-<article class="feature-card"><span class="icon">U2</span><h3>Uncharted 2 analysis</h3><p>Planned as a static-lift and opcode-discovery target to identify missing or approximate PPU operations and add regression tests.</p></article>
+<div class="section-heading"><span class="eyebrow">IMPLEMENTATION STATUS</span><h2>What is in the codebase</h2></div>
+<div class="feature-grid">
+<article class="feature-card reveal"><h3>ELF64 analysis</h3><p>Loads big-endian PowerPC64 ELF segments, handles entry/function descriptors, discovers symbols and OPD entries when available, detects likely PRX/NID strings, and extracts embedded SPU images.</p></article>
+<article class="feature-card reveal"><h3>PPU static lifting</h3><p>Generates host-side C++ in chunks. Integer, branch, memory, floating-point and VMX paths have broad but uneven coverage. Some operations remain approximate or use fallback behavior.</p></article>
+<article class="feature-card reveal"><h3>GUI and CLI workflow</h3><p>Project creation, ELF loading, lifting, build invocation and report viewing are available. Windows output can include <code>game.exe</code>, <code>ps3rt.dll</code> and <code>guest_image.bin</code>.</p></article>
+<article class="feature-card reveal"><h3>SPU interpreter</h3><p>Context and local-store support plus major instruction families, mailboxes and MFC/DMA plumbing exist. Full vector and floating-point semantics, complete channel coverage and SPURS remain partial.</p></article>
+<article class="feature-card reveal"><h3>RSX path</h3><p>FIFO method decoding and a flip/control path are present, with early raster and host presentation work. Complete RSX behavior and production host GPU backends are not established.</p></article>
+<article class="feature-card reveal"><h3>Runtime compatibility</h3><p>Guest memory, PPU state, syscall helpers and selected LV2/PRX stubs are under development. Static translation is ahead of runtime compatibility and semantic validation.</p></article>
 </div>
 </section>
 <section class="section-shell section tinted">
+<div class="section-heading"><span class="eyebrow">CURRENT PRIORITIES</span><h2>Runtime correctness before claims of compatibility</h2></div>
 <div class="prose-grid">
-<article class="prose">
-<h2>Development priorities</h2>
-<ul>
-<li>Improve PPU semantic correctness and runtime stability using focused synthetic tests and the God of War III analysis target.</li>
-<li>Use Uncharted 2: Among Thieves to discover additional opcode gaps and prioritize regression-backed implementation work.</li>
-<li>Develop SPU execution, RSX/GCM rendering and system-library compatibility as separate workstreams.</li>
-</ul>
-<h2>Build environment</h2>
-<p>Windows development uses CMake, Ninja, a C++17-capable compiler and the .NET 8 SDK for the GUI. Visual Studio 2022 with the C++ workload and Windows SDK is a documented setup.</p>
-<pre><code>scripts\build_all.bat
-scripts\run_smoke_test.bat</code></pre>
-<p>Build output is placed in <code>build\dist\</code>. See the repository README for Linux/macOS-compatible smoke-test commands and the complete workflow.</p>
-</article>
-<aside class="side-card">
-<h3>Project links</h3>
-<p>Use the repository documentation as the source of truth for current implementation status, build instructions and measured coverage.</p>
-<p><a class="text-link" href="https://github.com/NotY215/PPSX33" target="_blank" rel="noopener">PPSX33 repository ↗</a></p>
-<p><a class="text-link" href="https://github.com/NotY215/PPSX33/blob/main/README.md" target="_blank" rel="noopener">README and build guide ↗</a></p>
-<p><a class="text-link" href="https://github.com/NotY215/PPSX33/blob/main/docs/PPU_COVERAGE.md" target="_blank" rel="noopener">PPU coverage methodology ↗</a></p>
-<p><a class="text-link" href="https://github.com/NotY215/PPSX33/blob/main/docs/games/README.md" target="_blank" rel="noopener">Game coverage records ↗</a></p>
-<p><a class="text-link" href="https://github.com/NotY215/PPSX33/blob/main/ROADMAP.md" target="_blank" rel="noopener">Full roadmap ↗</a></p>
-</aside>
+<article class="prose"><h3>GOW3 is the primary runtime target</h3><p>The recorded GOW3 analysis reaches 100% reported static lift coverage, but runtime startup still encounters unresolved external or null call targets, including the observed <code>0x39800000</code> path. Current priorities are PRX/function-pointer resolution, startup HLE coverage and semantic hardening.</p><p>Uncharted 2 is a secondary static-lift target for long-tail PPU encodings and its seven extracted SPU images. Its documented workflow is lift and inspect only; do not treat it as a validated native build target.</p></article>
+<article class="prose"><h3>Validate each layer independently</h3><p>The synthetic smoke test checks the lift/build pipeline with a generated PPC64 ELF. It does not establish commercial-game compatibility. SPU execution, RSX rendering, library behavior and guest operating-system expectations require separate tests.</p><p>Use the repository's lift reports and game records for exact per-run details. Commercial ELF files, EBOOT files, keys and proprietary assets are not included in the project repository.</p></article>
 </div>
+<div class="hero-actions"><a class="button primary" href="https://github.com/NotY215/PPSX33/blob/main/README.md" target="_blank" rel="noopener">Build and usage guide ↗</a><a class="button secondary" href="https://github.com/NotY215/PPSX33/blob/main/docs/games/GOW3/GOW3.md" target="_blank" rel="noopener">GOW3 runtime record ↗</a><a class="button secondary" href="https://github.com/NotY215/PPSX33/blob/main/docs/games/Uncharted2/UNCHARTED2.md" target="_blank" rel="noopener">Uncharted 2 record ↗</a></div>
 </section>
 <section class="section-shell section">
-<div class="section-heading"><span class="eyebrow">HONEST STATUS</span><h2>Translation coverage is not compatibility</h2><p>A translated instruction count only says that the lifter emitted output for the analyzed instances. It does not prove the generated behavior matches PowerPC semantics or that a full game works.</p></div>
-<div class="card-grid three">
-<article class="feature-card"><h3>Semantic correctness</h3><p>Approximate operations, incomplete architectural state and no-op fallbacks may still appear as translated instructions.</p></article>
-<article class="feature-card"><h3>Runtime correctness</h3><p>Guest control flow, system calls, imports, memory behavior and runtime services need separate verification.</p></article>
-<article class="feature-card"><h3>Game compatibility</h3><p>Full boot, gameplay and rendering are not established by the current static-lift snapshot.</p></article>
-</div>
+<div class="section-heading"><span class="eyebrow">BUILD ENVIRONMENT</span><h2>Windows development</h2><p>Current documented setup uses CMake, Ninja, a C++17-capable compiler and .NET 8 for the GUI. Visual Studio 2022 with Desktop development with C++ and a Windows SDK is a supported setup.</p></div>
+<div class="prose"><p>From a configured developer command prompt, run <code>scripts\\build_all.bat</code>. Build output is placed under <code>build\\dist\\</code>. The GUI target may be skipped when the .NET SDK is unavailable.</p><p>For the synthetic pipeline check, use <code>scripts\\run_smoke_test.bat</code> on Windows or <code>bash scripts/run_smoke_test.sh</code> on supported Unix-like environments.</p></div>
 </section>
 </main>
-<footer class="site-footer"><div class="section-shell footer-grid">
-<div><a class="brand footer-brand" href="/"><img src="https://raw.githubusercontent.com/NotY215/NotYVOS/main/Assets/Neon%20Blue%20NotYVOS%20Tech%20Logo.png" alt=""><span>NotYVOS</span></a><p>A native x86-64 OS and systems-tooling projects by NotY215.</p></div>
-<div><h4>Explore</h4><a href="/Documentation/">Documentation</a><a href="/Architecture/">Architecture</a><a href="/Roadmap/">Roadmap</a></div>
-<div><h4>Projects</h4><a href="/PPSX3/">PPSX3</a><a href="https://github.com/NotY215/PPSX33" target="_blank" rel="noopener">PPSX33 on GitHub ↗</a></div>
-<div><h4>Source</h4><a href="https://github.com/NotY215" target="_blank" rel="noopener">NotY215 on GitHub ↗</a></div>
-</div><div class="section-shell footer-bottom"><span>© 2026 NotY215.</span><span>Experimental software · Status based on repository documentation</span></div></footer>
+<footer class="site-footer"><div class="section-shell footer-inner"><span>NotYVOS · PPSX33 project profile</span><div><a href="/">Home</a><a href="/Roadmap/">NotYVOS Roadmap</a><a href="https://github.com/NotY215/PPSX33" target="_blank" rel="noopener">PPSX33 source ↗</a></div></div></footer>
 </body></html>
