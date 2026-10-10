@@ -9,8 +9,8 @@
     }
   },
   "source": "https://github.com/NotY215/NotYVOS/blob/main/docs/roadmap.md",
-  "updated": "2026-10-08",
-  "currentPhase": "17",
+  "updated": "2026-10-10",
+  "currentPhase": "19",
   "phases": [
     {
       "id": "01",
@@ -117,25 +117,25 @@
     {
       "id": "17",
       "name": "Wi-Fi Driver + Management UI",
-      "description": "RTL8188EU driver, firmware loading, WPA2, Network Manager, roaming and power management.",
-      "status": "working"
+      "description": "RTL8188EU firmware integration, Wi-Fi scan/connect flow and management UI delivered; device-specific compatibility continues to evolve.",
+      "status": "completed"
     },
     {
       "id": "18",
       "name": "Bluetooth Framework",
-      "description": "HCI, USB transport, L2CAP/RFCOMM, Bluetooth HID and pairing UI.",
-      "status": "soon"
+      "description": "Bluetooth subsystem foundation, HCI transport, device bookkeeping, Settings UI and taskbar status integration delivered.",
+      "status": "completed"
     },
     {
       "id": "19",
       "name": "NYFS Maturity",
-      "description": "Write-ahead journaling, crash recovery, dynamic directory/inode scaling and CRC32 integrity.",
-      "status": "soon"
+      "description": "NYFS journaling, fsck integrity checking and repair, truncation and permission-change plumbing; recovery and stress validation continue.",
+      "status": "working"
     },
     {
       "id": "20",
       "name": "Firewall + Network Security",
-      "description": "Stateful IP/TCP filtering, per-application rules and Settings integration.",
+      "description": "Firewall and network security, including stateful filtering and per-application rules.",
       "status": "soon"
     },
     {
