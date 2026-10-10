@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     phase.style.removeProperty('transform');
   });
 
-  const current = page.dataset.roadmapCurrent || '17';
+  const current = page.dataset.roadmapCurrent || '19';
   const active = document.querySelector(`.roadmap-phase[data-phase="${CSS.escape(current)}"]`);
   if (active) {
     document.querySelectorAll('.roadmap-phase-active').forEach((item) => {
