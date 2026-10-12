@@ -10,8 +10,12 @@ Require all denied
 
 RewriteEngine On
 
+# Keep the public site on HTTPS. The domain root with and without a typed trailing slash
+# is the same HTTP resource; DirectoryIndex serves index.html for that root.
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://notyvos.gt.tc%{REQUEST_URI} [R=301,L]
+
 # Static HTML routes
-RewriteRule ^$ index.html [L]
 RewriteRule ^About/?$ about.html [L]
 RewriteRule ^Architecture/?$ architecture.html [L]
 RewriteRule ^Documentation/?$ documentation.html [L]
