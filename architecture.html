@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#06101c">
-<meta name="description" content="Explore the current NotYVOS boot, kernel, graphics, storage and PS3 runtime architecture.">
+<meta name="description" content="Explore the current Linux/Buildroot boot and SDL2 XMB session architecture.">
 <meta name="robots" content="index,follow">
 <title>NotYVOS Architecture</title>
 <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/NotY215/NotYVOS/main/Assets/Neon%20Blue%20NotYVOS%20Tech%20Logo.png">
@@ -34,16 +34,16 @@
 <section class="page-hero section-shell">
   <span class="eyebrow">SYSTEM ARCHITECTURE</span>
   <h1>From firmware handoff to desktop.</h1>
-  <p>The architecture is split into clear domains so kernel, storage, graphics and runtime work can evolve without becoming one giant subsystem. Canonical facts live in the main repository docs.</p>
+  <p>The current rewrite uses a small appliance stack: Linux kernel, BusyBox init, a session script, seatd, cage as a kiosk Wayland compositor, and notyvos-xmb built with SDL2. The main repository README and docs/architecture.md are canonical.</p>
 </section>
 
 <section class="section-shell section">
   <div class="architecture-flow reveal">
-    <div>UEFI</div><b>→</b>
-    <div>Limine</div><b>→</b>
-    <div>_start</div><b>→</b>
-    <div>kernel_main</div><b>→</b>
-    <div>scheduler + userland</div>
+    <div>Firmware</div><b>→</b>
+    <div>Linux / Buildroot</div><b>→</b>
+    <div>BusyBox init</div><b>→</b>
+    <div>notyvos-session</div><b>→</b>
+    <div>cage + SDL2 XMB</div>
   </div>
 </section>
 
@@ -51,20 +51,20 @@
   <div class="section-heading">
     <span class="eyebrow">01 / KERNEL</span>
     <h2>CPU, memory and processes</h2>
-    <p>Four-level x86-64 paging, higher-half kernel, per-process PML4, ELF64 loading, fork/wait/exec and uaccess-protected syscalls form the execution foundation.</p>
+    <p>The Linux kernel provides the underlying CPU, memory, device and process services. NotYVOS currently configures a silent boot with no visible console.</p>
   </div>
   <div class="card-grid three">
     <article class="feature-card">
       <h3>CPU platform</h3>
-      <p>GDT, TSS, IDT, ISR, PIC, PIT, LAPIC, per-CPU state and SMP bring-up.</p>
+      <p>Linux kernel and Buildroot provide processor, memory, device and scheduling foundations.</p>
     </article>
     <article class="feature-card">
       <h3>Memory</h3>
-      <p>Physical and virtual memory management, kernel heap, executable memory arena and user address spaces.</p>
+      <p>Kernel memory management is supplied by the Linux kernel; NotYVOS does not currently maintain its own native PMM/VMM implementation.</p>
     </article>
     <article class="feature-card">
       <h3>Processes</h3>
-      <p>ELF64 loading, per-process page tables, fork, wait, exec, brk, mmap and file descriptors.</p>
+      <p>The appliance starts a configured session and launches the XMB UI. A general-purpose desktop/user process model is not the current product surface.</p>
     </article>
   </div>
 </section>
@@ -73,7 +73,7 @@
   <div class="section-heading">
     <span class="eyebrow">02 / STORAGE</span>
     <h2>VFS, initramfs and NYFS</h2>
-    <p>VFS provides the VNode namespace and file-descriptor layer. Initramfs is a Limine-loaded ustar archive at /. NYFS is the persistent block-backed filesystem at /disk.</p>
+    <p>The current image uses Buildroot's root filesystem. User media is expected under /data/Photo, /data/Music, /data/Video and /data/Game; persistent disk-image packaging is not complete.</p>
   </div>
   <div class="card-grid three">
     <article class="feature-card">
@@ -86,7 +86,7 @@
     </article>
     <article class="feature-card">
       <h3>NYFS</h3>
-      <p>NYFS now has filesystem-specific create, truncate and unlink operations, journaling support, fsck integrity verification/repair, and permission-change plumbing. Phase 19 is active; the filesystem remains development-stage and should not be described as production-grade.</p>
+      <p>NYFS is not part of the current rewrite's active storage design. The project currently relies on the Buildroot root filesystem and has not yet completed persistent disk-image packaging.</p>
     </article>
   </div>
 </section>
@@ -96,7 +96,7 @@
     <div class="section-heading">
       <span class="eyebrow">03 / GRAPHICS</span>
       <h2>Graphics API → HAL → compositor</h2>
-      <p>The desktop uses a software framebuffer path with a graphics abstraction that keeps drawing code separate from presentation. TrueType text feeds the compositor via draw_text.</p>
+      <p>The XMB is rendered by SDL2 on a logical 1920×1080 canvas scaled to the display, with procedural wave geometry and monthly theme colours. TrueType text feeds the compositor via draw_text.</p>
     </div>
     <div class="diagram-card">
       <div class="diagram-node">Desktop apps</div>
@@ -146,15 +146,15 @@
   <div class="card-grid three">
     <article class="feature-card">
       <h3>Storage &amp; power</h3>
-      <p>ACPI table discovery and power control; AHCI block storage.</p>
+      <p>Hardware support is supplied by the Linux kernel and Buildroot configuration; current real-hardware compatibility is unverified.</p>
     </article>
     <article class="feature-card">
       <h3>Network &amp; audio</h3>
-      <p>Intel e1000 detection/initialization; HDA audio initialization. Production stack is Phase 16.</p>
+      <p>Networking and sound are planned, not currently implemented in the XMB appliance. Production stack is Phase 16.</p>
     </article>
     <article class="feature-card">
       <h3>Input</h3>
-      <p>PS/2 keyboard/mouse, USB xHCI, HID and mass storage, unified input facade.</p>
+      <p>Keyboard and mouse drive the XMB through SDL2. Native DualShock USB/Bluetooth support is future work.</p>
     </article>
   </div>
 </section>
