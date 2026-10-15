@@ -127,14 +127,14 @@
 <section class="section-shell section tinted" id="ps3">
   <div class="section-heading">
     <span class="eyebrow">04 / PS3 RUNTIME</span>
-    <h2>A separate compatibility-oriented execution path</h2>
-    <p>PS3 binaries are identified and parsed, then supported PowerPC code can run through the interpreter or the baseline x86-64 JIT. RSX provides a software compatibility path for graphics commands.</p>
+    <h2>Future integration, not part of the current build</h2>
+    <p>The current rewrite does not load PS3 binaries or run commercial games. PPU/SPU/RSX runtime integration appears only as a long-term direction in the roadmap; the earlier native-kernel runtime architecture should not be assumed to exist in this branch.</p>
   </div>
   <div class="card-grid four">
-    <article class="mini-card"><strong>PPU</strong><span>PowerPC decoder, interpreter and JIT</span></article>
-    <article class="mini-card"><strong>SPU</strong><span>Local store and mailbox foundations</span></article>
-    <article class="mini-card"><strong>DMA</strong><span>Cell-style queue and synchronization</span></article>
-    <article class="mini-card"><strong>RSX</strong><span>FIFO, raster, textures, depth and mipmaps</span></article>
+    <article class="mini-card"><strong>PPU</strong><span>Future PowerPC execution support</span></article>
+    <article class="mini-card"><strong>SPU</strong><span>Future co-processor support</span></article>
+    <article class="mini-card"><strong>DMA</strong><span>Future memory-transfer support</span></article>
+    <article class="mini-card"><strong>RSX</strong><span>Future graphics translation path</span></article>
   </div>
 </section>
 
@@ -150,7 +150,7 @@
     </article>
     <article class="feature-card">
       <h3>Network &amp; audio</h3>
-      <p>Networking and sound are planned, not currently implemented in the XMB appliance. Production stack is Phase 16.</p>
+      <p>Networking and sound are not implemented in the current XMB appliance; both are planned roadmap work.</p>
     </article>
     <article class="feature-card">
       <h3>Input</h3>
