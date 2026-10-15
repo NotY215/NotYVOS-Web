@@ -8,8 +8,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     field=document.createElement('div');
     field.className='ps3-symbol-field';
     field.setAttribute('aria-hidden','true');
-    const bg=document.querySelector('.site-bg');
-    (bg||document.body).appendChild(field);
+    document.body.appendChild(field);
   }
   if(field.dataset.ready==='true')return;
   field.dataset.ready='true';
