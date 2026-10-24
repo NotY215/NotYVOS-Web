@@ -286,3 +286,6 @@ body:has(.ps3-symbol-field) main,body:has(.ps3-symbol-field) .site-footer{positi
 }
 @media(min-width:761px){.nav-backdrop{display:none!important}}
 @media(prefers-reduced-motion:reduce){.nav-backdrop,body>.main-nav.mobile-drawer,.menu-toggle span{transition:none!important}}
+
+/* Keep the header and close button above the drawer edge. */
+@media(max-width:760px){body>.main-nav.mobile-drawer{z-index:1095!important}.site-header{z-index:1100}}
