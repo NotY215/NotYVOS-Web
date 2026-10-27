@@ -109,7 +109,6 @@
         }
         
         .stick-cap.pressed-l3, .stick-cap.pressed-r3 {
-            transform: scale(0.9) !important;
             fill: #00e5ff !important;
             filter: drop-shadow(0px 0px 15px #00e5ff);
         }
@@ -430,28 +429,28 @@
                     <i class="fa-solid fa-plus text-sky-400 text-xs w-4 text-center"></i>
                     <span class="text-gray-300 font-medium">Up</span>
                 </div>
-                <span id="key-DPAD_UP" class="key-val">Num 8</span>
+                <span id="key-DPAD_UP" class="key-val">NumPad8</span>
             </div>
             <div id="box-DPAD_LEFT" onclick="startRebind('DPAD_LEFT')" class="callout-box rounded-lg px-2.5 py-1 flex items-center justify-between w-40 sm:w-48 text-xs">
                 <div class="flex items-center gap-1.5">
                     <i class="fa-solid fa-arrows-to-dot text-sky-400 text-xs w-4 text-center"></i>
                     <span class="text-gray-300 font-medium">Left</span>
                 </div>
-                <span id="key-DPAD_LEFT" class="key-val">Num 4</span>
+                <span id="key-DPAD_LEFT" class="key-val">NumPad4</span>
             </div>
             <div id="box-DPAD_RIGHT" onclick="startRebind('DPAD_RIGHT')" class="callout-box rounded-lg px-2.5 py-1 flex items-center justify-between w-40 sm:w-48 text-xs">
                 <div class="flex items-center gap-1.5">
                     <i class="fa-solid fa-arrows-to-dot text-sky-400 text-xs w-4 text-center"></i>
                     <span class="text-gray-300 font-medium">Right</span>
                 </div>
-                <span id="key-DPAD_RIGHT" class="key-val">Num 6</span>
+                <span id="key-DPAD_RIGHT" class="key-val">NumPad6</span>
             </div>
             <div id="box-DPAD_DOWN" onclick="startRebind('DPAD_DOWN')" class="callout-box rounded-lg px-2.5 py-1 flex items-center justify-between w-40 sm:w-48 text-xs">
                 <div class="flex items-center gap-1.5">
                     <i class="fa-solid fa-arrow-down text-sky-400 text-xs w-4 text-center"></i>
                     <span class="text-gray-300 font-medium">Down</span>
                 </div>
-                <span id="key-DPAD_DOWN" class="key-val">Num 5</span>
+                <span id="key-DPAD_DOWN" class="key-val">NumPad5</span>
             </div>
         </div>
 
@@ -606,10 +605,10 @@
             'R3': { key: 'Ctrl Left', code: 'ControlLeft' },
             'PS': { key: 'Backspace', code: 'Backspace' },
             
-            'DPAD_UP': { key: 'Num 8', code: 'Numpad8' },
-            'DPAD_LEFT': { key: 'Num 4', code: 'Numpad4' },
-            'DPAD_RIGHT': { key: 'Num 6', code: 'Numpad6' },
-            'DPAD_DOWN': { key: 'Num 5', code: 'Numpad5' },
+            'DPAD_UP': { key: 'NumPad8', code: 'Numpad8' },
+            'DPAD_LEFT': { key: 'NumPad4', code: 'Numpad4' },
+            'DPAD_RIGHT': { key: 'NumPad6', code: 'Numpad6' },
+            'DPAD_DOWN': { key: 'NumPad5', code: 'Numpad5' },
             
             'TRIANGLE': { key: 'S', code: 'KeyS' },
             'CIRCLE': { key: 'X', code: 'KeyX' },
@@ -782,7 +781,7 @@
         // KEY CODE FORMATTER
         function formatKeyName(e) {
             if (e.code.startsWith('Numpad')) {
-                return 'Num ' + e.code.replace('Numpad', '');
+                return 'NumPad' + e.code.replace('Numpad', '');
             }
             if (e.code.startsWith('Key')) {
                 return e.code.replace('Key', '');
@@ -816,7 +815,7 @@
             if (isPressed('LS_RIGHT')) lsX += 16;
 
             if (leftCap) {
-                leftCap.style.transform = `translate(${lsX}px, ${lsY}px)`;
+                leftCap.style.transform = `translate(${lsX}px, ${lsY}px) scale(${isPressed('L3') ? 0.9 : 1})`;
             }
 
             // Right Stick Movement Vector calculation
@@ -827,7 +826,7 @@
             if (isPressed('RS_RIGHT')) rsX += 16;
 
             if (rightCap) {
-                rightCap.style.transform = `translate(${rsX}px, ${rsY}px)`;
+                rightCap.style.transform = `translate(${rsX}px, ${rsY}px) scale(${isPressed('R3') ? 0.9 : 1})`
             }
 
             // L3 / R3 Click Press Depress state
