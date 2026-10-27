@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPSX33 - PlayStation 3 Static Recompiler Key Mapping</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'ppsx-bg': '#040810',
+                        'ppsx-card': 'rgba(10, 18, 32, 0.94)',
+                        'ppsx-border': '#1d3459',
+                        'ppsx-cyan': '#00e5ff',
+                        'ppsx-blue-btn': '#0b1f3b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #040810;
+            background-image: 
+                radial-gradient(circle at 50% 30%, rgba(0, 229, 255, 0.08) 0%, transparent 70%),
+                linear-gradient(rgba(29, 52, 89, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(29, 52, 89, 0.1) 1px, transparent 1px);
+            background-size: 100% 100%, 32px 32px, 32px 32px;
+            color: #d1d5db;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        /* Interactive Callout Boxes */
+        .callout-box {
+            background: rgba(8, 16, 28, 0.90);
+            border: 1.5px solid #1c355e;
+            backdrop-filter: blur(10px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+        }
+
+        .callout-box:hover {
+            border-color: #00e5ff;
+            box-shadow: 0 0 16px rgba(0, 229, 255, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .callout-box.active-key {
+            border-color: #00e5ff !important;
+            background: rgba(0, 229, 255, 0.25) !important;
+            box-shadow: 0 0 24px rgba(0, 229, 255, 0.8) !important;
+            transform: scale(1.03);
+        }
+
+        .callout-box.rebinding {
+            border-color: #ffb703 !important;
+            background: rgba(255, 183, 3, 0.22) !important;
+            animation: pulse-rebind 0.8s infinite alternate;
+        }
+
+        @keyframes pulse-rebind {
+            0% { box-shadow: 0 0 6px rgba(255, 183, 3, 0.4); }
+            100% { box-shadow: 0 0 24px rgba(255, 183, 3, 0.95); }
+        }
+
+        /* PS Badge & Symbols */
+        .ps-btn-badge {
+            border: 1.5px solid #00e5ff;
+            border-radius: 4px;
+            padding: 1px 6px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+            background: rgba(0, 229, 255, 0.12);
+        }
+
+        .ps-triangle { color: #00e676; text-shadow: 0 0 8px rgba(0, 230, 118, 0.6); }
+        .ps-circle { color: #ff5252; text-shadow: 0 0 8px rgba(255, 82, 82, 0.6); }
+        .ps-cross { color: #40c4ff; text-shadow: 0 0 8px rgba(64, 196, 255, 0.6); }
+        .ps-square { color: #e040fb; text-shadow: 0 0 8px rgba(224, 64, 251, 0.6); }
+
+        /* Controller SVG Interactive Target Glows */
+        .btn-target {
+            transition: all 0.15s ease;
+        }
+        .btn-target.active-btn {
+            fill: #00e5ff !important;
+            filter: drop-shadow(0px 0px 12px #00e5ff);
+        }
+
+        /* Analog Stick 2D Motion Physics & Clicks */
+        .stick-cap {
+            transition: transform 0.12s cubic-bezier(0.25, 1, 0.5, 1), fill 0.15s ease, filter 0.15s ease;
+            transform-box: fill-box;
+            transform-origin: center;
+        }
+        
+        .stick-cap.pressed-l3, .stick-cap.pressed-r3 {
+            transform: scale(0.9) !important;
+            fill: #00e5ff !important;
+            filter: drop-shadow(0px 0px 15px #00e5ff);
+        }
+
+        /* Stick Motion Classes */
+        .stick-move-up { transform: translateY(-16px); }
+        .stick-move-down { transform: translateY(16px); }
+        .stick-move-left { transform: translateX(-16px); }
+        .stick-move-right { transform: translateX(16px); }
+        .stick-move-up-left { transform: translate(-12px, -12px); }
+        .stick-move-up-right { transform: translate(12px, -12px); }
+        .stick-move-down-left { transform: translate(-12px, 12px); }
+        .stick-move-down-right { transform: translate(12px, 12px); }
+
+        /* Overlay SVG Leader Lines Canvas */
+        #lines-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .key-val {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between p-4 sm:p-6 bg-[#040810] text-gray-200 select-none">
+
+    <!-- HEADER SECTION -->
+    <header class="flex flex-col md:flex-row justify-between items-center pb-4 border-b border-ppsx-border/50 gap-4 z-30">
+        <div class="flex items-center gap-4">
+            <!-- PPSX33 Logo -->
+            <div class="flex items-center">
+                <span class="text-4xl sm:text-5xl font-black italic tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-cyan-400 to-blue-500 drop-shadow-[0_0_20px_rgba(0,229,255,0.6)]">
+                    PPSX33
+                </span>
+            </div>
+            <div class="h-8 w-[2px] bg-ppsx-border hidden sm:block"></div>
+            <div>
+                <h1 class="text-lg sm:text-xl font-bold tracking-wide text-white leading-tight">PlayStation 3 Static Recompiler</h1>
+                <p class="text-xs tracking-widest text-sky-400 font-semibold uppercase">INTERACTIVE KEY MAPPING</p>
+            </div>
+        </div>
+
+        <!-- Action Controls Bar -->
+        <div class="flex items-center gap-2.5 flex-wrap justify-center">
+            <!-- Hidden Input for Import -->
+            <input type="file" id="import-file" accept=".json" class="hidden" onchange="importMappingsFile(event)" />
+            
+            <button onclick="document.getElementById('import-file').click()" class="px-3 py-1.5 rounded-lg border border-ppsx-border bg-ppsx-card hover:bg-sky-900/40 text-gray-300 text-xs font-semibold transition flex items-center gap-1.5">
+                <i class="fa-solid fa-file-import text-sky-400"></i> Import
+            </button>
+            <button onclick="exportMappingsFile()" class="px-3 py-1.5 rounded-lg border border-ppsx-border bg-ppsx-card hover:bg-sky-900/40 text-gray-300 text-xs font-semibold transition flex items-center gap-1.5">
+                <i class="fa-solid fa-file-export text-sky-400"></i> Export
+            </button>
+            <button id="reset-btn" onclick="resetToDefault()" class="px-4 py-1.5 rounded-lg border border-ppsx-cyan/60 bg-ppsx-blue-btn/90 hover:bg-sky-900/80 text-white text-xs font-semibold shadow-[0_0_15px_rgba(0,229,255,0.25)] transition flex items-center gap-2">
+                <i class="fa-solid fa-rotate-left text-sky-400"></i>
+                <span>Default Key Mapping</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN BOARD CONTAINER -->
+    <main id="main-stage" class="relative my-auto flex items-center justify-center max-w-[1600px] mx-auto w-full min-h-[640px] sm:min-h-[720px] p-2 sm:p-4 rounded-2xl bg-gradient-to-b from-[#060e1d]/60 via-[#040914]/85 to-[#020408]/95 border border-ppsx-border/40 overflow-hidden shadow-2xl">
+        
+        <!-- SVG CONNECTOR LINES CANVAS -->
+        <svg id="lines-canvas"></svg>
+
+        <!-- CENTERED HIGH-DETAIL PS3 CONTROLLER SVG -->
+        <div id="controller-wrapper" class="relative w-full max-w-[640px] aspect-[1.5/1] flex items-center justify-center my-6 z-10">
+            
+            <svg id="ps3-controller-svg" class="w-full h-auto drop-shadow-[0_22px_45px_rgba(0,0,0,0.95)]" viewBox="0 0 800 550" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Body Matte Gradient -->
+                    <radialGradient id="body-gradient" cx="50%" cy="40%" r="50%" fx="50%" fy="30%">
+                        <stop offset="0%" stop-color="#2a313d" />
+                        <stop offset="50%" stop-color="#181d26" />
+                        <stop offset="100%" stop-color="#0e1117" />
+                    </radialGradient>
+                    
+                    <!-- Grip Contour Gradient -->
+                    <linearGradient id="grip-left" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#343c4a" />
+                        <stop offset="70%" stop-color="#141820" />
+                        <stop offset="100%" stop-color="#0a0c10" />
+                    </linearGradient>
+
+                    <!-- Analog Stick Base Gradient -->
+                    <radialGradient id="stick-base-grad" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#10141d" />
+                        <stop offset="75%" stop-color="#1d2433" />
+                        <stop offset="100%" stop-color="#090b10" />
+                    </radialGradient>
+
+                    <!-- Analog Stick Cap Texture -->
+                    <radialGradient id="stick-cap-grad" cx="40%" cy="40%" r="60%">
+                        <stop offset="0%" stop-color="#3b465a" />
+                        <stop offset="60%" stop-color="#212733" />
+                        <stop offset="100%" stop-color="#11141c" />
+                    </radialGradient>
+                    
+                    <!-- Metallic Triggers Gradient -->
+                    <linearGradient id="trigger-grad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#3a4559"/>
+                        <stop offset="50%" stop-color="#1c222d"/>
+                        <stop offset="100%" stop-color="#0b0e14"/>
+                    </linearGradient>
+
+                    <!-- Glossy Button Well Shadow -->
+                    <radialGradient id="well-shadow" cx="50%" cy="50%" r="50%">
+                        <stop offset="70%" stop-color="#0a0d14" stop-opacity="0.9"/>
+                        <stop offset="100%" stop-color="#242c3d" stop-opacity="0.8"/>
+                    </radialGradient>
+                </defs>
+
+                <!-- CONTROLLER OUTER BODY SHELL -->
+                <path d="M 230,90 Q 280,85 400,95 Q 520,85 570,90 C 630,90 680,120 710,180 C 740,240 760,370 720,470 C 700,520 630,530 585,465 L 515,365 C 475,370 325,370 285,365 L 215,465 C 170,530 100,520 80,470 C 40,370 60,240 90,180 C 120,120 170,90 230,90 Z" 
+                      fill="url(#body-gradient)" stroke="#2b3445" stroke-width="3.5"/>
+                
+                <!-- Inner Ergonomic Contour Shadows -->
+                <path d="M 235,95 Q 280,90 400,100 Q 520,90 565,95 C 620,95 670,125 695,185 C 725,245 740,365 705,460 C 690,505 630,515 590,455 L 520,355 C 470,362 330,362 280,355 L 210,455 C 170,515 110,505 95,460 C 60,365 75,245 105,185 C 130,125 180,95 235,95 Z" 
+                      fill="none" stroke="url(#grip-left)" stroke-width="4" opacity="0.6"/>
+                
+                <!-- SHOULDER BUTTONS & TRIGGERS -->
+                <!-- L2 Trigger -->
+                <path id="svg-L2" class="btn-target" d="M 185,73 Q 225,63 260,80 L 255,93 Q 220,80 185,88 Z" fill="url(#trigger-grad)" stroke="#414e66" stroke-width="2"/>
+                <!-- L1 Button -->
+                <path id="svg-L1" class="btn-target" d="M 195,88 Q 230,80 265,93 L 260,108 Q 225,96 195,104 Z" fill="#252d3b" stroke="#485773" stroke-width="2"/>
+                
+                <!-- R2 Trigger -->
+                <path id="svg-R2" class="btn-target" d="M 615,73 Q 575,63 540,80 L 545,93 Q 580,80 615,88 Z" fill="url(#trigger-grad)" stroke="#414e66" stroke-width="2"/>
+                <!-- R1 Button -->
+                <path id="svg-R1" class="btn-target" d="M 605,88 Q 570,80 535,93 L 540,108 Q 575,96 605,104 Z" fill="#252d3b" stroke="#485773" stroke-width="2"/>
+
+                <!-- Left Handle Grip Highlights -->
+                <path d="M 120,200 C 100,280 110,400 135,460" stroke="#0a0d12" stroke-width="7" stroke-linecap="round" opacity="0.8"/>
+                <!-- Right Handle Grip Highlights -->
+                <path d="M 680,200 C 700,280 690,400 665,460" stroke="#0a0d12" stroke-width="7" stroke-linecap="round" opacity="0.8"/>
+
+                <!-- CENTER SONY BRANDING -->
+                <text x="400" y="145" text-anchor="middle" fill="#94a3b8" font-family="sans-serif" font-weight="900" font-size="20" letter-spacing="4">SONY</text>
+                
+                <!-- Port Indicator Bracket & LEDs -->
+                <rect x="365" y="98" width="70" height="6" rx="3" fill="#080a0f" stroke="#252e3d"/>
+                <circle cx="380" cy="115" r="3" fill="#ff3333" filter="drop-shadow(0px 0px 4px #ff3333)"/>
+                <circle cx="393" cy="115" r="2.5" fill="#161c26"/>
+                <circle cx="406" cy="115" r="2.5" fill="#161c26"/>
+                <circle cx="419" cy="115" r="2.5" fill="#161c26"/>
+
+                <!-- SELECT / START LABELS -->
+                <text x="350" y="212" text-anchor="middle" fill="#64748b" font-family="sans-serif" font-weight="700" font-size="11" letter-spacing="1">SELECT</text>
+                <text x="450" y="212" text-anchor="middle" fill="#64748b" font-family="sans-serif" font-weight="700" font-size="11" letter-spacing="1">START</text>
+
+                <!-- Select & Start Physical Rubber Buttons -->
+                <rect id="svg-SELECT" class="btn-target" x="335" y="222" width="30" height="12" rx="4" fill="#283040" stroke="#4a5873"/>
+                <polygon id="svg-START" class="btn-target" points="438,222 465,228 438,234" fill="#283040" stroke="#4a5873"/>
+
+                <!-- PS BUTTON EMBLEM -->
+                <circle id="svg-PS" class="btn-target" cx="400" cy="255" r="19" fill="#121621" stroke="#3d4b63" stroke-width="2.5"/>
+                <!-- PS Vector Logo -->
+                <path d="M 394,250 C 394,245 406,245 406,250 C 406,254 394,253 394,258 L 406,258" stroke="#ffffff" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+
+                <!-- D-PAD BASE WELL -->
+                <circle cx="215" cy="245" r="62" fill="url(#well-shadow)" stroke="#1a202c" stroke-width="2"/>
+                <!-- D-Pad Directional Cross Buttons -->
+                <g id="dpad-group">
+                    <!-- Up -->
+                    <path id="svg-DPAD_UP" class="btn-target" d="M 203,195 L 227,195 L 227,230 L 203,230 Z" fill="#252d3b" stroke="#43526e" stroke-width="1.5"/>
+                    <path d="M 215,203 L 222,214 L 208,214 Z" fill="#64748b"/>
+                    <!-- Down -->
+                    <path id="svg-DPAD_DOWN" class="btn-target" d="M 203,260 L 227,260 L 227,295 L 203,295 Z" fill="#252d3b" stroke="#43526e" stroke-width="1.5"/>
+                    <path d="M 215,287 L 222,276 L 208,276 Z" fill="#64748b"/>
+                    <!-- Left -->
+                    <path id="svg-DPAD_LEFT" class="btn-target" d="M 165,233 L 200,233 L 200,257 L 165,257 Z" fill="#252d3b" stroke="#43526e" stroke-width="1.5"/>
+                    <path d="M 173,245 L 184,238 L 184,252 Z" fill="#64748b"/>
+                    <!-- Right -->
+                    <path id="svg-DPAD_RIGHT" class="btn-target" d="M 230,233 L 265,233 L 265,257 L 230,257 Z" fill="#252d3b" stroke="#43526e" stroke-width="1.5"/>
+                    <path d="M 257,245 L 246,238 L 246,252 Z" fill="#64748b"/>
+                </g>
+
+                <!-- FACE BUTTONS BASE WELL -->
+                <circle cx="585" cy="245" r="62" fill="url(#well-shadow)" stroke="#1a202c" stroke-width="2"/>
+                
+                <!-- Triangle Button (Green) -->
+                <circle id="svg-TRIANGLE" class="btn-target" cx="585" cy="198" r="17.5" fill="#212838" stroke="#3e4c66" stroke-width="2"/>
+                <polygon points="585,189 594,204 576,204" fill="none" stroke="#00e676" stroke-width="3" stroke-linejoin="round"/>
+
+                <!-- Circle Button (Red) -->
+                <circle id="svg-CIRCLE" class="btn-target" cx="632" cy="245" r="17.5" fill="#212838" stroke="#3e4c66" stroke-width="2"/>
+                <circle cx="632" cy="245" r="8.5" fill="none" stroke="#ff5252" stroke-width="3"/>
+
+                <!-- Cross Button (Blue) -->
+                <circle id="svg-CROSS" class="btn-target" cx="585" cy="292" r="17.5" fill="#212838" stroke="#3e4c66" stroke-width="2"/>
+                <path d="M 578,285 L 592,299 M 592,285 L 578,299" stroke="#40c4ff" stroke-width="3" stroke-linecap="round"/>
+
+                <!-- Square Button (Pinkish Purple) -->
+                <circle id="svg-SQUARE" class="btn-target" cx="538" cy="245" r="17.5" fill="#212838" stroke="#3e4c66" stroke-width="2"/>
+                <rect x="530" y="237" width="16" height="16" fill="none" stroke="#e040fb" stroke-width="3" rx="1"/>
+
+                <!-- LEFT ANALOG STICK (L3 Base Socket & Moving Thumb Cap) -->
+                <g id="left-stick-assembly">
+                    <circle cx="310" cy="320" r="56" fill="url(#stick-base-grad)" stroke="#1a202c" stroke-width="3"/>
+                    <circle cx="310" cy="320" r="46" fill="#151a24" stroke="#2b3547" stroke-width="2"/>
+                    <!-- ANIMATED CAP L3 -->
+                    <g id="stick-left-cap-group" class="stick-cap">
+                        <circle id="svg-L3" class="btn-target" cx="310" cy="320" r="39" fill="url(#stick-cap-grad)" stroke="#455470" stroke-width="3"/>
+                        <!-- Textured Grip Ring & Concave Center -->
+                        <circle cx="310" cy="320" r="30" fill="none" stroke="#161b24" stroke-width="2" stroke-dasharray="4,2"/>
+                        <circle cx="310" cy="320" r="25" fill="#181d28" stroke="#0f121a" stroke-width="2"/>
+                    </g>
+                </g>
+
+                <!-- RIGHT ANALOG STICK (R3 Base Socket & Moving Thumb Cap) -->
+                <g id="right-stick-assembly">
+                    <circle cx="490" cy="320" r="56" fill="url(#stick-base-grad)" stroke="#1a202c" stroke-width="3"/>
+                    <circle cx="490" cy="320" r="46" fill="#151a24" stroke="#2b3547" stroke-width="2"/>
+                    <!-- ANIMATED CAP R3 -->
+                    <g id="stick-right-cap-group" class="stick-cap">
+                        <circle id="svg-R3" class="btn-target" cx="490" cy="320" r="39" fill="url(#stick-cap-grad)" stroke="#455470" stroke-width="3"/>
+                        <!-- Textured Grip Ring & Concave Center -->
+                        <circle cx="490" cy="320" r="30" fill="none" stroke="#161b24" stroke-width="2" stroke-dasharray="4,2"/>
+                        <circle cx="490" cy="320" r="25" fill="#181d28" stroke="#0f121a" stroke-width="2"/>
+                    </g>
+                </g>
+            </svg>
+
+            <!-- ANCHOR POINTS FOR DYNAMIC SVG LEADER LINES -->
+            <div id="anchor-L2" class="absolute left-[28%] top-[13%] w-2 h-2"></div>
+            <div id="anchor-L1" class="absolute left-[30%] top-[17%] w-2 h-2"></div>
+            <div id="anchor-PS" class="absolute left-[50%] top-[46%] w-2 h-2"></div>
+            <div id="anchor-R2" class="absolute left-[72%] top-[13%] w-2 h-2"></div>
+            <div id="anchor-R1" class="absolute left-[70%] top-[17%] w-2 h-2"></div>
+
+            <!-- D-Pad Anchors -->
+            <div id="anchor-DPAD_UP" class="absolute left-[27%] top-[35%] w-2 h-2"></div>
+            <div id="anchor-DPAD_LEFT" class="absolute left-[22%] top-[44%] w-2 h-2"></div>
+            <div id="anchor-DPAD_RIGHT" class="absolute left-[32%] top-[44%] w-2 h-2"></div>
+            <div id="anchor-DPAD_DOWN" class="absolute left-[27%] top-[53%] w-2 h-2"></div>
+
+            <!-- Action Button Anchors -->
+            <div id="anchor-TRIANGLE" class="absolute left-[73%] top-[35%] w-2 h-2"></div>
+            <div id="anchor-CIRCLE" class="absolute left-[79%] top-[44%] w-2 h-2"></div>
+            <div id="anchor-CROSS" class="absolute left-[73%] top-[53%] w-2 h-2"></div>
+            <div id="anchor-SQUARE" class="absolute left-[67%] top-[44%] w-2 h-2"></div>
+
+            <!-- Stick Center Anchors -->
+            <div id="anchor-L3" class="absolute left-[38.8%] top-[58%] w-2 h-2"></div>
+            <div id="anchor-R3" class="absolute left-[61.2%] top-[58%] w-2 h-2"></div>
+
+            <!-- System Button Anchors -->
+            <div id="anchor-SELECT" class="absolute left-[43%] top-[41%] w-2 h-2"></div>
+            <div id="anchor-START" class="absolute left-[57%] top-[41%] w-2 h-2"></div>
+        </div>
+
+        <!-- REBINDABLE CALLOUT BOXES OVERLAY -->
+
+        <!-- TOP LEFT: L2 & L1 -->
+        <div class="absolute top-4 left-4 sm:top-6 sm:left-8 flex flex-col gap-2.5 z-20">
+            <div id="box-L2" onclick="startRebind('L2')" class="callout-box rounded-lg px-3 py-1.5 flex items-center justify-between w-44 sm:w-52">
+                <span class="ps-btn-badge">L2</span>
+                <span id="key-L2" class="key-val">Shift Right</span>
+            </div>
+            <div id="box-L1" onclick="startRebind('L1')" class="callout-box rounded-lg px-3 py-1.5 flex items-center justify-between w-44 sm:w-52">
+                <span class="ps-btn-badge">L1</span>
+                <span id="key-L1" class="key-val">L</span>
+            </div>
+        </div>
+
+        <!-- CENTER TOP LEFT CALLOUT: L3 -->
+        <div class="absolute top-[18%] left-[34%] -translate-x-1/2 z-20">
+            <div id="box-L3" onclick="startRebind('L3')" class="callout-box rounded-lg px-3 py-1.5 flex items-center justify-between gap-3 min-w-[130px]">
+                <span class="ps-btn-badge border-sky-400 text-sky-300">L3</span>
+                <span id="key-L3" class="key-val">Shift Left</span>
+            </div>
+        </div>
+
+        <!-- CENTER TOP: PS BUTTON -->
+        <div class="absolute top-4 left-1/2 -translate-x-1/2 z-20">
+            <div id="box-PS" onclick="startRebind('PS')" class="callout-box rounded-lg px-3.5 py-1.5 flex items-center justify-between w-52 sm:w-60">
+                <div class="flex items-center gap-2">
+                    <i class="fa-brands fa-playstation text-gray-200 text-xs"></i>
+                    <span class="text-xs font-semibold text-gray-300">PS Button</span>
+                </div>
+                <span id="key-PS" class="key-val">Backspace</span>
+            </div>
+        </div>
+
+        <!-- TOP RIGHT: R2 & R1 -->
+        <div class="absolute top-4 right-4 sm:top-6 sm:right-8 flex flex-col gap-2.5 z-20">
+            <div id="box-R2" onclick="startRebind('R2')" class="callout-box rounded-lg px-3 py-1.5 flex items-center justify-between w-44 sm:w-52">
+                <span class="ps-btn-badge">R2</span>
+                <span id="key-R2" class="key-val">Ctrl Right</span>
+            </div>
+            <div id="box-R1" onclick="startRebind('R1')" class="callout-box rounded-lg px-3 py-1.5 flex items-center justify-between w-44 sm:w-52">
+                <span class="ps-btn-badge">R1</span>
+                <span id="key-R1" class="key-val">R</span>
+            </div>
+        </div>
+
+        <!-- CENTER TOP RIGHT CALLOUT: R3 -->
+        <div class="absolute top-[18%] right-[34%] translate-x-1/2 z-20">
+            <div id="box-R3" onclick="startRebind('R3')" class="callout-box rounded-lg px-3 py-1.5 flex items-center justify-between gap-3 min-w-[130px]">
+                <span class="ps-btn-badge border-sky-400 text-sky-300">R3</span>
+                <span id="key-R3" class="key-val">Ctrl Left</span>
+            </div>
+        </div>
+
+        <!-- MID LEFT: D-PAD CALLOUTS -->
+        <div class="absolute top-[27%] left-4 sm:left-8 flex flex-col gap-2 z-20">
+            <div id="box-DPAD_UP" onclick="startRebind('DPAD_UP')" class="callout-box rounded-lg px-2.5 py-1 flex items-center justify-between w-40 sm:w-48 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-plus text-sky-400 text-xs w-4 text-center"></i>
+                    <span class="text-gray-300 font-medium">Up</span>
+                </div>
+                <span id="key-DPAD_UP" class="key-val">Num 8</span>
+            </div>
+            <div id="box-DPAD_LEFT" onclick="startRebind('DPAD_LEFT')" class="callout-box rounded-lg px-2.5 py-1 flex items-center justify-between w-40 sm:w-48 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrows-to-dot text-sky-400 text-xs w-4 text-center"></i>
+                    <span class="text-gray-300 font-medium">Left</span>
+                </div>
+                <span id="key-DPAD_LEFT" class="key-val">Num 4</span>
+            </div>
+            <div id="box-DPAD_RIGHT" onclick="startRebind('DPAD_RIGHT')" class="callout-box rounded-lg px-2.5 py-1 flex items-center justify-between w-40 sm:w-48 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrows-to-dot text-sky-400 text-xs w-4 text-center"></i>
+                    <span class="text-gray-300 font-medium">Right</span>
+                </div>
+                <span id="key-DPAD_RIGHT" class="key-val">Num 6</span>
+            </div>
+            <div id="box-DPAD_DOWN" onclick="startRebind('DPAD_DOWN')" class="callout-box rounded-lg px-2.5 py-1 flex items-center justify-between w-40 sm:w-48 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-arrow-down text-sky-400 text-xs w-4 text-center"></i>
+                    <span class="text-gray-300 font-medium">Down</span>
+                </div>
+                <span id="key-DPAD_DOWN" class="key-val">Num 5</span>
+            </div>
+        </div>
+
+        <!-- MID RIGHT: ACTION BUTTONS CALLOUTS -->
+        <div class="absolute top-[27%] right-4 sm:right-8 flex flex-col gap-2 z-20">
+            <div id="box-TRIANGLE" onclick="startRebind('TRIANGLE')" class="callout-box rounded-lg px-2.5 py-1 flex items-center justify-between w-40 sm:w-48 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <span class="ps-triangle font-bold text-sm">▲</span>
+                    <span class="text-gray-300 font-medium">Triangle</span>
+                </div>
+                <span id="key-TRIANGLE" class="key-val">S</span>
+            </div>
+            <div id="box-CIRCLE" onclick="startRebind('CIRCLE')" class="callout-box rounded-lg px-2.5 py-1 flex items-center justify-between w-40 sm:w-48 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <span class="ps-circle font-bold text-sm">◯</span>
+                    <span class="text-gray-300 font-medium">Circle</span>
+                </div>
+                <span id="key-CIRCLE" class="key-val">X</span>
+            </div>
+            <div id="box-CROSS" onclick="startRebind('CROSS')" class="callout-box rounded-lg px-2.5 py-1 flex items-center justify-between w-40 sm:w-48 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <span class="ps-cross font-bold text-sm">✕</span>
+                    <span class="text-gray-300 font-medium">Cross</span>
+                </div>
+                <span id="key-CROSS" class="key-val">Z</span>
+            </div>
+            <div id="box-SQUARE" onclick="startRebind('SQUARE')" class="callout-box rounded-lg px-2.5 py-1 flex items-center justify-between w-40 sm:w-48 text-xs">
+                <div class="flex items-center gap-1.5">
+                    <span class="ps-square font-bold text-sm">▢</span>
+                    <span class="text-gray-300 font-medium">Square</span>
+                </div>
+                <span id="key-SQUARE" class="key-val">A</span>
+            </div>
+        </div>
+
+        <!-- BOTTOM LEFT: LEFT STICK DIRECTIONAL AXES (Interactive Animate & Rebind) -->
+        <div class="absolute bottom-6 left-4 sm:left-8 z-20">
+            <div class="callout-box rounded-xl p-3 w-44 sm:w-52 text-xs flex flex-col gap-1.5">
+                <div class="font-bold text-white tracking-wide border-b border-ppsx-border/60 pb-1 mb-0.5 flex justify-between items-center">
+                    <span>Left Stick</span>
+                    <i class="fa-solid fa-gamepad text-sky-400"></i>
+                </div>
+                <div id="box-LS_UP" onclick="startRebind('LS_UP')" class="flex justify-between items-center py-0.5 px-1.5 rounded hover:bg-sky-900/40">
+                    <span class="text-sky-300"><i class="fa-solid fa-arrow-up w-4 text-center"></i> Up</span>
+                    <span id="key-LS_UP" class="key-val">Up</span>
+                </div>
+                <div id="box-LS_DOWN" onclick="startRebind('LS_DOWN')" class="flex justify-between items-center py-0.5 px-1.5 rounded hover:bg-sky-900/40">
+                    <span class="text-sky-300"><i class="fa-solid fa-arrow-down w-4 text-center"></i> Down</span>
+                    <span id="key-LS_DOWN" class="key-val">Down</span>
+                </div>
+                <div id="box-LS_LEFT" onclick="startRebind('LS_LEFT')" class="flex justify-between items-center py-0.5 px-1.5 rounded hover:bg-sky-900/40">
+                    <span class="text-sky-300"><i class="fa-solid fa-arrow-left w-4 text-center"></i> Left</span>
+                    <span id="key-LS_LEFT" class="key-val">Left</span>
+                </div>
+                <div id="box-LS_RIGHT" onclick="startRebind('LS_RIGHT')" class="flex justify-between items-center py-0.5 px-1.5 rounded hover:bg-sky-900/40">
+                    <span class="text-sky-300"><i class="fa-solid fa-arrow-right w-4 text-center"></i> Right</span>
+                    <span id="key-LS_RIGHT" class="key-val">Right</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- CENTER BOTTOM: SELECT & START BUTTONS -->
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 sm:gap-4 z-20">
+            <div id="box-SELECT" onclick="startRebind('SELECT')" class="callout-box rounded-lg px-3.5 py-1.5 flex items-center justify-between gap-3 min-w-[125px]">
+                <div class="flex items-center gap-1.5">
+                    <span class="w-3.5 h-1.5 rounded-sm bg-gray-300 inline-block"></span>
+                    <span class="text-xs font-semibold text-gray-200">Select</span>
+                </div>
+                <span id="key-SELECT" class="key-val">Space</span>
+            </div>
+            <div id="box-START" onclick="startRebind('START')" class="callout-box rounded-lg px-3.5 py-1.5 flex items-center justify-between gap-3 min-w-[125px]">
+                <div class="flex items-center gap-1.5">
+                    <i class="fa-solid fa-play text-gray-300 text-xs"></i>
+                    <span class="text-xs font-semibold text-gray-200">Start</span>
+                </div>
+                <span id="key-START" class="key-val">V</span>
+            </div>
+        </div>
+
+        <!-- BOTTOM RIGHT: RIGHT STICK DIRECTIONAL AXES (Interactive Animate & Rebind) -->
+        <div class="absolute bottom-6 right-4 sm:right-8 z-20">
+            <div class="callout-box rounded-xl p-3 w-44 sm:w-52 text-xs flex flex-col gap-1.5">
+                <div class="font-bold text-white tracking-wide border-b border-ppsx-border/60 pb-1 mb-0.5 flex justify-between items-center">
+                    <span>Right Stick</span>
+                    <i class="fa-solid fa-gamepad text-sky-400"></i>
+                </div>
+                <div id="box-RS_UP" onclick="startRebind('RS_UP')" class="flex justify-between items-center py-0.5 px-1.5 rounded hover:bg-sky-900/40">
+                    <span class="text-sky-300"><i class="fa-solid fa-arrow-up w-4 text-center"></i> Up</span>
+                    <span id="key-RS_UP" class="key-val">U</span>
+                </div>
+                <div id="box-RS_DOWN" onclick="startRebind('RS_DOWN')" class="flex justify-between items-center py-0.5 px-1.5 rounded hover:bg-sky-900/40">
+                    <span class="text-sky-300"><i class="fa-solid fa-arrow-down w-4 text-center"></i> Down</span>
+                    <span id="key-RS_DOWN" class="key-val">J</span>
+                </div>
+                <div id="box-RS_LEFT" onclick="startRebind('RS_LEFT')" class="flex justify-between items-center py-0.5 px-1.5 rounded hover:bg-sky-900/40">
+                    <span class="text-sky-300"><i class="fa-solid fa-arrow-left w-4 text-center"></i> Left</span>
+                    <span id="key-RS_LEFT" class="key-val">H</span>
+                </div>
+                <div id="box-RS_RIGHT" onclick="startRebind('RS_RIGHT')" class="flex justify-between items-center py-0.5 px-1.5 rounded hover:bg-sky-900/40">
+                    <span class="text-sky-300"><i class="fa-solid fa-arrow-right w-4 text-center"></i> Right</span>
+                    <span id="key-RS_RIGHT" class="key-val">K</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER SECTION -->
+    <footer class="mt-4 pt-3 border-t border-ppsx-border/40 flex flex-col sm:flex-row justify-between items-center gap-3 z-30">
+        <div class="flex items-center gap-3 text-xs sm:text-sm text-gray-300">
+            <div class="w-6 h-6 rounded-full border border-sky-400/80 flex items-center justify-center text-sky-400 font-serif italic text-xs font-bold flex-shrink-0">
+                i
+            </div>
+            <p>
+                <strong class="text-white font-semibold">Note:</strong> 
+                <span class="italic text-gray-400">This is the default key mapping in PPSX33. Click any button box to customize keys at any time.</span>
+            </p>
+        </div>
+
+        <div class="flex items-center gap-2 text-white/90">
+            <i class="fa-brands fa-playstation text-2xl"></i>
+            <span class="text-xl font-bold tracking-widest font-sans italic">PS3</span>
+        </div>
+    </footer>
+
+    <!-- KEY REBINDING MODAL DIALOG -->
+    <div id="rebind-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-ppsx-card border-2 border-ppsx-cyan rounded-2xl p-6 max-w-xs w-full text-center shadow-[0_0_40px_rgba(0,229,255,0.45)]">
+            <div class="w-12 h-12 rounded-full bg-ppsx-cyan/20 border border-ppsx-cyan text-ppsx-cyan flex items-center justify-center mx-auto mb-3 text-xl animate-bounce">
+                <i class="fa-solid fa-keyboard"></i>
+            </div>
+            <h3 class="text-lg font-bold text-white mb-1">Rebind Mapping</h3>
+            <p id="rebind-target-text" class="text-xs text-sky-300 mb-4 font-semibold">Press any key on your keyboard...</p>
+            <div class="bg-black/60 border border-ppsx-border p-2.5 rounded-lg text-xs text-gray-400 mb-4">
+                Press <span class="text-white font-bold">ESC</span> to cancel.
+            </div>
+            <button onclick="cancelRebind()" class="px-5 py-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 text-xs font-semibold transition">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+    <!-- APPLICATION JAVASCRIPT LOGIC -->
+    <script>
+        // DEFAULT MAPPING CONFIGURATION
+        const DEFAULT_MAPPINGS = {
+            'L2': { key: 'Shift Right', code: 'ShiftRight' },
+            'L1': { key: 'L', code: 'KeyL' },
+            'L3': { key: 'Shift Left', code: 'ShiftLeft' },
+            'R2': { key: 'Ctrl Right', code: 'ControlRight' },
+            'R1': { key: 'R', code: 'KeyR' },
+            'R3': { key: 'Ctrl Left', code: 'ControlLeft' },
+            'PS': { key: 'Backspace', code: 'Backspace' },
+            
+            'DPAD_UP': { key: 'Num 8', code: 'Numpad8' },
+            'DPAD_LEFT': { key: 'Num 4', code: 'Numpad4' },
+            'DPAD_RIGHT': { key: 'Num 6', code: 'Numpad6' },
+            'DPAD_DOWN': { key: 'Num 5', code: 'Numpad5' },
+            
+            'TRIANGLE': { key: 'S', code: 'KeyS' },
+            'CIRCLE': { key: 'X', code: 'KeyX' },
+            'CROSS': { key: 'Z', code: 'KeyZ' },
+            'SQUARE': { key: 'A', code: 'KeyA' },
+            
+            'LS_UP': { key: 'Up', code: 'ArrowUp' },
+            'LS_DOWN': { key: 'Down', code: 'ArrowDown' },
+            'LS_LEFT': { key: 'Left', code: 'ArrowLeft' },
+            'LS_RIGHT': { key: 'Right', code: 'ArrowRight' },
+            
+            'RS_UP': { key: 'U', code: 'KeyU' },
+            'RS_DOWN': { key: 'J', code: 'KeyJ' },
+            'RS_LEFT': { key: 'H', code: 'KeyH' },
+            'RS_RIGHT': { key: 'K', code: 'KeyK' },
+            
+            'SELECT': { key: 'Space', code: 'Space' },
+            'START': { key: 'V', code: 'KeyV' }
+        };
+
+        let currentMappings = JSON.parse(JSON.stringify(DEFAULT_MAPPINGS));
+        let activeRebindTarget = null;
+        let activePressedCodes = new Set();
+
+        // DYNAMIC LEADER LINE MAP
+        const LINE_CONNECTIONS = [
+            { box: 'box-L2', anchor: 'anchor-L2' },
+            { box: 'box-L1', anchor: 'anchor-L1' },
+            { box: 'box-L3', anchor: 'anchor-L3' },
+            { box: 'box-PS', anchor: 'anchor-PS' },
+            { box: 'box-R2', anchor: 'anchor-R2' },
+            { box: 'box-R1', anchor: 'anchor-R1' },
+            { box: 'box-R3', anchor: 'anchor-R3' },
+            
+            { box: 'box-DPAD_UP', anchor: 'anchor-DPAD_UP' },
+            { box: 'box-DPAD_LEFT', anchor: 'anchor-DPAD_LEFT' },
+            { box: 'box-DPAD_RIGHT', anchor: 'anchor-DPAD_RIGHT' },
+            { box: 'box-DPAD_DOWN', anchor: 'anchor-DPAD_DOWN' },
+            
+            { box: 'box-TRIANGLE', anchor: 'anchor-TRIANGLE' },
+            { box: 'box-CIRCLE', anchor: 'anchor-CIRCLE' },
+            { box: 'box-CROSS', anchor: 'anchor-CROSS' },
+            { box: 'box-SQUARE', anchor: 'anchor-SQUARE' },
+
+            { box: 'box-SELECT', anchor: 'anchor-SELECT' },
+            { box: 'box-START', anchor: 'anchor-START' }
+        ];
+
+        // DRAW SVG CONNECTOR LEADER LINES
+        function drawLeaderLines() {
+            const svg = document.getElementById('lines-canvas');
+            const stage = document.getElementById('main-stage');
+            if (!svg || !stage) return;
+
+            svg.innerHTML = '';
+            const stageRect = stage.getBoundingClientRect();
+
+            LINE_CONNECTIONS.forEach(conn => {
+                const boxEl = document.getElementById(conn.box);
+                const anchorEl = document.getElementById(conn.anchor);
+
+                if (!boxEl || !anchorEl) return;
+
+                const boxRect = boxEl.getBoundingClientRect();
+                const anchorRect = anchorEl.getBoundingClientRect();
+
+                const anchorX = (anchorRect.left + anchorRect.width / 2) - stageRect.left;
+                const anchorY = (anchorRect.top + anchorRect.height / 2) - stageRect.top;
+
+                let boxX, boxY;
+
+                if (anchorX < boxRect.left - stageRect.left) {
+                    boxX = boxRect.left - stageRect.left;
+                } else if (anchorX > boxRect.right - stageRect.left) {
+                    boxX = boxRect.right - stageRect.left;
+                } else {
+                    boxX = (boxRect.left + boxRect.width / 2) - stageRect.left;
+                }
+
+                if (anchorY < boxRect.top - stageRect.top) {
+                    boxY = boxRect.top - stageRect.top;
+                } else if (anchorY > boxRect.bottom - stageRect.top) {
+                    boxY = boxRect.bottom - stageRect.top;
+                } else {
+                    boxY = (boxRect.top + boxRect.height / 2) - stageRect.top;
+                }
+
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', boxX);
+                line.setAttribute('y1', boxY);
+                line.setAttribute('x2', anchorX);
+                line.setAttribute('y2', anchorY);
+                line.setAttribute('stroke', 'rgba(0, 229, 255, 0.45)');
+                line.setAttribute('stroke-width', '1.5');
+                line.setAttribute('stroke-dasharray', '3,3');
+
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', anchorX);
+                circle.setAttribute('cy', anchorY);
+                circle.setAttribute('r', '3');
+                circle.setAttribute('fill', '#00e5ff');
+
+                svg.appendChild(line);
+                svg.appendChild(circle);
+            });
+        }
+
+        // UPDATE KEYBOARD LABELS ON UI
+        function updateUI() {
+            Object.keys(currentMappings).forEach(target => {
+                const mapData = currentMappings[target];
+                const keyEl = document.getElementById(`key-${target}`);
+                if (keyEl) keyEl.textContent = mapData.key;
+            });
+        }
+
+        // START REBINDING
+        function startRebind(targetAction) {
+            activeRebindTarget = targetAction;
+            const modal = document.getElementById('rebind-modal');
+            const targetText = document.getElementById('rebind-target-text');
+            
+            targetText.textContent = `Press any keyboard key for [${targetAction.replace('_', ' ')}]`;
+            modal.classList.remove('hidden');
+
+            const box = document.getElementById(`box-${targetAction}`);
+            if (box) box.classList.add('rebinding');
+        }
+
+        // CANCEL REBINDING
+        function cancelRebind() {
+            if (activeRebindTarget) {
+                const box = document.getElementById(`box-${activeRebindTarget}`);
+                if (box) box.classList.remove('rebinding');
+            }
+            activeRebindTarget = null;
+            document.getElementById('rebind-modal').classList.add('hidden');
+        }
+
+        // RESET MAP TO DEFAULTS
+        function resetToDefault() {
+            currentMappings = JSON.parse(JSON.stringify(DEFAULT_MAPPINGS));
+            updateUI();
+        }
+
+        // EXPORT MAPPINGS TO JSON FILE
+        function exportMappingsFile() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentMappings, null, 2));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "ppsx33_key_mapping.json");
+            dlAnchorElem.click();
+        }
+
+        // IMPORT MAPPINGS FROM JSON FILE
+        function importMappingsFile(event) {
+            const fileReader = new FileReader();
+            fileReader.onload = function(e) {
+                try {
+                    const imported = JSON.parse(e.target.result);
+                    currentMappings = { ...currentMappings, ...imported };
+                    updateUI();
+                } catch(err) {
+                    alert("Invalid JSON Key Mapping File!");
+                }
+            };
+            fileReader.readAsText(event.target.files[0]);
+        }
+
+        // KEY CODE FORMATTER
+        function formatKeyName(e) {
+            if (e.code.startsWith('Numpad')) {
+                return 'Num ' + e.code.replace('Numpad', '');
+            }
+            if (e.code.startsWith('Key')) {
+                return e.code.replace('Key', '');
+            }
+            if (e.code.startsWith('Digit')) {
+                return e.code.replace('Digit', '');
+            }
+            if (e.code === 'ControlLeft') return 'Ctrl Left';
+            if (e.code === 'ControlRight') return 'Ctrl Right';
+            if (e.code === 'ShiftLeft') return 'Shift Left';
+            if (e.code === 'ShiftRight') return 'Shift Right';
+            if (e.code === 'Space') return 'Space';
+            if (e.code === 'ArrowUp') return 'Up';
+            if (e.code === 'ArrowDown') return 'Down';
+            if (e.code === 'ArrowLeft') return 'Left';
+            if (e.code === 'ArrowRight') return 'Right';
+            
+            return e.key.length === 1 ? e.key.toUpperCase() : e.key;
+        }
+
+        // ANIMATE ANALOG STICK POSITIONS (LEFT & RIGHT)
+        function updateStickAnimations() {
+            const leftCap = document.getElementById('stick-left-cap-group');
+            const rightCap = document.getElementById('stick-right-cap-group');
+
+            // Left Stick Movement Vector calculation
+            let lsX = 0, lsY = 0;
+            if (isPressed('LS_UP')) lsY -= 16;
+            if (isPressed('LS_DOWN')) lsY += 16;
+            if (isPressed('LS_LEFT')) lsX -= 16;
+            if (isPressed('LS_RIGHT')) lsX += 16;
+
+            if (leftCap) {
+                leftCap.style.transform = `translate(${lsX}px, ${lsY}px)`;
+            }
+
+            // Right Stick Movement Vector calculation
+            let rsX = 0, rsY = 0;
+            if (isPressed('RS_UP')) rsY -= 16;
+            if (isPressed('RS_DOWN')) rsY += 16;
+            if (isPressed('RS_LEFT')) rsX -= 16;
+            if (isPressed('RS_RIGHT')) rsX += 16;
+
+            if (rightCap) {
+                rightCap.style.transform = `translate(${rsX}px, ${rsY}px)`;
+            }
+
+            // L3 / R3 Click Press Depress state
+            if (isPressed('L3')) {
+                leftCap?.classList.add('pressed-l3');
+            } else {
+                leftCap?.classList.remove('pressed-l3');
+            }
+
+            if (isPressed('R3')) {
+                rightCap?.classList.add('pressed-r3');
+            } else {
+                rightCap?.classList.remove('pressed-r3');
+            }
+        }
+
+        function isPressed(actionKey) {
+            const targetMap = currentMappings[actionKey];
+            if (!targetMap) return false;
+            return activePressedCodes.has(targetMap.code);
+        }
+
+        // PHYSICAL KEY DOWN LISTENER
+        window.addEventListener('keydown', (e) => {
+            if (activeRebindTarget) {
+                e.preventDefault();
+                if (e.code === 'Escape') {
+                    cancelRebind();
+                    return;
+                }
+
+                const newKeyName = formatKeyName(e);
+                currentMappings[activeRebindTarget] = {
+                    key: newKeyName,
+                    code: e.code
+                };
+
+                const box = document.getElementById(`box-${activeRebindTarget}`);
+                if (box) box.classList.remove('rebinding');
+
+                updateUI();
+                cancelRebind();
+                return;
+            }
+
+            activePressedCodes.add(e.code);
+
+            // Highlight corresponding buttons and callouts
+            Object.keys(currentMappings).forEach(target => {
+                const mapData = currentMappings[target];
+                if (mapData.code === e.code || mapData.key.toLowerCase() === e.key.toLowerCase()) {
+                    const box = document.getElementById(`box-${target}`);
+                    if (box) box.classList.add('active-key');
+
+                    const svgTarget = document.getElementById(`svg-${target}`);
+                    if (svgTarget) svgTarget.classList.add('active-btn');
+                }
+            });
+
+            updateStickAnimations();
+        });
+
+        // PHYSICAL KEY UP LISTENER
+        window.addEventListener('keyup', (e) => {
+            activePressedCodes.delete(e.code);
+
+            Object.keys(currentMappings).forEach(target => {
+                const mapData = currentMappings[target];
+                if (mapData.code === e.code || mapData.key.toLowerCase() === e.key.toLowerCase()) {
+                    const box = document.getElementById(`box-${target}`);
+                    if (box) box.classList.remove('active-key');
+
+                    const svgTarget = document.getElementById(`svg-${target}`);
+                    if (svgTarget) svgTarget.classList.remove('active-btn');
+                }
+            });
+
+            updateStickAnimations();
+        });
+
+        // INITIALIZE APP
+        window.onload = function() {
+            updateUI();
+            drawLeaderLines();
+            window.addEventListener('resize', drawLeaderLines);
+        };
+    </script>
+</body>
+</html>
