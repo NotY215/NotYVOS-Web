@@ -14,7 +14,7 @@ Canonical source for the PPSX33 project website.
 | Home | `index.html` | Project summary and high-level status |
 | About | `about.html` | Scope and compatibility expectations |
 | Architecture | `architecture.html` | Recompilation pipeline and subsystem boundaries |
-| Documentation | `documentation.html` | User and developer reference hub |
+| Wiki | `documentation.html` | Technical wiki, workflow, subsystems, troubleshooting and reference hub |
 | Roadmap | `roadmap.html` | Summary linked to canonical roadmap |
 | Updates | `updates.html` | Project updates |
 | FAQ | `faq.html` | Common questions and limitations |
@@ -28,9 +28,14 @@ Canonical source for the PPSX33 project website.
 - `assets/`: static images and other assets.
 - `robots.txt`, `sitemap.xml`, `.htaccess`: crawler metadata and routing support.
 - `ARCHITECTURE.md`: detailed architecture notes and diagram sources.
+- `LICENSE`: Apache License 2.0.
 - `DOCUMENTATION.md`: documentation map, evidence rules, and diagram conventions.
 
-The homepage is `index.html`. There is no separate `ppsx3.html` page. This repository contains the PPSX33 website only.
+The homepage is `index.html`. The public-facing Documentation page is presented as the PPSX33 Wiki; its current host-compatible source file remains `documentation.html`. This repository contains the PPSX33 website only.
+
+## License
+
+Website source code is licensed under the Apache License 2.0. See [`LICENSE`](LICENSE). Images, fonts, logos, and third-party assets may have separate terms.
 
 ## Diagram formats
 
