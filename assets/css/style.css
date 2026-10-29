@@ -289,3 +289,18 @@ body:has(.ps3-symbol-field) main,body:has(.ps3-symbol-field) .site-footer{positi
 
 /* Keep the header and close button above the drawer edge. */
 @media(max-width:760px){body>.main-nav.mobile-drawer{z-index:1095!important}.site-header{z-index:1100}}
+
+/* PPSX33 homepage refresh: editorial hero, responsive project facts, and wiki-first navigation. */
+.ppsx-home-hero{padding-top:clamp(2.5rem,7vw,6rem);padding-bottom:clamp(3rem,7vw,6rem);overflow:hidden}
+.home-hero-grid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:clamp(2rem,5vw,5rem);align-items:center}
+.home-hero-copy h1{font-size:clamp(2.8rem,6.4vw,5.8rem);line-height:.99;letter-spacing:-.065em;max-width:850px;margin:1.1rem 0 1.5rem}
+.home-hero-copy h1 span{background:linear-gradient(100deg,var(--cyan),#8ea8ff 65%,#c5d4ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+.home-hero-copy .hero-lead{font-size:clamp(1.05rem,1.6vw,1.25rem);line-height:1.8;max-width:650px;color:var(--muted)}
+.home-hero-art{position:relative;padding:clamp(1rem,2vw,1.5rem);border:1px solid var(--line);border-radius:28px;background:linear-gradient(145deg,rgba(24,54,83,.68),rgba(4,13,26,.88));box-shadow:0 25px 90px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.06)}
+.home-hero-art:before{content:"";position:absolute;inset:-25%;z-index:-1;background:radial-gradient(ellipse at 55% 40%,rgba(57,199,255,.18),transparent 62%);pointer-events:none}
+.home-hero-art .ppsx-banner{display:block;width:100%;height:auto;max-height:360px;object-fit:contain;border-radius:16px}
+.home-hero-art p{margin:.8rem 0 0;color:var(--muted);font-size:.86rem;letter-spacing:.04em}
+.home-facts{display:flex;flex-wrap:wrap;gap:.75rem 1.4rem;margin-top:2rem;color:var(--muted);font-size:.88rem}
+.home-facts span{display:flex;gap:.35rem;align-items:center}.home-facts b{color:var(--text);font-weight:650}
+@media(max-width:800px){.home-hero-grid{grid-template-columns:1fr;gap:2rem}.home-hero-copy h1{font-size:clamp(2.7rem,11vw,4.6rem)}.home-hero-art{max-width:640px;width:100%;margin-inline:auto}.home-facts{gap:.7rem 1rem}}
+@media(max-width:480px){.ppsx-home-hero{padding-top:2.2rem}.home-hero-copy h1{font-size:clamp(2.45rem,12vw,3.5rem)}.home-hero-art{padding:.8rem;border-radius:20px}.home-facts{font-size:.8rem}}
