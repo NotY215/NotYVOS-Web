@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://notyvos.gt.tc/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://notyvos.gt.tc/About/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://notyvos.gt.tc/Architecture/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://notyvos.gt.tc/Documentation/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://notyvos.gt.tc/Roadmap/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://notyvos.gt.tc/Updates/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://notyvos.gt.tc/FAQ/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://notyvos.gt.tc/Developer/</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://notyvos.gt.tc/PPSX3/</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+<url><loc>https://ppsx33.xo.je/</loc><priority>1.0</priority></url>
+<url><loc>https://ppsx33.xo.je/about/</loc><priority>0.8</priority></url>
+<url><loc>https://ppsx33.xo.je/architecture/</loc><priority>0.8</priority></url>
+<url><loc>https://ppsx33.xo.je/documentation/</loc><priority>0.9</priority></url>
+<url><loc>https://ppsx33.xo.je/roadmap/</loc><priority>0.9</priority></url>
+<url><loc>https://ppsx33.xo.je/updates/</loc><priority>0.7</priority></url>
+<url><loc>https://ppsx33.xo.je/faq/</loc><priority>0.7</priority></url>
+<url><loc>https://ppsx33.xo.je/developer/</loc><priority>0.6</priority></url>
 </urlset>
