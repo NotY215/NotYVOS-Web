@@ -30,7 +30,7 @@ Canonical source for the PPSX33 project website.
 - `ARCHITECTURE.md`: detailed architecture notes and diagram sources.
 - `DOCUMENTATION.md`: documentation map, evidence rules, and diagram conventions.
 
-The homepage is `index.html`. There is no separate `ppsx3.html` page. This repository is PPSX33-only and must not contain NotYVOS branding or routes.
+The homepage is `index.html`. There is no separate `ppsx3.html` page. This repository contains the PPSX33 website only.
 
 ## Diagram formats
 
