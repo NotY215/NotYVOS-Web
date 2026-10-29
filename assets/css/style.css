@@ -3,8 +3,8 @@
 body,.site-header,.site-footer,main,section,article,aside,nav,header,footer{user-select:none;-webkit-user-select:none;-moz-user-select:none}
 input,textarea,select,button{user-select:none;-webkit-user-select:none}
 img,svg,canvas{-webkit-user-drag:none;user-drag:none}
-main{animation:notyvosPageIn .55s ease both}
-@keyframes notyvosPageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+main{animation:ppsx33PageIn .55s ease both}
+@keyframes ppsx33PageIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){main{animation:none}.reveal{transition:none!important}}
 
 
@@ -55,7 +55,7 @@ main{animation:notyvosPageIn .55s ease both}
 }
 
 
-/* NotYVOS roadmap: explicit rendering layer */
+/* PPSX33 roadmap: explicit rendering layer */
 .roadmap-page{display:block;min-height:100vh}
 .roadmap-hero{position:relative}
 .roadmap-hero .roadmap-current{margin-top:28px}
@@ -188,7 +188,7 @@ body{color:var(--text);background:radial-gradient(ellipse at 14% 0%,rgba(55,111,
 @media(max-width:850px){.dev-stat-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.dev-chart-grid{grid-template-columns:1fr}}@media(max-width:520px){.dev-analytics-head{align-items:start;flex-direction:column}.dev-chart-card{padding:17px}.dev-donut-wrap{gap:14px}.dev-bar-row{grid-template-columns:84px minmax(0,1fr) 34px;gap:8px}.dev-stat{padding:16px}}
 
 
-/* PS3-inspired ambient controls: shared across all NotYVOS pages. */
+/* PS3-inspired ambient controls: shared across all PPSX33 pages. */
 .site-bg{isolation:isolate}
 .ps3-symbol-field{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;contain:layout paint;opacity:.8}
 .ps3-symbol{position:absolute;display:grid;place-items:center;left:var(--x);top:var(--y);width:var(--size);height:var(--size);font-family:Arial,sans-serif;font-weight:300;line-height:1;opacity:0;color:var(--symbol-color);text-shadow:0 0 12px color-mix(in srgb,var(--symbol-color) 34%,transparent),0 0 32px color-mix(in srgb,var(--symbol-color) 18%,transparent);border:1px solid color-mix(in srgb,var(--symbol-color) 28%,transparent);border-radius:var(--radius-shape);animation:ps3SymbolDrift var(--duration) ease-in-out var(--delay) infinite alternate;will-change:transform,opacity}
