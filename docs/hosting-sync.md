@@ -1,37 +1,23 @@
-# Website Hosting Sync
+# PPSX33 Website Hosting
 
-The canonical website source is this repository: `NotY215/NotYVOS-Web`.
-The public-host copy is `NotY215/Web-host/NotYvos/`.
+Canonical website source: [NotY215/PPSX33-Web](https://github.com/NotY215/PPSX33-Web).  
+Minimal host router: [NotY215/Web-host/tree/main/PPSX33](https://github.com/NotY215/Web-host/tree/main/PPSX33).  
+Live website: https://ppsx33.xo.je/
 
-## Asset loading
+## How serving works
+The host's `render.php` fetches page HTML from this repository's `main` branch and rewrites root-relative `/assets/...` links to the jsDelivr CDN for this repository. CSS, JavaScript, TypeScript source, images and all other site assets remain maintained here rather than duplicated on the host.
 
-Host HTML pages load CSS and JavaScript from jsDelivr URLs pointing to this repository's `main` branch. This avoids maintaining separate copies of shared CSS and JavaScript in the host repository.
+## Routes
+- `/` → `index.html`
+- `/About/` → `about.html`
+- `/Architecture/` → `architecture.html`
+- `/Documentation/` → `documentation.html`
+- `/Roadmap/` → `roadmap.html`
+- `/Updates/` → `updates.html`
+- `/FAQ/` → `faq.html`
+- `/Developer/` → `developer.html`
 
-## Automatic HTML sync
+The former `ppsx3.html` page has been removed. Do not reintroduce the redundant PPSX33 navigation button.
 
-The workflow at `.github/workflows/sync-host.yml` copies the root HTML pages to the host repository when those pages change. The host's `.htaccess` and `sitemap.xml` are intentionally maintained in the host repository because they contain hosting-specific routes and sitemap entries.
-
-The workflow requires a repository secret before it can push changes:
-
-1. Create a fine-grained personal access token with access limited to `NotY215/Web-host` and **Contents: Read and write** permission.
-2. Open this repository's **Settings → Secrets and variables → Actions**.
-3. Add a repository secret named `WEB_HOST_TOKEN` with that token as its value.
-4. Run **Actions → Sync website pages to host repository → Run workflow** to test the first sync.
-
-Do not put the token in source code, commit it to a file, or share it publicly.
-
-## Page mapping
-
-| Source page | Host file |
-|---|---|
-| `index.html` | `NotYvos/index.html` |
-| `about.html` | `NotYvos/About.html` |
-| `architecture.html` | `NotYvos/Architecture.html` |
-| `documentation.html` | `NotYvos/Documentation.html` |
-| `roadmap.html` | `NotYvos/Roadmap.html` |
-| `updates.html` | `NotYvos/Updates.html` |
-| `faq.html` | `NotYvos/FAQ.html` |
-| `developer.html` | `NotYvos/Developer.html` |
-| `ppsx3.html` | `NotYvos/ppsx3.html` |
-
-The workflow transforms local asset paths to shared CDN URLs while copying pages. The host-specific route rules and sitemap are not overwritten.
+## Changes
+Edit source files in this repository. The host renderer uses a short-lived cache and stale-cache fallback. Host routing and SEO metadata are maintained in `NotY215/Web-host/PPSX33/`. No credentials or tokens belong in source control.
