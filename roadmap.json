@@ -1,70 +1,11 @@
 {
   "_readme": {
-    "title": "NotYVOS Roadmap",
-    "howto": "Snapshot synchronized from NotY215/NotYVOS/ROADMAP.md. The repository roadmap is canonical.",
-    "phase_status": {
-      "completed": "Implemented in current rewrite",
-      "working": "Current sprint",
-      "soon": "Planned"
-    }
+    "title": "PPSX33 Roadmap Snapshot",
+    "howto": "Website metadata only. The canonical roadmap is in NotY215/PPSX33/ROADMAP.md.",
+    "canonical": "https://github.com/NotY215/PPSX33/blob/main/ROADMAP.md"
   },
-  "source": "https://github.com/NotY215/NotYVOS/blob/main/ROADMAP.md",
-  "updated": "2026-10-15",
-  "currentPhase": "0",
-  "phases": [
-    {
-      "id": "0",
-      "name": "Project Hygiene & Tooling",
-      "description": "Current sprint: Windows-first VirtualBox helper scripts, root CMake convenience targets, documentation and validation of the XMB workflow.",
-      "status": "working"
-    },
-    {
-      "id": "1",
-      "name": "VirtualBox First-Class Support",
-      "description": "Create a bootable VDI or raw-to-VDI workflow, configure VM defaults and attach the latest build artifacts.",
-      "status": "soon"
-    },
-    {
-      "id": "2",
-      "name": "Packaging & Boot Experience",
-      "description": "Create a proper bootable disk/ISO, persistent media data partition and a smooth transition into the XMB.",
-      "status": "soon"
-    },
-    {
-      "id": "3",
-      "name": "Media & Desktop Completeness",
-      "description": "Add photo/music/video playback, sound, theme refinements and networking UI.",
-      "status": "soon"
-    },
-    {
-      "id": "4",
-      "name": "Input & Controllers",
-      "description": "Improve DualShock mapping, native USB/Bluetooth controller support and hotplug behavior.",
-      "status": "soon"
-    },
-    {
-      "id": "5",
-      "name": "PS3 Runtime Foundation",
-      "description": "Investigate integrating PPU/SPU/DMA/RSX runtime components and a GameRunner for user-supplied content; not implemented in the current rewrite.",
-      "status": "soon"
-    },
-    {
-      "id": "6",
-      "name": "Performance & Native Lean",
-      "description": "Explore JIT improvements, graphics translation, SPU scheduling and profiling after runtime foundations exist.",
-      "status": "soon"
-    },
-    {
-      "id": "7",
-      "name": "Hardware & Distribution",
-      "description": "Validate real x86-64 hardware and prepare release ISO/VDI images and end-user documentation.",
-      "status": "soon"
-    },
-    {
-      "id": "8+",
-      "name": "Long-Term Extensions",
-      "description": "Consider online features, XMB plugins, multi-user profiles, cloud-save experiments and other architectures.",
-      "status": "soon"
-    }
-  ]
+  "project": "PPSX33",
+  "website": "https://ppsx33.xo.je/",
+  "repository": "https://github.com/NotY215/PPSX33",
+  "status_note": "Consult the canonical repository roadmap for current phase status. Implementation milestones do not establish compatibility."
 }
