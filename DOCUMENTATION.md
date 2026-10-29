@@ -1,15 +1,15 @@
-# PPSX33 Website Documentation Handbook
+# PPSX33 Website Wiki and Documentation Handbook
 
 ## Source of truth
 
-This repository publishes https://ppsx33.xo.je/. The [PPSX33 source repository](https://github.com/NotY215/PPSX33) owns implementation truth. This repository owns website copy, HTML, shared styles, scripts, assets, and diagram source.
+This repository publishes https://ppsx33.xo.je/. The public-facing Documentation page is named the PPSX33 Wiki. The [PPSX33 source repository](https://github.com/NotY215/PPSX33) owns implementation truth. This repository owns website copy, HTML, shared styles, scripts, assets, and diagram source.
 
 ## Page map
 
 - `index.html`: project overview.
 - `about.html`: purpose and scope.
 - `architecture.html`: pipeline and subsystem boundaries.
-- `documentation.html`: guide index.
+- `documentation.html`: PPSX33 Wiki and technical reference hub.
 - `roadmap.html`: roadmap summary linked to the canonical roadmap.
 - `updates.html`: project updates.
 - `faq.html`: common questions.
