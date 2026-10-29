@@ -7,8 +7,8 @@
 <meta name="description" content="Learn about the current PPSX33 static recompiler rewrite, its goals and known limitations.">
 <meta name="robots" content="index,follow">
 <title>About PPSX33</title>
-<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/NotY215/PPSX33/main/Assets/Neon%20Blue%20PPSX33%20Tech%20Logo.png">
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/NotY215/PPSX33/main/Assets/Neon%20Blue%20PPSX33%20Tech%20Logo.png">
+<link rel="icon" type="image/png" href="https://raw.githubusercontent.com/NotY215/PPSX33/main/assets/ppsx33-logo.png">
+<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/NotY215/PPSX33/main/assets/ppsx33-logo.png">
 <link rel="sitemap" type="application/xml" title="PPSX33 Sitemap" href="/sitemap.xml">
 <link rel="canonical" href="https://ppsx33.xo.je/About/">
 <link rel="stylesheet" href="/assets/css/style.css">
@@ -18,7 +18,7 @@
 <body>
 <div class="site-bg" aria-hidden="true"><span></span><span></span><span></span></div>
 <header class="site-header"><div class="nav-shell">
-<a class="brand" href="/"><img src="https://raw.githubusercontent.com/NotY215/PPSX33/main/Assets/Neon%20Blue%20PPSX33%20Tech%20Logo.png" alt=""><span>PPSX33</span></a>
+<a class="brand" href="/"><img src="https://raw.githubusercontent.com/NotY215/PPSX33/main/assets/ppsx33-logo.png" alt=""><span>PPSX33</span></a>
 <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false"><span></span><span></span><span></span></button>
 <nav class="main-nav" id="main-nav">
 <a class="" href="/">Home</a>
@@ -34,7 +34,7 @@
 </nav></div></header><main><section class="page-hero section-shell"><span class="eyebrow">ABOUT THE PROJECT</span><h1>A console-like static recompiler, rebuilt from scratch.</h1><p>The current PPSX33 rewrite is a lightweight gaming-focused appliance that boots directly into a PS3-style XMB. It uses a configured Linux kernel and a small SDL2 application rather than the earlier native-kernel desktop architecture.</p></section>
 <section class="section-shell section"><div class="prose-grid"><article class="prose reveal"><h2>The idea</h2><p>PPSX33 now uses the Linux kernel through Buildroot, BusyBox init, a respawned session script, seatd, the cage kiosk Wayland compositor and the SDL2-based notyvos-xmb program. The project is in an early rewrite stage, and the current repository README and ROADMAP are the source of truth.</p><p>The long-term roadmap includes PS3 runtime experimentation, but the current rewrite does not yet implement PS3 game loading or execution. Photo, Music and Video currently browse files only; playback is not implemented.</p><h2>Project philosophy</h2><ul><li>Keep architecture understandable and documented.</li><li>Prefer native components where practical.</li><li>Make subsystem boundaries explicit.</li><li>Document limitations instead of hiding incomplete areas.</li><li>Keep third-party components attributed and separated.</li></ul></article><aside class="side-card reveal"><span class="eyebrow">PLATFORM</span><dl><div><dt>CPU</dt><dd>x86-64</dd></div><div><dt>Kernel</dt><dd>Linux / Buildroot</dd></div><div><dt>UI</dt><dd>C++ / SDL2</dd></div><div><dt>Session</dt><dd>BusyBox + cage</dd></div><div><dt>Build</dt><dd>CMake + Ninja</dd></div><div><dt>License</dt><dd>AGPL-3.0-or-later</dd></div></dl></aside></div></section>
 <section class="section-shell section tinted"><div class="section-heading"><span class="eyebrow">BOUNDARIES</span><h2>What it does not claim</h2></div><div class="card-grid three"><article class="feature-card"><h3>Not a Windows replacement</h3><p>The current goal is a focused static recompiler, not Windows application compatibility or a general-purpose desktop environment.</p></article><article class="feature-card"><h3>Not PS3 firmware</h3><p>PS3 firmware is not part of the current rewrite workflow. Any future firmware handling remains a separate, user-supplied and legally constrained project boundary.</p></article><article class="feature-card"><h3>Not finished</h3><p>PPSX33 remains an early rewrite. Media playback, sound, networking, bootable disk packaging and PS3 game loading are still incomplete.</p></article></div></section></main><footer class="site-footer"><div class="section-shell footer-grid">
-<div><a class="brand footer-brand" href="/"><img src="https://raw.githubusercontent.com/NotY215/PPSX33/main/Assets/Neon%20Blue%20PPSX33%20Tech%20Logo.png" alt=""><span>PPSX33</span></a><p>An experimental static recompiler project by NotY215.</p></div>
+<div><a class="brand footer-brand" href="/"><img src="https://raw.githubusercontent.com/NotY215/PPSX33/main/assets/ppsx33-logo.png" alt=""><span>PPSX33</span></a><p>An experimental static recompiler project by NotY215.</p></div>
 <div><h4>Explore</h4><a href="/Documentation/">Documentation</a><a href="/Architecture/">Architecture</a><a href="/Roadmap/">Roadmap</a><a href="/Updates/">Updates</a><a href="/">PPSX33</a></div>
 <div><h4>Project</h4><a href="/About/">About</a><a href="/Developer/">Developer</a><a href="/FAQ/">FAQ</a></div>
 <div><h4>Source</h4><a href="https://github.com/NotY215/PPSX33" target="_blank" rel="noopener">PPSX33 repository</a><a href="https://github.com/NotY215/PPSX33" target="_blank" rel="noopener">PPSX33 repository</a><a href="https://github.com/NotY215" target="_blank" rel="noopener">NotY215 on GitHub</a></div>
