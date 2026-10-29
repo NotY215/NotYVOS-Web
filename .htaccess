@@ -3,53 +3,23 @@ ErrorDocument 404 /404.html
 Options -Indexes
 ServerSignature Off
 AddDefaultCharset UTF-8
-
-<FilesMatch "^(\.env|\.git|composer\.(json|lock)|package(-lock)?\.json|tsconfig\.json|phpunit\.xml|README.*)$">
-Require all denied
-</FilesMatch>
-
 RewriteEngine On
-
-# Keep the public site on HTTPS. The domain root with and without a typed trailing slash
-# is the same HTTP resource; DirectoryIndex serves index.html for that root.
 RewriteCond %{HTTPS} !=on
-RewriteRule ^ https://notyvos.gt.tc%{REQUEST_URI} [R=301,L]
-
-# Static HTML routes
-RewriteRule ^About/?$ about.html [L]
-RewriteRule ^Architecture/?$ architecture.html [L]
-RewriteRule ^Documentation/?$ documentation.html [L]
-RewriteRule ^Docs/?$ /Documentation/ [R=301,L]
-RewriteRule ^Roadmap/?$ roadmap.html [L]
-RewriteRule ^Updates/?$ updates.html [L]
-RewriteRule ^FAQ/?$ faq.html [L]
-RewriteRule ^Developer/?$ developer.html [L]
-RewriteRule ^PPSX3/?$ ppsx3.html [L]
-
-# Legacy PHP URLs
-RewriteCond %{THE_REQUEST} \s/+index\.php(?:[?\s]) [NC]
-RewriteRule ^index\.php$ / [R=301,L]
-RewriteCond %{THE_REQUEST} \s/+about\.php(?:[?\s]) [NC]
-RewriteRule ^about\.php$ /About/ [R=301,L]
-RewriteCond %{THE_REQUEST} \s/+architecture\.php(?:[?\s]) [NC]
-RewriteRule ^architecture\.php$ /Architecture/ [R=301,L]
-RewriteCond %{THE_REQUEST} \s/+documentation\.php(?:[?\s]) [NC]
-RewriteRule ^documentation\.php$ /Documentation/ [R=301,L]
-RewriteCond %{THE_REQUEST} \s/+docs\.php(?:[?\s]) [NC]
-RewriteRule ^docs\.php$ /Documentation/ [R=301,L]
-RewriteCond %{THE_REQUEST} \s/+roadmap\.php(?:[?\s]) [NC]
-RewriteRule ^roadmap\.php$ /Roadmap/ [R=301,L]
-RewriteCond %{THE_REQUEST} \s/+updates\.php(?:[?\s]) [NC]
-RewriteRule ^updates\.php$ /Updates/ [R=301,L]
-RewriteCond %{THE_REQUEST} \s/+faq\.php(?:[?\s]) [NC]
-RewriteRule ^faq\.php$ /FAQ/ [R=301,L]
-RewriteCond %{THE_REQUEST} \s/+developer\.php(?:[?\s]) [NC]
-RewriteRule ^developer\.php$ /Developer/ [R=301,L]
-
-<FilesMatch "\.(md|json|ts)$">
+RewriteRule ^ https://ppsx33.xo.je%{REQUEST_URI} [R=301,L]
+RewriteRule ^Docs/?$ /Documentation/ [R=301,L,NC]
+RewriteRule ^About/?$ about.html [L,NC]
+RewriteRule ^Architecture/?$ architecture.html [L,NC]
+RewriteRule ^Documentation/?$ documentation.html [L,NC]
+RewriteRule ^Roadmap/?$ roadmap.html [L,NC]
+RewriteRule ^Updates/?$ updates.html [L,NC]
+RewriteRule ^FAQ/?$ faq.html [L,NC]
+RewriteRule ^Developer/?$ developer.html [L,NC]
+<FilesMatch "^(.env|.git|composer.(json|lock)|package(-lock)?.json|tsconfig.json|phpunit.xml|README.*)$">
 Require all denied
 </FilesMatch>
-
+<FilesMatch ".(md|json|ts)$">
+Require all denied
+</FilesMatch>
 <IfModule mod_headers.c>
 Header always set Cache-Control "public, max-age=300"
 Header always set X-Content-Type-Options "nosniff"
