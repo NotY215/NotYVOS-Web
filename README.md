@@ -19,4 +19,4 @@ There is no separate `ppsx3.html` page. The homepage is `index.html`.
 PPSX33 is an experimental PlayStation 3 full-recompilation project, not a complete PS3 emulator. Static lifting and translation counts do not establish semantic correctness, bootability, or playability. The canonical project README and roadmap are the source of truth.
 
 ## Hosting
-The `PPSX33/` folder in [Web-host](https://github.com/NotY215/Web-host/tree/main/PPSX33) contains only the PHP renderer, routing configuration, README, robots file and sitemap. HTML and assets are fetched from this repository.
+The `PPSX33/` folder in [Web-host](https://github.com/NotY215/Web-host/tree/main/PPSX33) is the host-side routing/rendering layer. Website page content and assets are maintained in this repository; host-side files are intentionally left unchanged during routine website updates.
